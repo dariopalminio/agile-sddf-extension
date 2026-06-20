@@ -40,9 +40,9 @@ database interactions — without needing a browser or UI.
 > test behavior — so if you prefer to follow NestJS's convention, you can
 > rename it back to `(e2e)` without affecting functionality.
 
-## Reference Guide
+## References
 
-Load detailed guidance based on context:
+For more details, consult these reference files (loaded on demand):
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
@@ -52,6 +52,8 @@ Load detailed guidance based on context:
 | Database Isolation | `references/database-isolation.md` | Cleaning or resetting the test database between tests, choosing an isolation strategy |
 | Common Pitfalls | `references/common-pitfalls.md` | Debugging flaky/leaking integration tests, avoiding false-confidence anti-patterns |
 
+> These files are only loaded if the agent needs additional context.
+
 ## Examples
 
 Full, self-contained spec files demonstrating the patterns above:
@@ -60,5 +62,7 @@ Full, self-contained spec files demonstrating the patterns above:
 |------|--------------|
 | `examples/users.e2e-spec.ts` | Complete Users resource spec: CRUD (POST/GET/PUT/DELETE) plus protected-route authentication in one file |
 | `examples/orders.e2e-spec.ts` | Spec with full database isolation: `synchronize(true)` reset between tests, with assertions proving isolation actually works |
+
+> These files are only loaded if the agent needs additional context.
 
 Reference: [NestJS E2E Testing](https://docs.nestjs.com/fundamentals/testing#end-to-end-testing)

@@ -46,9 +46,9 @@ You are a senior QA automation engineer specializing in BDD with Cucumber and Pl
 
 For BDD detailed workflow see: `references/bdd-architecture.md`
 
-## Reference Guide
+## References
 
-Load detailed guidance based on context:
+For more details, consult these reference files (loaded on demand):
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
@@ -73,6 +73,8 @@ Load detailed guidance based on context:
 | API Mocking | `references/api-mocking.md` | Mocking API responses, stubbing endpoints, and testing edge cases |
 | API/REST Testing | `references/api-rest-testing.md` | Testing RESTful APIs, endpoints, and response validation |
 | WCAG E2E Testing | `references/wcag-e2e-testing.md` | Automated WCAG 2.2 accessibility checks in E2E tests with Playwright + axe-core |
+
+> These files are only loaded if the agent needs additional context.
 
 ## Constraints
 

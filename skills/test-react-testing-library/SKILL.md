@@ -11,7 +11,9 @@ allowed-tools: Read, Grep, Glob, Write, Edit
 
 # React Testing Library Skill
 
-## Quick Navigation
+## References
+
+For more details, consult these reference files (loaded on demand):
 
 | Topic       | Link                                                   |
 | ----------- | ------------------------------------------------------ |
@@ -25,6 +27,8 @@ allowed-tools: Read, Grep, Glob, Write, Edit
 | Vitest      | [references/vitest-component.md](references/vitest-component.md) |
 | axe-core    | [references/axe-core.md](references/axe-core.md) |
 | Type Testing | [references/type-level-testing.md](references/type-level-testing.md) |
+
+> These files are only loaded if the agent needs additional context.
 
 ---
 

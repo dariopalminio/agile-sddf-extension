@@ -42,9 +42,9 @@ You are a senior QA automation engineer specializing in BDD with Cucumber and Cy
 7. **Set up hooks** — Lifecycle hooks in `cypress/support/hooks.ts`
 8. **Integrate CI** — GitHub Actions with tag-based execution
 
-## Reference Guide
+## References
 
-Load detailed guidance based on context:
+For more details, consult these reference files (loaded on demand):
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
@@ -59,6 +59,8 @@ Load detailed guidance based on context:
 | Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
 | Best Practices | `references/cucumber-best-practices.md` | Scenario Design Principles, Feature Organization, Writing Good Gherkin, Scenario Outlines, Step Definition Patterns, Error Handling, Performance, Testing Pyramid |
 
+
+> These files are only loaded if the agent needs additional context.
 
 > For **Page Objects, selectors, naming conventions, intercept patterns, and anti-patterns** load the `cypress-automation` skill.
 

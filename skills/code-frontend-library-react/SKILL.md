@@ -21,9 +21,9 @@ Implement production-ready components for `packages/ui` following the project's 
 - Refactoring a component to use the `--ui-*` token system
 - Making a component Next.js App Router compatible (`"use client"`)
 
-## Reference Guide
+## References
 
-Load the relevant reference based on what you're IMPLEMENT:
+For more details, consult these reference files (loaded on demand):
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
@@ -39,6 +39,8 @@ Load the relevant reference based on what you're IMPLEMENT:
 | Animation & Transitions | `references/animation-transitions.md` | CSS transition standards, prefers-reduced-motion, spinner, hover/press patterns |
 | Theming & Dark Mode | `references/theming-dark-mode.md` | ThemeProvider, useTheme(), themeScript, dark mode integration |
 | Icons & SVG | `references/icons-svg.md` | Icon components, inline SVG, aria-hidden, decorative vs semantic |
+
+> These files are only loaded if the agent needs additional context.
 
 ## Stack & Architecture
 

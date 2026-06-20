@@ -36,7 +36,9 @@ Reference these guidelines when:
 | 8 | Microservices | MEDIUM | `micro-` |
 | 9 | DevOps & Deployment | LOW-MEDIUM | `devops-` |
 
-## Quick Reference
+## References
+
+For more details, consult these reference files (loaded on demand):
 
 ### 1. Architecture (CRITICAL)
 
@@ -102,6 +104,8 @@ Reference these guidelines when:
 - [references/devops-use-config-module.md](references/devops-use-config-module.md) - Environment configuration
 - [references/devops-use-logging.md](references/devops-use-logging.md) - Structured logging
 - [references/devops-graceful-shutdown.md](references/devops-graceful-shutdown.md) - Zero-downtime deployments
+
+> These files are only loaded if the agent needs additional context.
 
 ## How to Use
 
