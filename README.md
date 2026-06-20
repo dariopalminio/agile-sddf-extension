@@ -4,9 +4,6 @@ Public repository of agent skills to extend agile-sddf
 ## Structure
 ```
 my-skills-repo/
-├── .claude-plugin/
-│   └── marketplace.json          # Configuration for the Claude Code marketplace
-├── .github/                      # (Optional) CI/CD workflows
 ├── skills/
 │   ├── my-skill-1/               # kebab-case for the skill name
 │   │   ├── SKILL.md              # REQUIRED main file
