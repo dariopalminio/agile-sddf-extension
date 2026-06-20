@@ -17,6 +17,7 @@ For more details, consult these reference files (loaded on demand):
 
 | Topic       | Link                                                   |
 | ----------- | ------------------------------------------------------ |
+| Installation | [references/testing-library-installation.md](references/testing-library-installation.md) |
 | Queries     | [references/testing-library-queries.md](references/queries.md)         |
 | User Events | [references/testing-library-user-events.md](references/testing-library-user-events.md) |
 | API         | [references/testing-library-api.md](references/testing-library-api.md)                 |
@@ -31,24 +32,6 @@ For more details, consult these reference files (loaded on demand):
 > These files are only loaded if the agent needs additional context.
 
 ---
-
-## Installation
-
-```bash
-# Core (v16+: @testing-library/dom is peer dependency)
-npm install --save-dev @testing-library/react @testing-library/dom
-
-# TypeScript support
-npm install --save-dev @types/react @types/react-dom
-
-# Recommended: user-event for interactions
-npm install --save-dev @testing-library/user-event
-
-# Recommended: jest-dom for matchers
-npm install --save-dev @testing-library/jest-dom
-```
-
-**React 19 support**: Requires `@testing-library/react` v16.1.0+
 
 ## Core Philosophy
 
