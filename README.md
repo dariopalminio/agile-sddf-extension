@@ -1,110 +1,71 @@
 # agile-sddf-extension
 Public repository of agent skills to extend agile-sddf
 
-## Structure
-```
-my-skills-repo/
-├── skills/
-│   ├── my-skill-1/               # kebab-case for the skill name
-│   │   ├── SKILL.md              # REQUIRED main file
-│   │   ├── scripts/              # (Optional) Executable scripts
-│   │   │   ├── action.sh
-│   │   │   └── util.mjs
-│   │   ├── references/           # (Optional) Supporting documentation
-│   │   │   └── detailed-guide.md
-│   │   ├── assets/   
-│   │   └── lib/                  # (Optional) Shared code for scripts
-│   ├── my-skill-2/
-│   │   └── SKILL.md
-│   └── ...
-├── template/
-│   └── SKILL.md                  # Base template for new skills
-├── spec/
-│   └── agent-skills-spec.md      # (Optional) Skill specification
-├── AGENTS.md                     # Guide for AI agents working in the repo
-├── README.md                     # Main repository documentation
-└── .gitignore
-```
+## Available Skills
 
-## Required frontmatter fields
+### Implementation
 
-| Field | Description |
-|-------|-------------|
-| **`name`** | Unique skill identifier (lowercase, hyphens for spaces) |
-| **`description`** | Full description of what it does and when to use it |
+- **`code-backend-nestjs`** — NestJS best practices and architecture patterns for production-ready applications
+- **`code-frontend-library-react`** — React UI library components: CSS pure + BEM + design tokens, TypeScript strict, tsup, Turborepo
 
-### Optional fields (Vercel extension)
+### Testing
 
-| Field | Description |
-|-------|-------------|
-| **`metadata.version`** | Skill version (e.g. "1.2.0") |
+- **`test-cypress-cucumber`** — E2E tests with Cucumber BDD + Cypress (feature files, step definitions, hooks, CI/CD)
+- **`test-nestjs-jest-testing-module`** — Unit tests for NestJS apps using the Testing Module and Jest
+- **`test-nestjs-supertest`** — API integration tests for NestJS with Supertest (routing, guards, pipes, DB isolation)
+- **`test-playwright-cucumber`** — E2E tests with Cucumber BDD + Playwright (feature files, step definitions, hooks, CI/CD)
+- **`test-react-testing-library`** — React components tested with Vitest + Testing Library + happy-dom + axe-core
 
-## 🧠 Best Practices and Tips
+### Utilities
 
-### 1. Single Responsibility Principle
-Each skill should cover **one concern only**. If a `SKILL.md` covers deployment **and** monitoring, split it into two skills.
+- **`changelog-generator`** — Generate release notes from git commits, updates, or feature lists
 
-### 2. Keep `SKILL.md` under 500 lines
-The main file is loaded into the agent context when the skill is relevant. Keeping it **under 500 lines** optimizes context usage.
+### OpenSpec support
 
-### 3. Progressive Disclosure
-Put **only the essential information** in `SKILL.md`. Extended details belong in `references/` and are loaded on demand.
+- **`openspec-generate-baseline`** — Reverse-engineers an OpenSpec baseline from existing code and docs (README/AGENTS)
+- **`openspec-init-config`** — Initializes/updates OpenSpec project context from README.md, CLAUDE.md, AGENTS.md
 
-### 4. Prefer Scripts over Inline Code
-Scripts run without consuming context (only their output does). Use them for repetitive or computationally intensive tasks.
-
-### 5. Specific Descriptions with Trigger Phrases
-The description helps the agent know **exactly when to activate** the skill. Include phrases like *"Optimize my Vercel project"* or *"Review logs"*.
-
-### 6. Consistent Naming
-
-| Element | Convention | Example |
-|----------|------------|---------|
-| Skill directory | `kebab-case` | `vercel-optimize` |
-| `SKILL.md` | Always exactly this name | `SKILL.md` |
-| Scripts | `kebab-case.sh` or `.mjs` | `deploy.sh`, `collect-signals.mjs` |
-| Skill name (frontmatter) | Lowercase, hyphens | `vercel-optimize` |
-
-### 7. Write in English
-Always write `SKILL.md` in English to ensure consistent triggering by agents.
-
-### 8. Use Gerund Verbs (Optional)
-Community recommendation: use the **gerund form** (verb + -ing) for skill names, since it clearly describes the activity.
-
-### 9. Validate Your Skills
-Tools like [`skillgrade`](https://github.com/mgechev/skillgrade) let you evaluate skill quality and prevent regressions.
-
-### 10. Structure for Scale
-When `SKILL.md` becomes manageable, split its content into separate files inside `references/` and reference them.
-
-### 11. Script Requirements
-
-- **Bash**: use `#!/bin/bash` and `set -e`
-- **Node**: use `#!/usr/bin/env node` and the `.mjs` extension
-- **Status messages**: to `stderr`
-- **Machine-readable output**: to `stdout` (JSON)
-- **Cleanup**: include a cleanup trap for temporary files
-- **Paths**: relative references (e.g. `node scripts/util.mjs`)
-
-### 12. Installation and Distribution
+## Installation
 
 **For end users** (using npx):
 ```bash
 npx skills add dariopalminio/agile-sddf-extension --skill my-skill
 ```
 
-Full GitHub URL: 
+Full GitHub URL:
 ```bash
 npx skills add https://github.com/dariopalminio/agile-sddf-extension --skill my-skill
 ```
-Install all skills from a repository: 
+
+Install all skills from a repository:
 ```bash
 npx skills add dariopalminio/agile-sddf-extension --all
 ```
 
--s, --skill <skills...>: To install only specific skills by name (e.g. --skill frontend-design). You can use '*' to install all skills in the repository.
+| Flag | Description |
+|------|-------------|
+| `-s, --skill <skills...>` | Install only specific skills by name (e.g. `--skill code-backend-nestjs`). Use `*` to install all skills in the repository. |
+| `-l, --list` | List all available skills in a repository without installing them |
 
+## Repository Structure
+```
+agile-sddf-extension/
+├── skills/
+│   └── <skill-name>/             # kebab-case, e.g. code-backend-nestjs
+│       ├── SKILL.md              # REQUIRED main file
+│       ├── scripts/              # (Optional) Executable scripts
+│       ├── references/           # (Optional) Supporting documentation
+│       ├── assets/               # (Optional) Static files used by the skill
+│       └── lib/                  # (Optional) Shared code for scripts
+├── template/
+│   └── SKILL.md                  # Base template for new skills
+├── spec/
+│   └── agent-skills-spec.md      # Skill specification
+├── AGENTS.md                     # Guide for AI agents working in the repo
+├── README.md                     # Main repository documentation
+└── .gitignore
+```
 
--l, --list: To list all available skills in a repository without installing them
+## Creating or Contributing a Skill
 
-
+Skill conventions, the required frontmatter, and the contribution checklist live in [AGENTS.md](AGENTS.md) — read that file before adding or modifying a skill.
