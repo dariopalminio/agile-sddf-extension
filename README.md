@@ -90,16 +90,16 @@ When `SKILL.md` becomes manageable, split its content into separate files inside
 
 **For end users** (using npx):
 ```bash
-npx skills add your-user/my-skills-repo --skill my-skill
+npx skills add dariopalminio/agile-sddf-extension --skill my-skill
 ```
 
 Full GitHub URL: 
 ```bash
-npx skills add https://github.com/user/repository --skill my-skill
+npx skills add https://github.com/dariopalminio/agile-sddf-extension --skill my-skill
 ```
 Install all skills from a repository: 
 ```bash
-npx skills add your-user/my-skills-repo --all
+npx skills add dariopalminio/agile-sddf-extension --all
 ```
 
 -s, --skill <skills...>: To install only specific skills by name (e.g. --skill frontend-design). You can use '*' to install all skills in the repository.
