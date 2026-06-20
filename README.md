@@ -1,3 +1,4 @@
+![agile-sddf](assets/logo/agile-sddf-extension-logo-v1.png)
 # agile-sddf-extension
 Public repository of agent skills to extend agile-sddf
 
