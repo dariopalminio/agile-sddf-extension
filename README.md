@@ -10,11 +10,11 @@ Public repository of agent skills to extend agile-sddf
 
 ### Testing
 
-- **`test-cypress-cucumber`** — E2E tests with Cucumber BDD + Cypress (feature files, step definitions, hooks, CI/CD)
-- **`test-nestjs-jest-testing-module`** — Unit tests for NestJS apps using the Testing Module and Jest
-- **`test-nestjs-supertest`** — API integration tests for NestJS with Supertest (routing, guards, pipes, DB isolation)
-- **`test-playwright-cucumber`** — E2E tests with Cucumber BDD + Playwright (feature files, step definitions, hooks, CI/CD)
-- **`test-react-testing-library`** — React components tested with Vitest + Testing Library + happy-dom + axe-core
+- **`test-playwright-cucumber`** — E2E tests (E2E) with Cucumber BDD + Playwright (feature files, step definitions, hooks, CI/CD)
+- **`test-cypress-cucumber`** — E2E tests (E2E) with Cucumber BDD + Cypress (feature files, step definitions, hooks, CI/CD)
+- **`test-nestjs-jest-testing-module`** — Unit tests (UT) for NestJS apps using the Testing Module and Jest
+- **`test-nestjs-supertest`** — API integration tests (API/IT) for NestJS with Supertest (routing, guards, pipes, DB isolation)
+- **`test-react-testing-library`** — React components tested (CT) with Vitest + Testing Library + happy-dom + axe-core
 
 ### Utilities
 
