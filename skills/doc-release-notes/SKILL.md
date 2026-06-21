@@ -1,6 +1,8 @@
 ---
 name: doc-release-notes
-description: "Generate release notes and changelogs from git commits, updates, or feature lists"
+description: >-
+  Generate release notes and changelogs from git commits, updates, or feature lists.
+  Use when creating, editing or updating `CHANGELOG.md`, `RELEASE_NOTES.md`, `RELEASE_NOTES_TECHNICAL.md` or when the user mentions update changelog, update release notes, update technical release notes, create changelog, create release notes, create technical release notes, generate changelog, generate release notes, generate technical release notes.
 license: MIT
 metadata:
   owner: dariopalminio/agile-sddf-extension
