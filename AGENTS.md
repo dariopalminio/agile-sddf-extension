@@ -19,6 +19,8 @@ Every skill in this repository must adhere to these principles:
 3.  **Script over Explanation**: For repetitive or deterministic tasks, prefer executable scripts (`scripts/`) over long inline instructions. Scripts run outside the agent's context, saving tokens.
 4.  **Clarity for Agents**: The `description` in the skill's frontmatter must be specific and include trigger phrases so the agent knows exactly when to use it.
 5.  **English Only**: All `SKILL.md` files and their references must be written in English.
+6.  **README.md (recommended)**: A README.md file that explains what the skills do and how to install them.
+7.  **Clear License**: Include license (MIT) and ownership information (dariopalminio/agile-sddf).
 
 ## 🏗️ Repository Structure
 
@@ -58,11 +60,14 @@ When creating a new skill, follow this checklist:
     | `name` | Yes | Unique skill identifier (lowercase, hyphens for spaces) |
     | `description` | Yes | Full description of what it does and when to use it, with trigger phrases |
     | `metadata.version` | No (Vercel extension) | Skill version, e.g. `"1.2.0"` |
-3.  **Write concise instructions**: Focus on the core workflow. Keep it actionable.
-4.  **Add references (if needed)**: Move detailed guides, rules, or long examples to `references/`.
-5.  **Add scripts (if needed)**: For any deterministic actions.
-6.  **Validate**: Ensure the skill works as expected.
-7. **Skill worker**: Ensure that the skill is of type worker, meaning it does not invoke sub-agents nor is it an orchestrator skill. The skill remains autonomous and atomic.
+3.  **Name `name`**: Lowercase, with hyphens, maximum 64 characters.
+4.  **Description `description`**: In English, maximum 1024 characters, describing what it does and when to use it.
+5.  **License `license`**: Specify the license for the skill, e.g., `MIT`.
+6.  **Write concise instructions**: Focus on the core workflow. Keep it actionable.
+7.  **Add references (if needed)**: Move detailed guides, rules, or long examples to `references/`.
+8.  **Add scripts (if needed)**: For any deterministic actions.
+9.  **Validate**: Ensure the skill works as expected.
+10. **Skill worker**: Ensure that the skill is of type worker, meaning it does not invoke sub-agents nor is it an orchestrator skill. The skill remains autonomous and atomic.
 
 ### Naming Conventions
 

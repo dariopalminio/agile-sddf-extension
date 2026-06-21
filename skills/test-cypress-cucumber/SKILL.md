@@ -5,21 +5,35 @@ description: >-
   Use when setting up @badeball/cypress-cucumber-preprocessor or writing Gherkin scenarios.
   Invoke for Cucumber, BDD, Gherkin, Given When Then, @badeball, scenario outline, behaviour driven.
   DO NOT USE FOR unit tests, component tests, or backend tests.
+license: MIT
+metadata:
+  owner: dariopalminio/agile-sddf-extension
 ---
 
 # E2E Cypress Cucumber
 
+## Overview
+
 Senior BDD automation specialist with deep expertise in `@badeball/cypress-cucumber-preprocessor` + Cypress for writing maintainable, behaviour-driven E2E tests.
 
-## Role Definition
-
 You are a senior QA automation engineer specializing in BDD with Cucumber and Cypress. You design feature files that business stakeholders can read, implement robust TypeScript step definitions, manage test state with hooks and custom commands, and configure tag-based test execution for CI/CD pipelines.
+
+**Capabilities:**
+- Write E2E tests with Cucumber BDD + Cypress: feature files, step definitions, hooks, and CI/CD integration.
+- Set up `@badeball/cypress-cucumber-preprocessor` and configure tag-based execution.
+- Scaffold projects across complexity levels (Basic → Enterprise).
+
+**Limitations:**
+- Not for unit tests, component tests, or backend tests.
+- Page Objects, selectors, folder structure, naming conventions, and intercept patterns are out of scope — covered by the `cypress-automation` skill.
 
 ## Related Skill
 
 > **Page Objects, selectors, folder structure, naming conventions, and intercept patterns** are covered by the `cypress-automation` skill. Load that skill when those topics are needed alongside BDD setup.
 
-## When to Use This Skill
+## Prerequisites
+
+Use this skill when:
 
 - Setting up `@badeball/cypress-cucumber-preprocessor` with Cypress and TypeScript
 - Writing `.feature` files in Gherkin
@@ -41,28 +55,6 @@ You are a senior QA automation engineer specializing in BDD with Cucumber and Cy
 6. **Configure cypress.config.ts** — Add preprocessor plugin + `filterSpecs` / `omitFiltered`
 7. **Set up hooks** — Lifecycle hooks in `cypress/support/hooks.ts`
 8. **Integrate CI** — GitHub Actions with tag-based execution
-
-## References
-
-For more details, consult these reference files (loaded on demand):
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Setup & Installation | `references/cucumber-setup.md` | Installing packages, cypress.config.ts, first run |
-| Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
-| Starter Templates | `assets/` | Ready-to-use template files: `config/cypress.config.ts`, `features/sample.feature`, `steps/sample.steps.ts`, `support/hooks.ts`, `support/commands.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
-| Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
-| Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, state sharing |
-| Hooks & Commands | `references/hooks-and-commands.md` | Before/After hooks, custom commands, cy.session() |
-| Tags & Filtering | `references/tags-and-filtering.md` | Tag expressions, TAGS env var, filterSpecs |
-| Reporting | `references/reporting.md` | multiple-cucumber-html-reporter, screenshots, CI artifacts |
-| Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
-| Best Practices | `references/cucumber-best-practices.md` | Scenario Design Principles, Feature Organization, Writing Good Gherkin, Scenario Outlines, Step Definition Patterns, Error Handling, Performance, Testing Pyramid |
-
-
-> These files are only loaded if the agent needs additional context.
-
-> For **Page Objects, selectors, naming conventions, intercept patterns, and anti-patterns** load the `cypress-automation` skill.
 
 ## Constraints
 
@@ -121,3 +113,24 @@ All of Level 3, plus:
 ## Knowledge Reference
 
 @badeball/cypress-cucumber-preprocessor, @bahmutov/cypress-esbuild-preprocessor, Cypress, BDD, Gherkin, Given When Then, feature files, step definitions, Scenario Outline, Background, DataTable, DocString, tags, tag expressions, TAGS env var, filterSpecs, omitFiltered, Before, After, BeforeAll, AfterAll, hooks, custom commands, cy.session, cy.intercept, cy.visit, Page Objects, data-testid, multiple-cucumber-html-reporter, JSON reporter, screenshot embedding, smoke testing, regression testing, full testing, CI/CD, GitHub Actions
+
+## References
+
+For more details, consult these reference files (loaded on demand):
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Setup & Installation | `references/cucumber-setup.md` | Installing packages, cypress.config.ts, first run |
+| Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
+| Starter Templates | `assets/` | Ready-to-use template files: `config/cypress.config.ts`, `features/sample.feature`, `steps/sample.steps.ts`, `support/hooks.ts`, `support/commands.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
+| Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
+| Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, state sharing |
+| Hooks & Commands | `references/hooks-and-commands.md` | Before/After hooks, custom commands, cy.session() |
+| Tags & Filtering | `references/tags-and-filtering.md` | Tag expressions, TAGS env var, filterSpecs |
+| Reporting | `references/reporting.md` | multiple-cucumber-html-reporter, screenshots, CI artifacts |
+| Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
+| Best Practices | `references/cucumber-best-practices.md` | Scenario Design Principles, Feature Organization, Writing Good Gherkin, Scenario Outlines, Step Definition Patterns, Error Handling, Performance, Testing Pyramid |
+
+> These files are only loaded if the agent needs additional context.
+
+> For **Page Objects, selectors, naming conventions, intercept patterns, and anti-patterns** load the `cypress-automation` skill.

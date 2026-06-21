@@ -7,8 +7,10 @@ description: |
   WHEN TO USE: Setting up `supertest` with NestJS and Jest, writing `*.e2e-spec.ts` files, testing POST/GET/PUT/DELETE endpoints against a running `INestApplication`, testing routes protected by guards (JWT/Bearer auth), configuring `Test.createTestingModule` + `createNestApplication()`, or isolating/cleaning a test database between tests.
 
   DO NOT USE FOR: unit tests of controllers/services/providers in isolation, frontend component tests, or true browser E2E tests that simulate real user interactions through a UI (use the `playwright`/`cypress` skills instead).
+license: MIT
 metadata:
   author: https://github.com/dariopalminio
+  owner: dariopalminio/agile-sddf-extension
   version: "1.0.0"
   domain: quality
   triggers: Supertest, NestJS, e2e-spec, integration testing, request(app.getHttpServer()), Test.createTestingModule, createNestApplication, ValidationPipe, guards, DataSource, synchronize, database isolation, beforeAll, afterAll, INestApplication, protected routes, Bearer token
@@ -19,10 +21,23 @@ metadata:
 
 # NestJS Supertest API Integration Testing
 
+## Overview
+
 Tests in this skill use Supertest to make real HTTP requests against a
 running `INestApplication` instance, exercising the complete
 request/response cycle — middleware, guards, pipes, interceptors, and
 database interactions — without needing a browser or UI.
+
+**Capabilities:**
+- Scaffold API integration test suites with `Test.createTestingModule` + `createNestApplication()`.
+- Test CRUD endpoints (POST/GET/PUT/DELETE), including validation error responses.
+- Verify authenticated / protected routes guarded by JWT/Bearer auth.
+- Isolate and clean the test database between runs.
+
+**Limitations:**
+- Not for unit tests of controllers/services/providers in isolation.
+- Not for frontend component tests.
+- Not for true browser E2E tests that simulate real user interactions through a UI (use the `playwright`/`cypress` skills instead).
 
 > **Note:** NestJS docs and tooling conventionally call these "E2E tests"
 > and name the files `*.e2e-spec.ts`, but technically they are **API
@@ -40,6 +55,23 @@ database interactions — without needing a browser or UI.
 > test behavior — so if you prefer to follow NestJS's convention, you can
 > rename it back to `(e2e)` without affecting functionality.
 
+## Prerequisites
+
+- A NestJS application with `@nestjs/testing`, `jest` and `supertest` installed.
+- Jest e2e config present (`test/jest-e2e.json`) matching the `*.e2e-spec.ts` pattern.
+- A test database (or isolation strategy) available for integration runs.
+
+## Examples
+
+Full, self-contained spec files demonstrating the patterns above:
+
+| File | Demonstrates |
+|------|--------------|
+| `examples/users.e2e-spec.ts` | Complete Users resource spec: CRUD (POST/GET/PUT/DELETE) plus protected-route authentication in one file |
+| `examples/orders.e2e-spec.ts` | Spec with full database isolation: `synchronize(true)` reset between tests, with assertions proving isolation actually works |
+
+> These files are only loaded if the agent needs additional context.
+
 ## References
 
 For more details, consult these reference files (loaded on demand):
@@ -51,17 +83,6 @@ For more details, consult these reference files (loaded on demand):
 | Authentication | `references/authentication.md` | Testing routes protected by guards, obtaining tokens via a login flow, sending `Authorization: Bearer` headers |
 | Database Isolation | `references/database-isolation.md` | Cleaning or resetting the test database between tests, choosing an isolation strategy |
 | Common Pitfalls | `references/common-pitfalls.md` | Debugging flaky/leaking integration tests, avoiding false-confidence anti-patterns |
-
-> These files are only loaded if the agent needs additional context.
-
-## Examples
-
-Full, self-contained spec files demonstrating the patterns above:
-
-| File | Demonstrates |
-|------|--------------|
-| `examples/users.e2e-spec.ts` | Complete Users resource spec: CRUD (POST/GET/PUT/DELETE) plus protected-route authentication in one file |
-| `examples/orders.e2e-spec.ts` | Spec with full database isolation: `synchronize(true)` reset between tests, with assertions proving isolation actually works |
 
 > These files are only loaded if the agent needs additional context.
 

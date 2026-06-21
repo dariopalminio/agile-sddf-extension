@@ -1,49 +1,79 @@
 ---
 name: openspec-init-config
-description: Carga el contexto del proyecto en openspec/config.yaml leyendo exhaustivamente la documentación del proyecto (README.md, CLAUDE.md, AGENTS.md). Usar cuando se quiera inicializar o actualizar el contexto de OpenSpec para un proyecto.
+description: Loads the project context into openspec/config.yaml by exhaustively reading the project documentation (README.md, CLAUDE.md, AGENTS.md). Use when you want to initialize or update the OpenSpec context for a project.
+license: MIT
+metadata:
+  owner: dariopalminio/agile-sddf-extension
 ---
 
-Carga el contexto del proyecto en `openspec/config.yaml` leyendo la documentación existente.
+# OpenSpec Context Initialization
 
-**Pasos**
+## Overview
 
-1. **Leer exhaustivamente la documentación del proyecto**
+Loads the project context into `openspec/config.yaml` by exhaustively reading the project's existing documentation, so that OpenSpec has an accurate context (stack, architecture, conventions, and domain).
 
-   Lee los siguientes archivos en orden, si existen:
-   - `README.md` — fuente principal: propósito del proyecto, stack tecnológico, arquitectura, convenciones
-   - `CLAUDE.md` — instrucciones del proyecto, estructura de directorios, patrones de agentes y skills
-   - `AGENTS.md` — definición de agentes, roles y capacidades
-   - Otros archivos relevantes que encuentres en la raíz del proyecto (por ejemplo `package.json`, `pyproject.toml`, etc.) para inferir stack y dependencias
+**Capabilities:**
+- Reads the project documentation (`README.md`, `CLAUDE.md`, `AGENTS.md`, and other root files).
+- Infers stack and dependencies from manifests (`package.json`, `pyproject.toml`, etc.).
+- Writes or updates **only** the `context:` field in `openspec/config.yaml`.
 
-   **IMPORTANTE**: No omitas ninguno de estos archivos si existen. El contexto que escribas será tan bueno como la documentación que leas.
+**Limitations:**
+- Does not modify the `schema:` or `rules:` fields (or their comments) in `openspec/config.yaml`.
+- The resulting context is only as good as the documentation that exists in the project.
 
-2. **Leer el archivo `openspec/config.yaml`**
+## Prerequisites
 
-   Lee el archivo completo para entender su estructura actual y el template de comentarios que indica cómo rellenar el campo `context:`.
+- The `openspec/config.yaml` file must exist in the project.
+- Ideally one or more documentation files exist (`README.md`, `CLAUDE.md`, `AGENTS.md`).
+- The **Edit** tool is available to update the configuration file.
 
-3. **Escribir el campo `context:` en `openspec/config.yaml`**
+## Execution
 
-   Usa la herramienta **Edit** para actualizar **únicamente** el campo `context:` en `openspec/config.yaml`.
+1. **Exhaustively read the project documentation**
 
-   - Si el campo `context:` ya existe, reemplázalo con el nuevo contenido
-   - Si el campo `context:` no existe, agrégalo después de la línea `schema: spec-driven`
-   - **Preserva intactos** el campo `schema:` y el campo `rules:` (y sus comentarios) — solo modifica `context:`
+   Read the following files in order, if they exist:
+   - `README.md` — primary source: project purpose, technology stack, architecture, conventions
+   - `CLAUDE.md` — project instructions, directory structure, agent and skill patterns
+   - `AGENTS.md` — agent definitions, roles, and capabilities
+   - Other relevant files you find in the project root (for example `package.json`, `pyproject.toml`, etc.) to infer stack and dependencies
 
-   El contenido del campo `context:` debe incluir (en formato YAML multiline con `|`):
-   - **Stack tecnológico**: lenguajes, frameworks, herramientas principales
-   - **Arquitectura**: estructura del proyecto, patrones usados, módulos clave
-   - **Convenciones**: naming, commits, organización de archivos, estilo de código
-   - **Dominio**: qué hace el proyecto, para quién, cuál es su propósito
+   **IMPORTANT**: Do not skip any of these files if they exist. The context you write will be only as good as the documentation you read.
 
-   Ejemplo de formato:
+2. **Read the `openspec/config.yaml` file**
+
+   Read the whole file to understand its current structure and the comment template that indicates how to fill in the `context:` field.
+
+3. **Write the `context:` field in `openspec/config.yaml`**
+
+   Use the **Edit** tool to update **only** the `context:` field in `openspec/config.yaml`.
+
+   - If the `context:` field already exists, replace it with the new content
+   - If the `context:` field does not exist, add it after the `schema: spec-driven` line
+   - **Keep intact** the `schema:` field and the `rules:` field (and their comments) — only modify `context:`
+
+   The content of the `context:` field must include (in YAML multiline format with `|`):
+   - **Technology stack**: languages, frameworks, main tools
+   - **Architecture**: project structure, patterns used, key modules
+   - **Conventions**: naming, commits, file organization, code style
+   - **Domain**: what the project does, for whom, what its purpose is
+
+   Example format:
    ```yaml
    context: |
      Stack: Python, Markdown, YAML
-     Arquitectura: sistema multiagente con skills y agentes especializados
-     Convenciones: kebab-case para nombres de archivos, commits convencionales
-     Dominio: framework de especificación ágil para proyectos software
+     Architecture: multi-agent system with specialized skills and agents
+     Conventions: kebab-case for file names, conventional commits
+     Domain: agile specification framework for software projects
    ```
 
-4. **Confirmar resultado**
+## Output
 
-   Muestra el contenido final del campo `context:` escrito en `openspec/config.yaml` y confirma que el archivo fue actualizado correctamente.
+- The `context:` field of `openspec/config.yaml` created or updated, in YAML multiline format (`|`), with stack, architecture, conventions, and domain.
+- The `schema:` and `rules:` fields remain intact.
+- The final content of the `context:` field is shown to the user, confirming the file was updated correctly.
+
+## Examples
+
+**Manual invocation:**
+`/openspec-init-config`
+→ Reads `README.md`, `CLAUDE.md`, and `AGENTS.md`, infers the stack from `package.json`, and writes the `context:` field in `openspec/config.yaml`, showing the final result.

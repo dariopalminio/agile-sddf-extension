@@ -4,14 +4,26 @@ description: NestJS best practices and architecture patterns for building produc
 license: MIT
 metadata:
   author: Kadajett, https://github.com/dariopalminio
+  owner: dariopalminio/agile-sddf-extension
   version: "1.1.0"
 ---
 
 # NestJS for backend code
 
+## Overview
+
 Comprehensive best practices guide for backend code or NestJS applications. Contains references across different categories, prioritized by impact to guide automated refactoring and code generation.
 
-## When to Apply
+**Capabilities:**
+- Guide writing of NestJS modules, controllers, and services with proper patterns.
+- Apply architecture, dependency injection, error handling, security, and performance best practices.
+- Drive automated refactoring and code generation, prioritized by impact.
+
+**Limitations:**
+- Guidance/reference only — does not scaffold or run code by itself.
+- Focused on NestJS backend code; not for frontend or non-NestJS stacks.
+
+## Prerequisites
 
 Reference these guidelines when:
 
@@ -35,6 +47,22 @@ Reference these guidelines when:
 | 7 | API Design | MEDIUM | `api-` |
 | 8 | Microservices | MEDIUM | `micro-` |
 | 9 | DevOps & Deployment | LOW-MEDIUM | `devops-` |
+
+## Examples
+
+Read individual reference files as if they were rules and get detailed explanations and code examples:
+
+```
+references/arch-avoid-circular-deps.md
+references/security-validate-all-input.md
+references/_sections.md
+```
+
+Each reference file contains:
+- Brief explanation of why it matters
+- Incorrect code example with explanation
+- Correct code example with explanation
+- Additional context and references
 
 ## References
 
@@ -106,19 +134,3 @@ For more details, consult these reference files (loaded on demand):
 - [references/devops-graceful-shutdown.md](references/devops-graceful-shutdown.md) - Zero-downtime deployments
 
 > These files are only loaded if the agent needs additional context.
-
-## How to Use
-
-Read individual reference files as if they were rules and get detailed explanations and code examples:
-
-```
-references/arch-avoid-circular-deps.md
-references/security-validate-all-input.md
-references/_sections.md
-```
-
-Each reference file contains:
-- Brief explanation of why it matters
-- Incorrect code example with explanation
-- Correct code example with explanation
-- Additional context and references

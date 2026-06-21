@@ -3,15 +3,29 @@ name: code-frontend-library-react
 description: |
   Implement React components for React UI Library: CSS pure + BEM + design tokens, TypeScript strict, tsup build, Turborepo monorepo. Use when creating new components, adding variants, or integrating with demo/storybook apps.
 
+license: MIT
+metadata:
+  owner: dariopalminio/agile-sddf-extension
 ---
 
 #  Code Front-end Library-React Components (React UI Library)
 
+## Overview
+
 Implement production-ready components for `packages/ui` following the project's strict conventions: plain CSS + CSS variables, BEM naming, two-layer token system, TypeScript strict, and Next.js App Router compatibility.
 
-> **Testing is out of scope for this skill.** For unit tests use `test-react-testing-library`; for E2E use `test-e2e-playwright-cucumber`.
+**Capabilities:**
+- Create new UI components and compound sub-parts in `packages/ui/src/components/`.
+- Add variants or sizes to existing components.
+- Add demo pages to `apps/demo` and Storybook stories to `apps/storybook`.
+- Refactor components to the `--ui-*` token system and make them Next.js App Router compatible.
 
-## When to Use This Skill
+**Limitations:**
+- **Testing is out of scope for this skill.** For unit tests use `test-react-testing-library`; for E2E use `test-e2e-playwright-cucumber`.
+
+## Prerequisites
+
+Use this skill when:
 
 - Creating a new UI component in `packages/ui/src/components/`
 - Adding a new variant or size to an existing component
@@ -20,27 +34,6 @@ Implement production-ready components for `packages/ui` following the project's 
 - Adding Storybook stories to `apps/storybook`
 - Refactoring a component to use the `--ui-*` token system
 - Making a component Next.js App Router compatible (`"use client"`)
-
-## References
-
-For more details, consult these reference files (loaded on demand):
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Component Structure | `references/component-structure.md` | Creating or scaffolding any component |
-| Design Tokens | `references/design-tokens.md` | Writing CSS, choosing colors, spacing, radius |
-| Component Patterns | `references/component-patterns.md` | Compound components, forwardRef, controlled/uncontrolled |
-| Storybook Patterns | `references/storybook-patterns.md` | Writing `.stories.tsx` files |
-| Accessibility | `references/accessibility-patterns.md` | ARIA, keyboard nav, focus management |
-| CSS Styling | `references/css-styling-approaches.md` | CSS conventions, BEM, CSS variable usage |
-| Web Component Design | `references/web-component-design.md` | Component API design, composition, TypeScript typing |
-| Responsive Design | `references/responsive-design.md` | Adaptive components (container queries), demo layouts, touch targets, fluid values |
-| Visual Design Principles | `references/visual-design-principles.md` | Design decisions: spacing grid, color philosophy, typography hierarchy, shadows, border radius, anti-patterns |
-| Animation & Transitions | `references/animation-transitions.md` | CSS transition standards, prefers-reduced-motion, spinner, hover/press patterns |
-| Theming & Dark Mode | `references/theming-dark-mode.md` | ThemeProvider, useTheme(), themeScript, dark mode integration |
-| Icons & SVG | `references/icons-svg.md` | Icon components, inline SVG, aria-hidden, decorative vs semantic |
-
-> These files are only loaded if the agent needs additional context.
 
 ## Stack & Architecture
 
@@ -88,3 +81,24 @@ For more details, consult these reference files (loaded on demand):
 - Button reference implementation: `packages/ui/src/components/Button/`
 - Input reference implementation: `packages/ui/src/components/Input/`
 - Card reference implementation: `packages/ui/src/components/Card/`
+
+## References
+
+For more details, consult these reference files (loaded on demand):
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Component Structure | `references/component-structure.md` | Creating or scaffolding any component |
+| Design Tokens | `references/design-tokens.md` | Writing CSS, choosing colors, spacing, radius |
+| Component Patterns | `references/component-patterns.md` | Compound components, forwardRef, controlled/uncontrolled |
+| Storybook Patterns | `references/storybook-patterns.md` | Writing `.stories.tsx` files |
+| Accessibility | `references/accessibility-patterns.md` | ARIA, keyboard nav, focus management |
+| CSS Styling | `references/css-styling-approaches.md` | CSS conventions, BEM, CSS variable usage |
+| Web Component Design | `references/web-component-design.md` | Component API design, composition, TypeScript typing |
+| Responsive Design | `references/responsive-design.md` | Adaptive components (container queries), demo layouts, touch targets, fluid values |
+| Visual Design Principles | `references/visual-design-principles.md` | Design decisions: spacing grid, color philosophy, typography hierarchy, shadows, border radius, anti-patterns |
+| Animation & Transitions | `references/animation-transitions.md` | CSS transition standards, prefers-reduced-motion, spinner, hover/press patterns |
+| Theming & Dark Mode | `references/theming-dark-mode.md` | ThemeProvider, useTheme(), themeScript, dark mode integration |
+| Icons & SVG | `references/icons-svg.md` | Icon components, inline SVG, aria-hidden, decorative vs semantic |
+
+> These files are only loaded if the agent needs additional context.

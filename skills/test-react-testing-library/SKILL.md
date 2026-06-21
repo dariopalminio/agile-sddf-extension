@@ -6,34 +6,39 @@ description: >-
   Invoke for "Testing Library", "componente React", "render", "screen", "userEvent", "axe".
   DO NOT USE FOR unit tests, E2E tests, or backend tests.
 allowed-tools: Read, Grep, Glob, Write, Edit
+license: MIT
+metadata:
+  owner: dariopalminio/agile-sddf-extension
 ---
 
 
 # React Testing Library Skill
 
-## References
+## Overview
 
-For more details, consult these reference files (loaded on demand):
+Test React components with Vitest + Testing Library + happy-dom + axe-core, focusing on rendering, user interaction, and accessibility from the user's perspective.
 
-| Topic       | Link                                                   |
-| ----------- | ------------------------------------------------------ |
-| Installation | [references/testing-library-installation.md](references/testing-library-installation.md) |
-| Queries     | [references/testing-library-queries.md](references/queries.md)         |
-| User Events | [references/testing-library-user-events.md](references/testing-library-user-events.md) |
-| API         | [references/testing-library-api.md](references/testing-library-api.md)                 |
-| Async       | [references/testing-library-async.md](references/testing-library-async.md)             |
-| Debugging   | [references/testing-library-debugging.md](references/testing-library-debugging.md)     |
-| Config      | [references/testing-library-config.md](references/testing-library-config.md)           |
-| Happy DOM   | [references/happy-dom-tests.md](references/happy-dom-tests.md) |
-| Vitest      | [references/vitest-component.md](references/vitest-component.md) |
-| axe-core    | [references/axe-core.md](references/axe-core.md) |
-| Type Testing | [references/type-level-testing.md](references/type-level-testing.md) |
+**Capabilities:**
+- Render and query UI components, forms, and hooks in the DOM.
+- Simulate real user interactions with `@testing-library/user-event`.
+- Assert behavior with `findBy`/`waitFor` async patterns and jest-dom matchers.
+- Check accessibility via role/label queries and axe-core.
 
-> These files are only loaded if the agent needs additional context.
+**Limitations:**
+- Not for backend tests or true browser E2E tests (use the Playwright/Cypress skills instead).
+- Avoid testing implementation details (internal state, methods, lifecycle, child internals).
 
----
+## Prerequisites
 
-## Core Philosophy
+- A React project with Vitest, `@testing-library/react`, `@testing-library/user-event`, happy-dom and axe-core installed.
+- `@testing-library/jest-dom` matchers configured in the test setup.
+- Test files co-located with the components they test (`*.test.tsx`).
+
+## Examples
+
+> The patterns, query references, and snippets below show how to write tests with React Testing Library.
+
+### Core Philosophy
 
 > "The more your tests resemble the way your software is used, the more confidence they can give you."
 
@@ -414,3 +419,25 @@ getByText((content, element) => {
 | `waitFor`           | Retry until assertion passes      |
 | `configure`         | Set global options                |
 | `userEvent.setup()` | Create user event instance        |
+
+---
+
+## References
+
+For more details, consult these reference files (loaded on demand):
+
+| Topic       | Link                                                   |
+| ----------- | ------------------------------------------------------ |
+| Installation | [references/testing-library-installation.md](references/testing-library-installation.md) |
+| Queries     | [references/testing-library-queries.md](references/queries.md)         |
+| User Events | [references/testing-library-user-events.md](references/testing-library-user-events.md) |
+| API         | [references/testing-library-api.md](references/testing-library-api.md)                 |
+| Async       | [references/testing-library-async.md](references/testing-library-async.md)             |
+| Debugging   | [references/testing-library-debugging.md](references/testing-library-debugging.md)     |
+| Config      | [references/testing-library-config.md](references/testing-library-config.md)           |
+| Happy DOM   | [references/happy-dom-tests.md](references/happy-dom-tests.md) |
+| Vitest      | [references/vitest-component.md](references/vitest-component.md) |
+| axe-core    | [references/axe-core.md](references/axe-core.md) |
+| Type Testing | [references/type-level-testing.md](references/type-level-testing.md) |
+
+> These files are only loaded if the agent needs additional context.

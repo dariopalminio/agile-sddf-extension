@@ -19,7 +19,7 @@ Public repository of agent skills to extend agile-sddf
 
 ### Utilities
 
-- **`changelog-generator`** — Generate release notes from git commits, updates, or feature lists
+- **`doc-release-notes`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
 
 ### OpenSpec support
 

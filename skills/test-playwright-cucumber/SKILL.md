@@ -5,17 +5,30 @@ description: >-
   Use when setting up @cucumber/cucumber or writing Gherkin scenarios.
   Invoke for Cucumber, BDD, Gherkin, Given When Then, @badeball, @smoke, @regression.
   DO NOT USE FOR unit tests, component tests, or backend tests.
+license: MIT
+metadata:
+  owner: dariopalminio/agile-sddf-extension
 ---
 
 # E2E Playwright Cucumber
 
-BDD automation specialist with deep expertise in `@cucumber/cucumber` + Playwright for writing maintainable, behaviour-driven E2E tests.
+## Overview
 
-## Role Definition
+BDD automation specialist with deep expertise in `@cucumber/cucumber` + Playwright for writing maintainable, behaviour-driven E2E tests.
 
 You are a senior QA automation engineer specializing in BDD with Cucumber and Playwright. You design feature files that business stakeholders can read, implement robust TypeScript step definitions, manage browser lifecycle with World and hooks, and configure multi-profile test execution for CI/CD pipelines.
 
-## When to Use This Skill
+**Capabilities:**
+- Write E2E tests with Cucumber BDD + Playwright: feature files, step definitions, hooks, and CI/CD integration.
+- Set up `@cucumber/cucumber`, configure the `World` class and multi-profile execution.
+- Scaffold projects across complexity levels (Basic → Enterprise).
+
+**Limitations:**
+- Not for unit tests, component tests, or backend tests.
+
+## Prerequisites
+
+Use this skill when:
 
 - Setting up `@cucumber/cucumber` with Playwright and TypeScript
 - Writing `.feature` files in Gherkin
@@ -41,36 +54,6 @@ You are a senior QA automation engineer specializing in BDD with Cucumber and Pl
 9. **Integrate CI** — GitHub Actions with profile-based execution
 
 For BDD detailed workflow see: `references/bdd-architecture.md`
-
-## References
-
-For more details, consult these reference files (loaded on demand):
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Setup & Installation | `references/cucumber-setup.md` | Installing packages, tsconfig, first run |
-| Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
-| Starter Templates | `assets/` | Ready-to-use template files: `config/cucumber.js`, `features/sample.feature`, `steps/sample.steps.ts`, `support/world.ts`, `support/hooks.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
-| Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
-| BDD Architecture | `references/bdd-architecture.md` | Page Objects, selectors, naming conventions, folder structure |
-| BDD Architecture Diagram | `references/bdd-architecture.plantuml` | Visual representation of BDD architecture |
-| Feature Organization | `references/feature-organization.md` | Organizing tests by feature, domain, and complexity level |
-| Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, World typing |
-| Page Objects | `references/page-object-template.md` | Template for creating Page Object classes |
-| Selectors & Locators | `references/selectors-locators.md` | Best practices for selecting elements in Playwright tests |
-| Hooks & World | `references/hooks-and-world.md` | World class, Before/After, browser lifecycle |
-| Tags & Profiles | `references/tags-and-profiles.md` | Tag expressions, cucumber.js profiles, parallel |
-| Reporting | `references/reporting.md` | HTML/JSON/JUnit reports, screenshot embedding, CI artifacts |
-| Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
-| Visual Regression | `references/visual-regression.md` | Visual regression testing, screenshot comparison, baseline management |
-| Naming Conventions | `references/naming-conventions.md` | File and class naming patterns, folder structure, Page Objects, components |
-| Debugging & Flaky Tests | `references/debugging-flaky.md` | Techniques for debugging flaky tests, common causes, and mitigation strategies |
-| E2E Testing without Cucumber | `references/e2e-testing-without-cucumber.md` | BDD/Gherkin user flow testing without Cucumber, classic user flow testing, checkout flow |
-| API Mocking | `references/api-mocking.md` | Mocking API responses, stubbing endpoints, and testing edge cases |
-| API/REST Testing | `references/api-rest-testing.md` | Testing RESTful APIs, endpoints, and response validation |
-| WCAG E2E Testing | `references/wcag-e2e-testing.md` | Automated WCAG 2.2 accessibility checks in E2E tests with Playwright + axe-core |
-
-> These files are only loaded if the agent needs additional context.
 
 ## Constraints
 
@@ -132,3 +115,33 @@ All of Level 3, plus:
 ## Knowledge Reference
 
 @cucumber/cucumber, Playwright, BDD, Gherkin, Given When Then, feature files, step definitions, Scenario Outline, Background, DataTable, DocString, tags, tag expressions, cucumber.js profiles, World, CustomWorld, PlaywrightWorld, setWorldConstructor, Before, After, BeforeAll, AfterAll, hooks, ts-node, commonjs, HTML reporter, JSON reporter, JUnit reporter, screenshot embedding, parallel execution, smoke testing, core testing, full testing, regression testing, CI/CD, GitHub Actions
+
+## References
+
+For more details, consult these reference files (loaded on demand):
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Setup & Installation | `references/cucumber-setup.md` | Installing packages, tsconfig, first run |
+| Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
+| Starter Templates | `assets/` | Ready-to-use template files: `config/cucumber.js`, `features/sample.feature`, `steps/sample.steps.ts`, `support/world.ts`, `support/hooks.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
+| Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
+| BDD Architecture | `references/bdd-architecture.md` | Page Objects, selectors, naming conventions, folder structure |
+| BDD Architecture Diagram | `references/bdd-architecture.plantuml` | Visual representation of BDD architecture |
+| Feature Organization | `references/feature-organization.md` | Organizing tests by feature, domain, and complexity level |
+| Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, World typing |
+| Page Objects | `references/page-object-template.md` | Template for creating Page Object classes |
+| Selectors & Locators | `references/selectors-locators.md` | Best practices for selecting elements in Playwright tests |
+| Hooks & World | `references/hooks-and-world.md` | World class, Before/After, browser lifecycle |
+| Tags & Profiles | `references/tags-and-profiles.md` | Tag expressions, cucumber.js profiles, parallel |
+| Reporting | `references/reporting.md` | HTML/JSON/JUnit reports, screenshot embedding, CI artifacts |
+| Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
+| Visual Regression | `references/visual-regression.md` | Visual regression testing, screenshot comparison, baseline management |
+| Naming Conventions | `references/naming-conventions.md` | File and class naming patterns, folder structure, Page Objects, components |
+| Debugging & Flaky Tests | `references/debugging-flaky.md` | Techniques for debugging flaky tests, common causes, and mitigation strategies |
+| E2E Testing without Cucumber | `references/e2e-testing-without-cucumber.md` | BDD/Gherkin user flow testing without Cucumber, classic user flow testing, checkout flow |
+| API Mocking | `references/api-mocking.md` | Mocking API responses, stubbing endpoints, and testing edge cases |
+| API/REST Testing | `references/api-rest-testing.md` | Testing RESTful APIs, endpoints, and response validation |
+| WCAG E2E Testing | `references/wcag-e2e-testing.md` | Automated WCAG 2.2 accessibility checks in E2E tests with Playwright + axe-core |
+
+> These files are only loaded if the agent needs additional context.
