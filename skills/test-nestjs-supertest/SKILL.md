@@ -29,12 +29,14 @@ request/response cycle — middleware, guards, pipes, interceptors, and
 database interactions — without needing a browser or UI.
 
 **Capabilities:**
+- Implement the RED phase tests of TDD.
 - Scaffold API integration test suites with `Test.createTestingModule` + `createNestApplication()`.
 - Test CRUD endpoints (POST/GET/PUT/DELETE), including validation error responses.
 - Verify authenticated / protected routes guarded by JWT/Bearer auth.
 - Isolate and clean the test database between runs.
 
 **Limitations:**
+- It does not implement production-functional code, it only implements tests.
 - Not for unit tests of controllers/services/providers in isolation.
 - Not for frontend component tests.
 - Not for true browser E2E tests that simulate real user interactions through a UI (use the `playwright`/`cypress` skills instead).

@@ -18,10 +18,12 @@ Comprehensive best practices guide for backend code or NestJS applications. Cont
 - Guide writing of NestJS modules, controllers, and services with proper patterns.
 - Apply architecture, dependency injection, error handling, security, and performance best practices.
 - Drive automated refactoring and code generation, prioritized by impact.
+- Implements the GREEN and REFACTOR phases of TDD.
 
 **Limitations:**
 - Guidance/reference only — does not scaffold or run code by itself.
 - Focused on NestJS backend code; not for frontend or non-NestJS stacks.
+- **Testing is out of scope for this skill**, not for tests.
 
 ## Prerequisites
 

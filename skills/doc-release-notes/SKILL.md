@@ -26,6 +26,7 @@ This skill helps you generate professional release notes and changelogs from com
 - Requires commit messages or change descriptions as input
 - Cannot verify semantic versioning automatically
 - Technical details should be verified by developers
+- Testing and coding are out of scope for this skill - Do not modify source code.
 
 ## Prerequisites
 

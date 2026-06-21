@@ -19,13 +19,14 @@ metadata:
 Test React components with Vitest + Testing Library + happy-dom + axe-core, focusing on rendering, user interaction, and accessibility from the user's perspective.
 
 **Capabilities:**
+- Implement the RED phase tests of TDD.
 - Render and query UI components, forms, and hooks in the DOM.
 - Simulate real user interactions with `@testing-library/user-event`.
 - Assert behavior with `findBy`/`waitFor` async patterns and jest-dom matchers.
 - Check accessibility via role/label queries and axe-core.
 
 **Limitations:**
-- Not for backend tests or true browser E2E tests (use the Playwright/Cypress skills instead).
+- Not for backend tests or true browser E2E tests.
 - Avoid testing implementation details (internal state, methods, lifecycle, child internals).
 
 ## Prerequisites

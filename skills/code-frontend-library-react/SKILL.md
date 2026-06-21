@@ -15,13 +15,15 @@ metadata:
 Implement production-ready components for `packages/ui` following the project's strict conventions: plain CSS + CSS variables, BEM naming, two-layer token system, TypeScript strict, and Next.js App Router compatibility.
 
 **Capabilities:**
-- Create new UI components and compound sub-parts in `packages/ui/src/components/`.
-- Add variants or sizes to existing components.
-- Add demo pages to `apps/demo` and Storybook stories to `apps/storybook`.
-- Refactor components to the `--ui-*` token system and make them Next.js App Router compatible.
+- Creates new UI components and composite subparts (for example in `packages/ui/src/components/` or in specified component path).
+- Adds variants or sizes to existing components.
+- Adds Storybook stories (to `apps/storybook` or in specified storybook path).
+- Adds demo pages (to `apps/demo` or in specified demo path if a demonstration application exists).
+- Refactors components to the `--ui-*` token system and makes them Next.js App Router compatible.
+- Implements the GREEN and REFACTOR phases of TDD.
 
 **Limitations:**
-- **Testing is out of scope for this skill.** For unit tests use `test-react-testing-library`; for E2E use `test-e2e-playwright-cucumber`.
+- **Testing is out of scope for this skill.**.
 
 ## Prerequisites
 
