@@ -1,19 +1,17 @@
 ---
 name: test-nestjs-supertest
-description: |
-  Write API integration tests for NestJS applications using Supertest to validate the full request/response cycle: routing, middleware, guards, pipes, interceptors, and database interactions, without a browser or UI.
-  Use it to scaffold integration test suites, test CRUD endpoints, verify authenticated/protected routes, and isolate the test database between runs.
-
-  WHEN TO USE: Setting up `supertest` with NestJS and Jest, writing `*.e2e-spec.ts` files, testing POST/GET/PUT/DELETE endpoints against a running `INestApplication`, testing routes protected by guards (JWT/Bearer auth), configuring `Test.createTestingModule` + `createNestApplication()`, or isolating/cleaning a test database between tests.
-
-  DO NOT USE FOR: unit tests of controllers/services/providers in isolation, frontend component tests, or true browser E2E tests that simulate real user interactions through a UI (use the `playwright`/`cypress` skills instead).
+description: >-
+  Write NestJS API integration tests with Supertest and Jest against a running
+  INestApplication (`*.e2e-spec.ts`): CRUD endpoints, guard-protected routes
+  (JWT/Bearer), `Test.createTestingModule` + `createNestApplication()`, and test
+  DB isolation. Not for isolated unit tests, frontend components, or browser E2E.
 license: MIT
 metadata:
   author: https://github.com/dariopalminio
   owner: dariopalminio/agile-sddf-extension
   version: "1.0.0"
   domain: quality
-  triggers: Supertest, NestJS, e2e-spec, integration testing, request(app.getHttpServer()), Test.createTestingModule, createNestApplication, ValidationPipe, guards, DataSource, synchronize, database isolation, beforeAll, afterAll, INestApplication, protected routes, Bearer token
+  triggers: Supertest, Test API NestJS, e2e-spec, integration testing, request(app.getHttpServer()), API Test.createTestingModule, createNestApplication, ValidationPipe, guards, DataSource, synchronize, database isolation, beforeAll, afterAll, INestApplication, protected routes, Bearer token
   role: specialist
   scope: implementing, automation, testing, backend-testing
   output-format: code

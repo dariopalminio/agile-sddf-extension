@@ -4,6 +4,11 @@ description: Write Unit Tests for NestJS applications using Testing Module and j
 license: MIT
 metadata:
   owner: dariopalminio/agile-sddf-extension
+  domain: quality
+  triggers: Test NestJS, unit test, Testing Module, jest, mock dependencies, exception paths, guard testing, mocked external services
+  role: specialist
+  scope: implementing, automation, testing, backend-testing
+  output-format: code
 ---
 
 # NestJS Jest Testing Module Unit Tests

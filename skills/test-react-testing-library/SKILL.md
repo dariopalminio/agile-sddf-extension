@@ -11,7 +11,6 @@ metadata:
   owner: dariopalminio/agile-sddf-extension
 ---
 
-
 # React Testing Library Skill
 
 ## Overview
