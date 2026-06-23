@@ -76,14 +76,20 @@ Full, self-contained spec files demonstrating the patterns above:
 
 For more details, consult these reference files (loaded on demand):
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Setup & Teardown | `references/setup-and-teardown.md` | Configuring `Test.createTestingModule`, `createNestApplication()`, global pipes, `beforeAll`/`afterAll`, closing the app |
-| CRUD Operations | `references/crud-operations.md` | Testing POST, GET, PUT, DELETE endpoints, including validation error responses |
-| Authentication | `references/authentication.md` | Testing routes protected by guards, obtaining tokens via a login flow, sending `Authorization: Bearer` headers |
-| Database Isolation | `references/database-isolation.md` | Cleaning or resetting the test database between tests, choosing an isolation strategy |
-| Common Pitfalls | `references/common-pitfalls.md` | Debugging flaky/leaking integration tests, avoiding false-confidence anti-patterns |
+- **Setup & Teardown** — `references/setup-and-teardown.md`: Configuring `Test.createTestingModule`, `createNestApplication()`, global pipes, `beforeAll`/`afterAll`, closing the app
+- **CRUD Operations** — `references/crud-operations.md`: Testing POST, GET, PUT, DELETE endpoints, including validation error responses
+- **Authentication** — `references/authentication.md`: Testing routes protected by guards, obtaining tokens via a login flow, sending `Authorization: Bearer` headers
+- **Database Isolation** — `references/database-isolation.md`: Cleaning or resetting the test database between tests, choosing an isolation strategy
+- **Common Pitfalls** — `references/common-pitfalls.md`: Debugging flaky/leaking integration tests, avoiding false-confidence anti-patterns
+
+If Cucumber is used (BDD with gherkin):
+- **Cucumber Integration** — `references/cucumber-integration.md`: Setting up and using Cucumber.js with SuperTest and Jest for BDD-style API tests
+- **Cucumber Testing** — `references/cucumber-testing.md`: Writing Gherkin feature files and step definitions for API tests with SuperTest
+- **Cucumber Reporting** — `references/cucumber-reporting.md`: Generating HTML reports from Cucumber JSON output
 
 > These files are only loaded if the agent needs additional context.
 
-Reference: [NestJS E2E Testing](https://docs.nestjs.com/fundamentals/testing#end-to-end-testing)
+Resources: 
+- [NestJS E2E Testing](https://docs.nestjs.com/fundamentals/testing#end-to-end-testing)
+- [Jest documentation](https://jestjs.io/)
+- [SuperTest documentation](https://github.com/ladjs/supertest)
