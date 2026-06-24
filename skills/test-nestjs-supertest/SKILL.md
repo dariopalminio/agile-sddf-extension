@@ -83,9 +83,9 @@ For more details, consult these reference files (loaded on demand):
 - **Common Pitfalls** — `references/common-pitfalls.md`: Debugging flaky/leaking integration tests, avoiding false-confidence anti-patterns
 
 If Cucumber is used (BDD with gherkin):
-- **Cucumber Integration** — `references/cucumber-integration.md`: Setting up and using Cucumber.js with SuperTest and Jest for BDD-style API tests
-- **Cucumber Testing** — `references/cucumber-testing.md`: Writing Gherkin feature files and step definitions for API tests with SuperTest
-- **Cucumber Reporting** — `references/cucumber-reporting.md`: Generating HTML reports from Cucumber JSON output
+- **Cucumber Integration** — `references/bdd-cucumber-integration.md`: Setting up Cucumber.js with SuperTest. Part 1 = standalone (external URL, root `features/`); **Part 2 = wiring Cucumber to a real NestJS `INestApplication`** (World + hooks bootstrap). Recommended layout is a **flat suite under `test/bdd/{features,steps_definition,support}`** (siblings, one job each; named `bdd` because both Jest and Cucumber suites are API integration tests — the distinguishing axis is the BDD style, and `e2e`/`api` collide or fail to disambiguate). Covers `paths` + dual `require` globs in `cucumber.js`, plus the gotchas: ts-node TypeScript loading with a CommonJS `tsconfig.cucumber.json` override, Node version compatibility (Cucumber v13 needs Node 22+; use v10 on Node 20), and keeping Cucumber off the existing Jest `test` script
+- **Cucumber Testing** — `references/bdd-cucumber-testing.md`: Writing Gherkin feature files and step definitions. Section 2 = external URL; section 2b = NestJS steps via `request(this.app.getHttpServer())` and a typed `CustomWorld` (imported from the sibling `support/` dir in the flat layout)
+- **Cucumber Reporting** — `references/bdd-cucumber-reporting.md`: Generating HTML reports from Cucumber JSON output, plus a cross-platform run-and-report Node wrapper (shell `;` chaining breaks on Windows)
 
 > These files are only loaded if the agent needs additional context.
 

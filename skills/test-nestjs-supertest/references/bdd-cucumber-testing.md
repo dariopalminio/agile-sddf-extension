@@ -1,4 +1,4 @@
-# Part 2: Creating a Cucumber Test with Gherkin
+# BDD: Creating a Cucumber Test with Gherkin
 
 ## 1. Writing a Feature File (Gherkin)
 
@@ -87,6 +87,66 @@ Then('the response should contain the details of the post', async function () {
 - **Context sharing**: The `this` object is shared across steps within a scenario. Store responses, IDs, etc., in `this` (e.g., `this.response`).
 - **Async/Await**: All steps must be async and return a Promise. Cucumber waits for them to resolve.
 - **Parameter types**: Use `{int}`, `{string}`, `{float}` to pass parameters into steps.
+
+## 2b. Step Definitions against a NestJS app (recommended)
+
+When integrating with a real `INestApplication` (see Part 1b in
+`cucumber-integration.md`), the steps fire requests at `app.getHttpServer()`
+via the typed `CustomWorld`, instead of a hard-coded external URL.
+
+**Feature:** `test/bdd/features/hello.feature`
+
+```gherkin
+Feature: Hello endpoint
+  As an API consumer
+  I want to call the root endpoint
+  So that I receive a greeting
+
+  Scenario: Get the hello world greeting
+    Given the API is running
+    When I send a GET request to "/"
+    Then the response status should be 200
+    And the response body should be "Hello World!"
+```
+
+**Steps:** `test/bdd/steps_definition/hello.steps.ts`
+
+```typescript
+import { Given, When, Then } from '@cucumber/cucumber';
+import { strict as assert } from 'assert';
+import request from 'supertest';
+// steps_definition/ and support/ are siblings in the flat layout
+import { CustomWorld } from '../support/world';
+
+Given('the API is running', function (this: CustomWorld) {
+  assert.ok(this.app, 'Nest application should be initialized');
+});
+
+When(
+  'I send a GET request to {string}',
+  async function (this: CustomWorld, path: string) {
+    this.response = await request(this.app.getHttpServer()).get(path);
+  },
+);
+
+Then(
+  'the response status should be {int}',
+  function (this: CustomWorld, status: number) {
+    assert.equal(this.response.status, status);
+  },
+);
+
+Then(
+  'the response body should be {string}',
+  function (this: CustomWorld, body: string) {
+    assert.equal(this.response.text, body);
+  },
+);
+```
+
+> Use `import request from 'supertest'` (default import) — it works because
+> `esModuleInterop` is enabled in the CommonJS tsconfig from Part 1b. For a
+> JSON endpoint assert against `this.response.body` instead of `.text`.
 
 ## 3. Running Cucumber Tests
 
