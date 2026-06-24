@@ -1,4 +1,4 @@
-# Setup and Teardown
+# Integration Test Bootstrap and Teardown
 
 Every API integration test suite needs to bootstrap a real
 `INestApplication` once, apply the exact same global config the app uses in

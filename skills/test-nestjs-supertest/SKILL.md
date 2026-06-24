@@ -11,7 +11,7 @@ metadata:
   owner: dariopalminio/agile-sddf-extension
   version: "1.0.0"
   domain: quality
-  triggers: Supertest, Test API NestJS, e2e-spec, integration testing, request(app.getHttpServer()), API Test.createTestingModule, createNestApplication, ValidationPipe, guards, DataSource, synchronize, database isolation, beforeAll, afterAll, INestApplication, protected routes, Bearer token
+  triggers: Supertest, Test API NestJS, e2e-spec, integration testing, api bdd, cucumber, request(app.getHttpServer()), API Test.createTestingModule, createNestApplication, ValidationPipe, guards, DataSource, synchronize, database isolation, beforeAll, afterAll, INestApplication, protected routes, Bearer token
   role: specialist
   scope: implementing, automation, testing, backend-testing
   output-format: code
@@ -61,6 +61,35 @@ database interactions — without needing a browser or UI.
 - Jest e2e config present (`test/jest-e2e.json`) matching the `*.e2e-spec.ts` pattern.
 - A test database (or isolation strategy) available for integration runs.
 
+## Default Tools and Frameworks
+
+- **Jest:** This is the default testing framework. It acts as a test runner and provides functions for making assertions (expects), creating mocks, and running spies (jest.fn(), jest.spyOn()).
+- **Supertest:** Used in conjunction with Jest for end-to-end (E2E/API integration) testing. It allows you to make HTTP requests to your application and verify the responses.
+- **@nestjs/testing:** This is an official package that provides utilities for creating isolated test modules, facilitating unit and integration testing.
+- **cucumber-js:** Optional, for Behavior-Driven Development (BDD) style tests. It allows you to write tests in a human-readable format using Gherkin syntax.
+
+## NestJS Testing Convention
+
+- **Unit Testing (*.spec.ts):** The convention for unit tests (UT) is to co-locate them (place them in the same directory) alongside the files being tested.
+- **E2E Testing (*.e2e-spec.ts):** The convention for locating e2e tests is test/ (that's where jest-e2e.json and *.e2e-spec.ts live).
+- **Cucumber (features/):** By default, Cucumber is located in features/ (Nested Folders Strategy)
+- **Cucumber (test/bdd/):** In custom settings, the convention for self-contained Cucumber suite is located in test/bdd/ (flat structure strategy)
+
+## Key Best Practices
+
+- **Dependency injection:** This is not only a good practice, it is an essential practice for writing maintainable, testable, and scalable code.
+- **Isolation:** Each test should be independent. It should not depend on the state of other tests or an external environment.
+- **Descriptive Names:** Use clear names in the `describe` and `it` blocks that explain what is being tested and what the expected result is.
+- **Scenario Coverage:** Don't limit yourself to testing the "happy path." Make sure to also test edge cases and error situations (exceptions).
+- **Using the CLI:** It is recommended to use the NestJS CLI (`nest generate`) to create files, as it will automatically generate the `.spec.ts` test files with the basic structure.
+- **Test module creation:** Use Test.createTestingModule() and declare only the required providers for the unit under test. Avoid importing heavy or unrelated modules.
+- **Replacing dependencies:** To swap a real implementation for a mock, use .overrideProvider() combined with .useValue() or .useClass(). Alternatively, define the mocked provider directly in the providers array.
+- **Mocking repositories (TypeORM/Mongoose):** Use getRepositoryToken(Entity) or getModelToken(Entity) as the injection token, and provide an object whose methods (findOne, save, etc.) are defined as jest.fn().
+- **Mocking external services (APIs, queues, etc.):** Create a plain object with mock functions (jest.fn()) that return resolved or rejected promises depending on the scenario you want to test.
+- **Verifying interactions:** Check that mocks were called correctly using expect(mock.method).toHaveBeenCalledWith(...) and toHaveBeenCalledTimes(n).
+- **Resetting state between tests:** Run jest.clearAllMocks() or jest.resetAllMocks() inside beforeEach to clear calls and mock results without recreating the entire module.
+- **Avoiding unnecessary overhead:** For unit tests, do not import the full AppModule. Build lightweight test modules that declare only the dependencies actually needed by the component you are isolating.
+
 ## Examples
 
 Full, self-contained spec files demonstrating the patterns above:
@@ -76,7 +105,7 @@ Full, self-contained spec files demonstrating the patterns above:
 
 For more details, consult these reference files (loaded on demand):
 
-- **Setup & Teardown** — `references/setup-and-teardown.md`: Configuring `Test.createTestingModule`, `createNestApplication()`, global pipes, `beforeAll`/`afterAll`, closing the app
+- **Setup & Teardown** — `references/bootstrap-and-teardown.md`: Configuring `Test.createTestingModule`, `createNestApplication()`, global pipes, `beforeAll`/`afterAll`, closing the app
 - **CRUD Operations** — `references/crud-operations.md`: Testing POST, GET, PUT, DELETE endpoints, including validation error responses
 - **Authentication** — `references/authentication.md`: Testing routes protected by guards, obtaining tokens via a login flow, sending `Authorization: Bearer` headers
 - **Database Isolation** — `references/database-isolation.md`: Cleaning or resetting the test database between tests, choosing an isolation strategy
