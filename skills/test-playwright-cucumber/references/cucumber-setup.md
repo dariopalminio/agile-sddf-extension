@@ -39,13 +39,13 @@ npx playwright install chromium
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@pages/*":   ["tests/e2e/pages/*"],
-      "@utils/*":   ["tests/e2e/utils/*"],
-      "@support/*": ["tests/e2e/support/*"]
+      "@pages/*":   ["test/e2e/pages/*"],
+      "@utils/*":   ["test/e2e/utils/*"],
+      "@support/*": ["test/e2e/support/*"]
     }
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist", "tests/e2e/reports"]
+  "exclude": ["node_modules", "dist", "test/e2e/reports"]
 }
 ```
 
@@ -73,7 +73,7 @@ The tsconfig.json file following is configured for a project that uses modern ES
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["src", "tests/e2e"]
+  "include": ["src", "test/e2e"]
 }
 ```
 
@@ -85,13 +85,13 @@ The tsconfig.json file following is configured for a project that uses modern ES
 // cucumber.js (project root)
 module.exports = {
   default: {
-    require:       ['tests/e2e/support/hooks.ts', 'tests/e2e/step_definitions/**/*.ts'],
+    require:       ['test/e2e/support/hooks.ts', 'test/e2e/step_definitions/**/*.ts'],
     requireModule: ['ts-node/register'],
     format: [
       'progress',
-      'html:tests/e2e/reports/cucumber-report.html',
+      'html:test/e2e/reports/cucumber-report.html',
     ],
-    paths:        ['tests/e2e/features/**/*.feature'],
+    paths:        ['test/e2e/features/**/*.feature'],
     publishQuiet: true,
   },
 };
@@ -126,7 +126,7 @@ The cucumber.cjs file following is configured for a project that uses modern ES 
 // so that ts-node/esm picks up tsconfig.cucumber.json instead of tsconfig.json.
 // The npm scripts set this via cross-env.
 const common = {
-  import: ['tests/e2e/support/hooks.ts', 'tests/e2e/step_definitions/**/*.ts'],
+  import: ['test/e2e/support/hooks.ts', 'test/e2e/step_definitions/**/*.ts'],
   loader: ['ts-node/esm'],
   publishQuiet: true,
 };
@@ -136,61 +136,61 @@ module.exports = {
   // ── Default: run all scenarios except @wip ──────────────────────────────
   default: {
     ...common,
-    paths: ['tests/e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: 'not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/cucumber-report.html',
-      'json:tests/e2e/reports/cucumber-report.json',
+      'html:test/e2e/reports/cucumber-report.html',
+      'json:test/e2e/reports/cucumber-report.json',
     ],
   },
 
   // ── Smoke: fast sanity check — @smoke tagged scenarios only ─────────────
   smoke: {
     ...common,
-    paths: ['tests/e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: '@smoke and not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/smoke-report.html',
-      'json:tests/e2e/reports/smoke-report.json',
+      'html:test/e2e/reports/smoke-report.html',
+      'json:test/e2e/reports/smoke-report.json',
     ],
   },
 
   // ── Sanity: smoke + variants/state — @smoke or @sanity ─────────────────────
   sanity: {
     ...common,
-    paths: ['tests/e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: '(@smoke or @sanity) and not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/sanity-report.html',
-      'json:tests/e2e/reports/sanity-report.json',
+      'html:test/e2e/reports/sanity-report.html',
+      'json:test/e2e/reports/sanity-report.json',
     ],
   },
 
   // ── Regression: complete regression — all non-wip scenarios ───────────────────
   regression: {
     ...common,
-    paths: ['tests/e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: 'not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/regression-report.html',
-      'json:tests/e2e/reports/regression-report.json',
+      'html:test/e2e/reports/regression-report.html',
+      'json:test/e2e/reports/regression-report.json',
     ],
   },
 
   // ── CI: all non-wip with JUnit XML for GitHub Actions ───────────────────
   ci: {
     ...common,
-    paths: ['tests/e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: 'not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/cucumber-report.html',
-      'json:tests/e2e/reports/cucumber-report.json',
-      'junit:tests/e2e/reports/junit-report.xml',
+      'html:test/e2e/reports/cucumber-report.html',
+      'json:test/e2e/reports/cucumber-report.json',
+      'junit:test/e2e/reports/junit-report.xml',
     ],
   },
 
@@ -233,19 +233,19 @@ The package.json scripts following are configured for a project that uses modern
     "test:e2e:regression": "cross-env TS_NODE_PROJECT=tsconfig.cucumber.json cucumber-js --config cucumber.cjs --profile regression",
     "test:e2e:headed": "cross-env TS_NODE_PROJECT=tsconfig.cucumber.json HEADLESS=false cucumber-js --config cucumber.cjs",
     "test:e2e:debug": "cross-env TS_NODE_PROJECT=tsconfig.cucumber.json HEADLESS=false SLOWMO=500 cucumber-js --config cucumber.cjs",
-    "lint:e2e": "eslint tests/e2e",
+    "lint:e2e": "eslint test/e2e",
     "typecheck:e2e": "tsc --noEmit --project tsconfig.cucumber.json && echo \"Typecheck passed\""
 }
 ```
 
 ---
 
-## e2e/utils/config.ts
+## test/e2e/utils/config.ts
 
 Centralize all environment configuration here. Never hardcode URLs or credentials in steps.
 
 ```typescript
-// e2e/utils/config.ts
+// test/e2e/utils/config.ts
 export const config = {
   baseUrl:  process.env.BASE_URL  || 'http://localhost:3000',
   headless: process.env.HEADLESS  !== 'false',
@@ -272,7 +272,7 @@ npm test
 npm run test:smoke
 
 # 5. Run a single feature file
-npx cucumber-js tests/e2e/features/auth/login.feature
+npx cucumber-js test/e2e/features/auth/login.feature
 
 # 6. Run by ad-hoc tag
 npx cucumber-js --tags "@login and not @wip"
@@ -281,7 +281,7 @@ npx cucumber-js --tags "@login and not @wip"
 npm run test:headed
 
 # 8. Run a single feature file with Cucumber and pnpm, using cucumber.cjs — Big Config example
-pnpm exec cucumber-js --profile single tests/e2e/features/auth/login.feature
+pnpm exec cucumber-js --profile single test/e2e/features/auth/login.feature
 
 # 9. Run smoke tests only with pnpm
 pnpm run test:smoke
@@ -298,5 +298,5 @@ pnpm run test:smoke
 | `npm run test:smoke` | Run `@smoke` tagged scenarios |
 | `npm run test:regression` | Run `@regression` (excluding `@wip`) |
 | `npx cucumber-js --tags "@tag"` | Ad-hoc tag filter |
-| `npx cucumber-js tests/e2e/features/auth/login.feature` | Single feature file |
+| `npx cucumber-js test/e2e/features/auth/login.feature` | Single feature file |
 | `HEADLESS=false npm test` | Visible browser |

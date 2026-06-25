@@ -50,7 +50,7 @@ setWorldConstructor(PlaywrightWorld);
 ## Hooks
 
 ```typescript
-// e2e/support/hooks.ts
+// test/e2e/support/hooks.ts
 import { Before, After, BeforeAll, AfterAll, Status } from '@cucumber/cucumber';
 import { chromium } from '@playwright/test';
 import { PlaywrightWorld } from './world';
@@ -141,7 +141,7 @@ Before({ order: 2, tags: '@authenticated' }, async function (this: PlaywrightWor
 For faster test runs, save auth state once and reuse it across scenarios:
 
 ```typescript
-// tests/global-setup.ts — run once to generate auth state
+// test/global-setup.ts — run once to generate auth state
 import { chromium } from '@playwright/test';
 import { config } from '../utils/config';
 import path from 'path';

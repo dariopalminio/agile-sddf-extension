@@ -21,41 +21,41 @@ if (![1, 2, 3, 4].includes(level)) {
 // ── Directory sets by level ───────────────────────────────────────────────
 
 const level1Dirs = [
-  'e2e/features',
-  'e2e/step_definitions',
-  'e2e/reports',
+  'test/e2e/features',
+  'test/e2e/step_definitions',
+  'test/e2e/reports',
 ];
 
 const level2Dirs = [
   ...level1Dirs,
-  'e2e/features/auth',
-  'e2e/step_definitions/auth',
-  'e2e/step_definitions/shared',
-  'e2e/pages/auth',
+  'test/e2e/features/auth',
+  'test/e2e/step_definitions/auth',
+  'test/e2e/step_definitions/shared',
+  'test/e2e/pages/auth',
 ];
 
 const level3Dirs = [
   ...level2Dirs,
-  'e2e/features/checkout',
-  'e2e/step_definitions/checkout',
-  'e2e/pages/checkout',
-  'e2e/utils',
-  'e2e/support',
-  'e2e/test-data/auth',
-  'e2e/test-data/fixtures',
+  'test/e2e/features/checkout',
+  'test/e2e/step_definitions/checkout',
+  'test/e2e/pages/checkout',
+  'test/e2e/utils',
+  'test/e2e/support',
+  'test/e2e/test-data/auth',
+  'test/e2e/test-data/fixtures',
 ];
 
 const level4Dirs = [
   ...level3Dirs,
-  'e2e/features/catalog',
-  'e2e/features/cart',
-  'e2e/features/admin',
-  'e2e/step_definitions/catalog',
-  'e2e/step_definitions/cart',
-  'e2e/step_definitions/admin',
-  'e2e/pages/catalog',
-  'e2e/pages/cart',
-  'e2e/pages/admin',
+  'test/e2e/features/catalog',
+  'test/e2e/features/cart',
+  'test/e2e/features/admin',
+  'test/e2e/step_definitions/catalog',
+  'test/e2e/step_definitions/cart',
+  'test/e2e/step_definitions/admin',
+  'test/e2e/pages/catalog',
+  'test/e2e/pages/cart',
+  'test/e2e/pages/admin',
   '.github/workflows',
 ];
 
@@ -73,8 +73,8 @@ for (const dir of dirs) {
 
 const requirePaths =
   level >= 3
-    ? `['e2e/support/hooks.ts', 'e2e/step_definitions/**/*.ts']`
-    : `['e2e/step_definitions/**/*.ts']`;
+    ? `['test/e2e/support/hooks.ts', 'test/e2e/step_definitions/**/*.ts']`
+    : `['test/e2e/step_definitions/**/*.ts']`;
 
 const profiles =
   level >= 4
@@ -88,26 +88,26 @@ const common = {
 module.exports = {
   default: {
     ...common,
-    paths: ['e2e/features/**/*.feature'],
-    format: ['progress', 'html:e2e/reports/cucumber-report.html', 'json:e2e/reports/cucumber-report.json'],
+    paths: ['test/e2e/features/**/*.feature'],
+    format: ['progress', 'html:test/e2e/reports/cucumber-report.html', 'json:test/e2e/reports/cucumber-report.json'],
   },
   smoke: {
     ...common,
-    paths: ['e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: '@smoke and not @wip',
-    format: ['progress', 'html:e2e/reports/smoke-report.html'],
+    format: ['progress', 'html:test/e2e/reports/smoke-report.html'],
   },
   regression: {
     ...common,
-    paths: ['e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: '@regression and not @wip',
-    format: ['progress', 'html:e2e/reports/regression-report.html'],
+    format: ['progress', 'html:test/e2e/reports/regression-report.html'],
   },
   ci: {
     ...common,
-    paths: ['e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: 'not @wip',
-    format: ['progress', 'html:e2e/reports/cucumber-report.html', 'json:e2e/reports/cucumber-report.json', 'junit:e2e/reports/junit-report.xml'],
+    format: ['progress', 'html:test/e2e/reports/cucumber-report.html', 'json:test/e2e/reports/cucumber-report.json', 'junit:test/e2e/reports/junit-report.xml'],
   },
 };
 `
@@ -117,9 +117,9 @@ module.exports = {
     require: ${requirePaths},
     requireModule: ['ts-node/register'],
     publishQuiet: true,
-    paths: ['e2e/features/**/*.feature'],
+    paths: ['test/e2e/features/**/*.feature'],
     tags: 'not @wip',
-    format: ['progress', 'html:e2e/reports/cucumber-report.html'],
+    format: ['progress', 'html:test/e2e/reports/cucumber-report.html'],
   },
 };
 `;
@@ -131,7 +131,7 @@ console.log('  created: cucumber.js');
 
 const paths =
   level >= 2
-    ? `,\n    "paths": {\n      "@pages/*": ["e2e/pages/*"],\n      "@utils/*": ["e2e/utils/*"],\n      "@support/*": ["e2e/support/*"]\n    }`
+    ? `,\n    "paths": {\n      "@pages/*": ["test/e2e/pages/*"],\n      "@utils/*": ["test/e2e/utils/*"],\n      "@support/*": ["test/e2e/support/*"]\n    }`
     : '';
 
 const tsconfig = `{
@@ -148,18 +148,18 @@ const tsconfig = `{
     "skipLibCheck": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist", "e2e/reports"]
+  "exclude": ["node_modules", "dist", "test/e2e/reports"]
 }
 `;
 
 writeFileSync('tsconfig.json', tsconfig);
 console.log('  created: tsconfig.json');
 
-// ── e2e/support/world.ts (Level 3+) ──────────────────────────────────────
+// ── test/e2e/support/world.ts (Level 3+) ──────────────────────────────────────
 
 if (level >= 3) {
   writeFileSync(
-    'e2e/support/world.ts',
+    'test/e2e/support/world.ts',
     `import { setWorldConstructor, World, IWorldOptions } from '@cucumber/cucumber';
 import { Browser, BrowserContext, Page } from '@playwright/test';
 
@@ -184,11 +184,11 @@ export class PlaywrightWorld extends World implements CustomWorld {
 setWorldConstructor(PlaywrightWorld);
 `
   );
-  console.log('  created: e2e/support/world.ts');
+  console.log('  created: test/e2e/support/world.ts');
 
-  // ── e2e/utils/config.ts ──────────────────────────────────────────────────
+  // ── test/e2e/utils/config.ts ──────────────────────────────────────────────────
   writeFileSync(
-    'e2e/utils/config.ts',
+    'test/e2e/utils/config.ts',
     `export const config = {
   baseUrl:  process.env.BASE_URL  || 'http://localhost:3000',
   headless: process.env.HEADLESS  !== 'false',
@@ -197,11 +197,11 @@ setWorldConstructor(PlaywrightWorld);
 };
 `
   );
-  console.log('  created: e2e/utils/config.ts');
+  console.log('  created: test/e2e/utils/config.ts');
 
-  // ── e2e/support/hooks.ts ─────────────────────────────────────────────────
+  // ── test/e2e/support/hooks.ts ─────────────────────────────────────────────────
   writeFileSync(
-    'e2e/support/hooks.ts',
+    'test/e2e/support/hooks.ts',
     `import { Before, After, BeforeAll, AfterAll, Status } from '@cucumber/cucumber';
 import { chromium } from '@playwright/test';
 import { PlaywrightWorld } from './world';
@@ -219,7 +219,7 @@ Before(async function (this: PlaywrightWorld) {
 });
 
 Before({ tags: '@authenticated' }, async function (this: PlaywrightWorld) {
-  await this.context.storageState({ path: 'e2e/test-data/auth/user.auth.json' });
+  await this.context.storageState({ path: 'test/e2e/test-data/auth/user.auth.json' });
 });
 
 After(async function (this: PlaywrightWorld, scenario) {
@@ -240,17 +240,17 @@ AfterAll(async function () {
 });
 `
   );
-  console.log('  created: e2e/support/hooks.ts');
+  console.log('  created: test/e2e/support/hooks.ts');
 }
 
 // ── .gitignore ────────────────────────────────────────────────────────────
 
 const gitignoreContent = [
   '# Reports',
-  'e2e/reports/',
+  'test/e2e/reports/',
   '',
   '# Auth state',
-  'e2e/test-data/auth/*.auth.json',
+  'test/e2e/test-data/auth/*.auth.json',
   '',
   '# Node',
   'node_modules/',
@@ -298,7 +298,7 @@ jobs:
         if: always()
         with:
           name: smoke-report
-          path: e2e/reports/
+          path: test/e2e/reports/
 
   regression:
     name: Regression Tests
@@ -317,7 +317,7 @@ jobs:
         if: always()
         with:
           name: regression-report
-          path: e2e/reports/
+          path: test/e2e/reports/
 `
   );
   console.log('  created: .github/workflows/cucumber.yml');
@@ -340,6 +340,6 @@ if (level >= 4) {
 console.log('\nNext steps:');
 console.log('  1. npm install @cucumber/cucumber @playwright/test ts-node typescript');
 console.log('  2. npx playwright install chromium');
-console.log('  3. Write your first .feature file in e2e/features/');
+console.log('  3. Write your first .feature file in test/e2e/features/');
 console.log('  4. npx cucumber-js --dry-run   — verify step definitions load');
 console.log('  5. npx cucumber-js             — run all tests');

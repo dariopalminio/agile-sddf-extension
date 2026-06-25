@@ -4,8 +4,8 @@ Folder layout for `@cucumber/cucumber` + Playwright projects by complexity level
 
 ## Agreements on root e2e testing folder
 
-- E2E / BDD: Centralize in a dedicated top-level tests/e2e/ folder (alternatively, it could be e2e/ folder if the user prefers).
-- All BDD test files live under tests/e2e/ alongside existing Playwright specs. 
+- E2E / BDD: Centralize in a dedicated top-level `test/e2e/` folder (alternatively, it could be a bare `e2e/` folder if the user prefers).
+- All BDD test files live under test/e2e/ alongside existing Playwright specs. 
 - `cucumber.js` stays at the **project root** (where the Cucumber CLI looks for it by default).
 
 ---
@@ -19,8 +19,8 @@ my-project/
 ├── package.json
 ├── .gitignore
 │
-└──tests/
-      └── e2e/
+└──test/
+      └──e2e/
           ├── features/
           │   └── login.feature
           │
@@ -44,8 +44,8 @@ my-project/
 ├── package.json
 ├── .gitignore
 │
-└──tests/
-      └── e2e/
+└──test/
+      └──e2e/
           ├── features/
           │   ├── auth/
           │   │   ├── login.feature
@@ -83,8 +83,8 @@ my-project/
 ├── package.json
 ├── .gitignore
 │
-└──tests/
-      └── e2e/
+└──test/
+      └──e2e/
           ├── features/
           │   ├── auth/
           │   ├── catalog/
@@ -130,8 +130,8 @@ my-project/
 ├── package.json
 ├── .gitignore
 │
-└──tests/
-      └── e2e/
+└──test/
+      └──e2e/
           ├── features/
           │   ├── auth/
           │   ├── catalog/
@@ -184,13 +184,13 @@ my-project/
 
 | Folder | Contents | Notes |
 |--------|----------|-------|
-| `tests/e2e/features/` | `.feature` files (Gherkin) | Group by domain |
-| `tests/e2e/step_definitions/` | TypeScript step files | Mirror `tests/e2e/features/` structure |
-| `tests/e2e/pages/` | Page Object classes | See `playwright-automation-expert` |
-| `tests/e2e/support/` | `world.ts`, `hooks.ts` | Browser lifecycle management |
-| `tests/e2e/utils/` | Config, helpers | No Playwright `page` in config/helpers |
-| `tests/e2e/test-data/auth/` | `*.auth.json` storage state | Must be gitignored |
-| `tests/e2e/reports/` | Generated HTML/JSON/XML | Must be gitignored |
+| `test/e2e/features/` | `.feature` files (Gherkin) | Group by domain |
+| `test/e2e/step_definitions/` | TypeScript step files | Mirror `test/e2e/features/` structure |
+| `test/e2e/pages/` | Page Object classes | See `playwright-automation-expert` |
+| `test/e2e/support/` | `world.ts`, `hooks.ts` | Browser lifecycle management |
+| `test/e2e/utils/` | Config, helpers | No Playwright `page` in config/helpers |
+| `test/e2e/test-data/auth/` | `*.auth.json` storage state | Must be gitignored |
+| `test/e2e/reports/` | Generated HTML/JSON/XML | Must be gitignored |
 
 ---
 
@@ -198,10 +198,10 @@ my-project/
 
 ```
 # Reports
-tests/e2e/reports/
+test/e2e/reports/
 
 # Auth state
-tests/e2e/test-data/auth/*.auth.json
+test/e2e/test-data/auth/*.auth.json
 
 # Node
 node_modules/
@@ -221,9 +221,9 @@ dist/
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@pages/*":   ["tests/e2e/pages/*"],
-      "@utils/*":   ["tests/e2e/utils/*"],
-      "@support/*": ["tests/e2e/support/*"]
+      "@pages/*":   ["test/e2e/pages/*"],
+      "@utils/*":   ["test/e2e/utils/*"],
+      "@support/*": ["test/e2e/support/*"]
     }
   }
 }

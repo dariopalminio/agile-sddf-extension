@@ -10,12 +10,12 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@pages/*":   ["pages/*"],
-      "@utils/*":   ["utils/*"],
-      "@support/*": ["tests/*"]
+      "@pages/*":   ["test/e2e/pages/*"],
+      "@utils/*":   ["test/e2e/utils/*"],
+      "@support/*": ["test/e2e/support/*"]
     },
     "skipLibCheck": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist", "reports"]
+  "exclude": ["node_modules", "dist", "test/e2e/reports"]
 }

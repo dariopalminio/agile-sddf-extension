@@ -52,7 +52,7 @@ module.exports = {
 Screenshots are attached to the HTML report via `this.attach()` in the `After` hook. No external image files are needed — they are base64-embedded directly in the HTML.
 
 ```typescript
-// e2e/support/hooks.ts
+// test/e2e/support/hooks.ts
 import { After, Status } from '@cucumber/cucumber';
 import { PlaywrightWorld } from './world';
 
@@ -153,10 +153,10 @@ Add to a local profile (do not use in CI — it does not buffer output correctly
 // cucumber.js
 module.exports = {
   local: {
-    require:       ['e2e/support/hooks.ts', 'e2e/step_definitions/**/*.ts'],
+    require:       ['test/e2e/support/hooks.ts', 'test/e2e/step_definitions/**/*.ts'],
     requireModule: ['ts-node/register'],
     format:        ['@cucumber/pretty-formatter'],
-    paths:         ['e2e/features/**/*.feature'],
+    paths:         ['test/e2e/features/**/*.feature'],
     publishQuiet:  true,
   },
 };

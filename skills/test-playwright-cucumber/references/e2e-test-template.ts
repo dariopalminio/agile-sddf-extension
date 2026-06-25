@@ -1,7 +1,7 @@
 /**
  * e2e-test-template.ts — Annotated E2E test using Playwright.
  *
- * Place at: e2e/tests/users/create-user.spec.ts
+ * Place at: test/e2e/users/create-user.spec.ts
  *
  * This template demonstrates:
  *   - Using page objects (tests never touch selectors directly)

@@ -34,9 +34,9 @@ Implement Before to initialize the World (launch browser, create page) and After
 
 **Example:** The architecture requires 5 components for a one-button component feature:
 
-1. Feature File:	tests/e2e/features/components/button.feature
-2. Page Object:	tests/e2e/pages/ButtonPage.ts
-3. Step Definitions:	tests/e2e/step_definitions/components/button.steps.ts
-4. World:	tests/e2e/support/world.ts
-5. Hooks:	tests/e2e/support/hooks.ts
+1. Feature File:	test/e2e/features/components/button.feature
+2. Page Object:	test/e2e/pages/ButtonPage.ts
+3. Step Definitions:	test/e2e/step_definitions/components/button.steps.ts
+4. World:	test/e2e/support/world.ts
+5. Hooks:	test/e2e/support/hooks.ts
 

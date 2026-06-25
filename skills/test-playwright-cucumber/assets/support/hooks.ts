@@ -23,7 +23,7 @@ Before(async function (this: PlaywrightWorld) {
 // ── Tagged hook — only runs before @authenticated scenarios ────────────────
 Before({ tags: '@authenticated' }, async function (this: PlaywrightWorld) {
   // Load stored auth state to skip the login UI
-  await this.context.storageState({ path: 'e2e/test-data/auth/user.auth.json' });
+  await this.context.storageState({ path: 'test/e2e/test-data/auth/user.auth.json' });
 });
 
 // ── Per-scenario teardown (runs after EACH scenario) ───────────────────────

@@ -139,7 +139,7 @@ The following table indicates, for each type of regression execution (`@smoke`, 
 // cucumber.cjs (use .cjs when package.json has "type": "module")
 // Uses --loader ts-node/esm for ESM-native TypeScript support
 const common = {
-  import:       ['tests/e2e/support/hooks.ts', 'tests/e2e/step_definitions/**/*.ts'],
+  import:       ['test/e2e/support/hooks.ts', 'test/e2e/step_definitions/**/*.ts'],
   loader:       ['ts-node/esm'],
   publishQuiet: true,
 };
@@ -148,61 +148,61 @@ module.exports = {
   // Default — runs everything except @wip
   default: {
     ...common,
-    paths:  ['tests/e2e/features/**/*.feature'],
+    paths:  ['test/e2e/features/**/*.feature'],
     tags:   'not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/cucumber-report.html',
-      'json:tests/e2e/reports/cucumber-report.json',
+      'html:test/e2e/reports/cucumber-report.html',
+      'json:test/e2e/reports/cucumber-report.json',
     ],
   },
 
   // Smoke — fast happy-path gate, runs on every deploy
   smoke: {
     ...common,
-    paths:  ['tests/e2e/features/**/*.feature'],
+    paths:  ['test/e2e/features/**/*.feature'],
     tags:   '@smoke and not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/smoke-report.html',
-      'json:tests/e2e/reports/smoke-report.json',
+      'html:test/e2e/reports/smoke-report.html',
+      'json:test/e2e/reports/smoke-report.json',
     ],
   },
 
   // Core — smoke + variants/state/interaction (@smoke or @sanity)
   core: {
     ...common,
-    paths:  ['tests/e2e/features/**/*.feature'],
+    paths:  ['test/e2e/features/**/*.feature'],
     tags:   '(@smoke or @sanity) and not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/core-report.html',
-      'json:tests/e2e/reports/core-report.json',
+      'html:test/e2e/reports/core-report.html',
+      'json:test/e2e/reports/core-report.json',
     ],
   },
 
   // Full — complete regression, all non-wip scenarios
   full: {
     ...common,
-    paths:  ['tests/e2e/features/**/*.feature'],
+    paths:  ['test/e2e/features/**/*.feature'],
     tags:   'not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/full-report.html',
-      'json:tests/e2e/reports/full-report.json',
+      'html:test/e2e/reports/full-report.html',
+      'json:test/e2e/reports/full-report.json',
     ],
   },
 
   // CI — all non-wip with JUnit XML for GitHub Actions
   ci: {
     ...common,
-    paths:  ['tests/e2e/features/**/*.feature'],
+    paths:  ['test/e2e/features/**/*.feature'],
     tags:   'not @wip',
     format: [
       'progress',
-      'html:tests/e2e/reports/cucumber-report.html',
-      'json:tests/e2e/reports/cucumber-report.json',
-      'junit:tests/e2e/reports/junit-report.xml',
+      'html:test/e2e/reports/cucumber-report.html',
+      'json:test/e2e/reports/cucumber-report.json',
+      'junit:test/e2e/reports/junit-report.xml',
     ],
   },
 };

@@ -57,7 +57,7 @@ export { expect } from '@playwright/test';
 ## Login & Register — Positive Cases
 
 ```typescript
-// tests/api/auth.spec.ts
+// test/api/auth.spec.ts
 import { test, expect } from '@fixtures/index';
 
 test.describe('POST /api/auth/login', () => {
@@ -191,7 +191,7 @@ import { expectStatus, expectSuccess } from '@utils/api-assertions';
 ```
 
 ```typescript
-// tests/api/http-codes.spec.ts
+// test/api/http-codes.spec.ts
 test.describe('HTTP status code assertions', () => {
   test('GET /api/users — 200 OK', async ({ apiContext, authToken }) => {
     const response = await apiContext.get('/api/users', {
@@ -259,7 +259,7 @@ test.describe('HTTP status code assertions', () => {
 Idempotent operations: the same request executed N times produces the same result.
 
 ```typescript
-// tests/api/idempotency.spec.ts
+// test/api/idempotency.spec.ts
 test.describe('Idempotency', () => {
   test('PUT /api/users/:id is idempotent', async ({ apiContext, authToken }) => {
     const userId = 'user-123';
@@ -319,7 +319,7 @@ test.describe('Idempotency', () => {
 ## Performance Measurement
 
 ```typescript
-// tests/api/performance.spec.ts
+// test/api/performance.spec.ts
 // IMPORTANT: Thresholds must be derived from measured baselines, not guessed.
 // How to establish baselines:
 //   1. Run the test suite against a known-good environment (staging or local with prod data volume)
@@ -405,7 +405,7 @@ import { validateSchema } from '@utils/schema-validator';
 ```
 
 ```typescript
-// tests/api/schemas.spec.ts
+// test/api/schemas.spec.ts
 import { test, expect } from '@fixtures/index';
 import { validateSchema } from '@utils/schema-validator';
 

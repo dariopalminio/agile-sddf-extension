@@ -51,7 +51,7 @@ Use this skill when:
 4. **Build Page Objects** — POM classes consumed by steps via World context
 5. **Implement steps** — TypeScript step definitions using `Given`/`When`/`Then`
 6. **World** — Shared context for step definitions
-7. **Set up hooks** — Browser lifecycle in `e2e/support/hooks.ts`
+7. **Set up hooks** — Browser lifecycle in `test/e2e/support/hooks.ts`
 8. **Configure profiles** — `cucumber.js` profiles + HTML reporter
 9. **Integrate CI** — GitHub Actions with profile-based execution
 
@@ -103,10 +103,10 @@ All of Level 1, plus:
 
 **Level 3 — Advanced** (World + hooks + config)
 All of Level 2, plus:
-7. `e2e/support/world.ts` — Custom World
-8. `e2e/utils/config.ts` — Environment configuration
-9. `e2e/support/hooks.ts` — Before/After browser lifecycle
-10. `e2e/utils/data-helpers.ts` — Test data factories
+7. `test/e2e/support/world.ts` — Custom World
+8. `test/e2e/utils/config.ts` — Environment configuration
+9. `test/e2e/support/hooks.ts` — Before/After browser lifecycle
+10. `test/e2e/utils/data-helpers.ts` — Test data factories
 
 **Level 4 — Enterprise** (profiles + CI)
 All of Level 3, plus:

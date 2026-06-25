@@ -184,7 +184,7 @@ Given('the user navigates to the app', async function (this: PlaywrightWorld) {
 module.exports = {
   default: {
     format: ['progress'],
-    paths:  ['e2e/features/**/*.feature'],
+    paths:  ['test/e2e/features/**/*.feature'],
   },
 };
 
@@ -192,7 +192,7 @@ module.exports = {
 module.exports = {
   default: {
     format:       ['progress'],
-    paths:        ['e2e/features/**/*.feature'],
+    paths:        ['test/e2e/features/**/*.feature'],
     publishQuiet: true,   // always include this
   },
 };

@@ -13,12 +13,12 @@ Rules:
 - Always use `.spec.ts` extension — never `.test.ts` for Playwright E2E tests
 - Use **kebab-case** for file names
 - Name after the **feature or user flow**, not the technical component
-- Group related specs in a subfolder: `tests/checkout/` not `tests/checkout-page.spec.ts` + `tests/checkout-payment.spec.ts` as loose files
-- API specs go in `tests/api/` — they follow the same naming pattern but test REST endpoints directly (no browser)
+- Group related specs in a subfolder: `test/checkout/` not `test/checkout-page.spec.ts` + `test/checkout-payment.spec.ts` as loose files
+- API specs go in `test/api/` — they follow the same naming pattern but test REST endpoints directly (no browser)
 
 Example without cucumber:
 ```
-tests/e2e/specs/
+test/e2e/specs/
   auth/
     login.spec.ts            ✓
     login-social.spec.ts     ✓
@@ -44,13 +44,13 @@ test-login.ts                ✗  (missing .spec, prefixed with "test-")
 | `<resource>-<action>.spec.ts` | `users-pagination.spec.ts` |
 
 Rules:
-- Located in `tests/api/` — never mixed with E2E specs
+- Located in `test/api/` — never mixed with E2E specs
 - Use `apiContext` fixture, not `page`
 - Same **kebab-case** as other specs
 - Name after the resource/endpoint being tested
 
 ```
-tests/
+test/
   api/
     auth.spec.ts             ✓
     users.spec.ts            ✓
@@ -201,7 +201,7 @@ mocks/
 | Type | File naming | Class/export naming |
 |------|-------------|---------------------|
 | Spec file (E2E) | `feature-name.spec.ts` | — |
-| Spec file (API) | `tests/api/resource.spec.ts` | — |
+| Spec file (API) | `test/api/resource.spec.ts` | — |
 | Page Object | `LoginPage.ts` | `class LoginPage` |
 | Component PO | `NavBar.ts` | `class NavBar` |
 | Fixture | `auth.fixture.ts` | `export const test` |

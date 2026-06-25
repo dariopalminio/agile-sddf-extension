@@ -18,7 +18,7 @@ Start with a **flat structure** and migrate to **feature-based** when you cross 
 Best for: small apps, single developer, early stage projects.
 
 ```
-tests/
+test/
   login.spec.ts
   register.spec.ts
   dashboard.spec.ts
@@ -42,7 +42,7 @@ Simple, easy to navigate. No nesting required.
 Best for: growing teams, clear feature boundaries.
 
 ```
-tests/
+test/
   auth/
     login.spec.ts
     register.spec.ts
@@ -79,7 +79,7 @@ components/
   Pagination.ts
 ```
 
-Mirror the feature structure between `tests/` and `pages/`.
+Mirror the feature structure between `test/` and `pages/`.
 
 ---
 
@@ -88,8 +88,8 @@ Mirror the feature structure between `tests/` and `pages/`.
 Best for: monorepos, large teams, multiple product areas.
 
 ```
-tests/
-  e2e/                          # Full end-to-end user flows
+test/
+  test/e2e/                          # Full end-to-end user flows
     checkout-flow.spec.ts
     onboarding-flow.spec.ts
   features/                     # Feature-specific tests
@@ -149,25 +149,25 @@ export default defineConfig({
     // Full E2E tests — all browsers
     {
       name: 'e2e-chromium',
-      testDir: './tests/e2e',
+      testDir: './test/e2e',
       use: { ...devices['Desktop Chrome'] },
     },
     // Feature tests — fast, Chrome only
     {
       name: 'features',
-      testDir: './tests/features',
+      testDir: './test/features',
       use: { ...devices['Desktop Chrome'] },
     },
     // Visual tests — separate run
     {
       name: 'visual',
-      testDir: './tests/visual',
+      testDir: './test/visual',
       use: { ...devices['Desktop Chrome'] },
     },
     // API tests — no browser needed
     {
       name: 'api',
-      testDir: './tests/api',
+      testDir: './test/api',
       // No 'use' block needed: API tests use apiContext, not a browser
     },
   ],
@@ -232,9 +232,9 @@ Not sure?
 
 | Anti-pattern | Problem | Fix |
 |---|---|---|
-| `tests/pages/` (tests inside pages folder) | Mixes concerns | Keep `tests/` and `pages/` as siblings at root |
-| `tests/test-login.spec.ts` | Redundant "test-" prefix | `tests/auth/login.spec.ts` |
+| `test/pages/` (tests inside pages folder) | Mixes concerns | Keep `test/` and `pages/` as siblings at root |
+| `test/test-login.spec.ts` | Redundant "test-" prefix | `test/auth/login.spec.ts` |
 | One giant spec file per feature | Hard to parallelize, slow CI | Split by scenario into multiple files |
-| Feature folder with > 10 spec files | Too large | Add a sub-level: `tests/orders/history/`, `tests/orders/creation/` |
+| Feature folder with > 10 spec files | Too large | Add a sub-level: `test/orders/history/`, `test/orders/creation/` |
 | `pages/helpers/` inside pages folder | Wrong abstraction | Move helpers to `utils/` |
 
