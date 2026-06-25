@@ -15,7 +15,7 @@ Rules:
 - Group related features in a subfolder: `features/checkout/` not loose files
 
 ```
-tests/e2e/features/
+test/e2e/features/
   auth/
     login.feature              ✓
     login-social.feature       ✓
@@ -44,10 +44,10 @@ Rules:
 - Use `.cy.ts` extension for Cypress specs (also accepts `.spec.ts`)
 - Use **kebab-case** for file names
 - Name after the **feature or user flow**
-- API specs go in `tests/e2e/api/` — they use `cy.request()` and test REST endpoints
+- API specs go in `test/e2e/api/` — they use `cy.request()` and test REST endpoints
 
 ```
-tests/e2e/specs/
+test/e2e/specs/
   auth/
     login.cy.ts                ✓
     login-social.cy.ts         ✓
@@ -78,7 +78,7 @@ Rules:
 - One steps file per feature file (co-locate or mirror structure)
 
 ```
-tests/e2e/step_definitions/
+test/e2e/step_definitions/
   auth/
     login.steps.ts             ✓
   checkout/
@@ -172,12 +172,12 @@ Rules:
 - No Cypress `cy.*` dependencies in `utils/` — keep them framework-agnostic where possible
 
 ```typescript
-// tests/e2e/utils/user-builder.ts
+// test/e2e/utils/user-builder.ts
 export function buildUser(overrides = {}) { ... }     ✓
 export function randomEmail() { ... }                  ✓
 
-// tests/e2e/utils/helpers.ts  ✗  (too generic)
-// tests/e2e/utils/UserBuilder.ts  ✗  (PascalCase for non-class file)
+// test/e2e/utils/helpers.ts  ✗  (too generic)
+// test/e2e/utils/UserBuilder.ts  ✗  (PascalCase for non-class file)
 ```
 
 ---

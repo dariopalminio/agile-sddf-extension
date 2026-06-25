@@ -2,7 +2,7 @@
 /**
  * e2e-test-template.ts — Annotated Cypress E2E test (without Cucumber).
  *
- * Place at: tests/e2e/specs/users/create-user.cy.ts
+ * Place at: test/e2e/specs/users/create-user.cy.ts
  *
  * This template demonstrates:
  *   - Using Page Objects (tests never touch selectors directly)

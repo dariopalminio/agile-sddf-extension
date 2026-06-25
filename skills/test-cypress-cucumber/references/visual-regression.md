@@ -120,7 +120,7 @@ it('fully loaded page', () => {
 ## Uso en step definitions BDD (Cucumber)
 
 ```typescript
-// tests/e2e/step_definitions/visual.steps.ts
+// test/e2e/step_definitions/visual.steps.ts
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
 
 Then('la página debería coincidir con el snapshot {string}', (snapshotName: string) => {

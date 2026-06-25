@@ -136,7 +136,7 @@ import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 
 export default defineConfig({
   e2e: {
-    specPattern: 'tests/e2e/features/**/*.feature',
+    specPattern: 'test/e2e/features/**/*.feature',
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config);
       on('file:preprocessor', createBundler({ plugins: [createEsbuildPlugin(config)] }));
@@ -195,7 +195,7 @@ CYPRESS_BASE_URL=https://staging.example.com npm run test:e2e:smoke
 npm run test:e2e:headed
 
 # Run a single feature file
-npx cypress run --spec="tests/e2e/features/checkout.feature"
+npx cypress run --spec="test/e2e/features/checkout.feature"
 ```
 
 ---
@@ -257,5 +257,5 @@ npx cypress run --env tags='@checkout'
 | Exclude a tag | `--env tags='not @wip'` |
 | Combine tags (AND) | `--env tags='@sanity and @auth'` |
 | Combine tags (OR) | `--env tags='@smoke or @sanity'` |
-| Run single feature | `npx cypress run --spec="tests/e2e/features/auth.feature"` |
+| Run single feature | `npx cypress run --spec="test/e2e/features/auth.feature"` |
 | Override base URL | `CYPRESS_BASE_URL=https://staging.example.com npm run test:e2e` |

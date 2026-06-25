@@ -114,7 +114,7 @@ it('shows completed order', () => {
 ## Uso en step definitions BDD (Cucumber)
 
 ```typescript
-// tests/e2e/step_definitions/orders.steps.ts
+// test/e2e/step_definitions/orders.steps.ts
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
 Given('la API de órdenes devuelve datos de prueba', () => {

@@ -43,7 +43,7 @@ Cypress.Commands.add('loginApi', (email: string, password: string) => {
 ## Login & Register — Casos positivos
 
 ```typescript
-// tests/e2e/api/auth.cy.ts
+// test/e2e/api/auth.cy.ts
 describe('POST /api/auth/login', () => {
   it('returns 200 and token with valid credentials', () => {
     cy.request({
@@ -185,7 +185,7 @@ describe('POST /api/auth/register — negative', () => {
 ## HTTP Status Code Validation
 
 ```typescript
-// tests/e2e/api/http-codes.cy.ts
+// test/e2e/api/http-codes.cy.ts
 describe('HTTP status code assertions', () => {
   let authToken: string;
 
@@ -288,7 +288,7 @@ describe('HTTP status code assertions', () => {
 Idempotent operations: the same request executed N times produces the same result.
 
 ```typescript
-// tests/e2e/api/idempotency.cy.ts
+// test/e2e/api/idempotency.cy.ts
 describe('Idempotency', () => {
   let authToken: string;
 
@@ -364,7 +364,7 @@ describe('Idempotency', () => {
 ## Performance Measurement
 
 ```typescript
-// tests/e2e/api/performance.cy.ts
+// test/e2e/api/performance.cy.ts
 // IMPORTANT: Thresholds must be derived from measured baselines, not guessed.
 // How to establish baselines:
 //   1. Run the test suite against a known-good environment (staging or local with prod data volume)
@@ -430,7 +430,7 @@ describe('API Performance', () => {
 ## JSON Schema Validation
 
 ```typescript
-// tests/e2e/api/schemas.cy.ts
+// test/e2e/api/schemas.cy.ts
 
 // Inline schema validator (sin dependencias externas)
 function validateSchema(body: Record<string, unknown>, schema: { required: string[]; properties: Record<string, { type: string }> }, label: string) {

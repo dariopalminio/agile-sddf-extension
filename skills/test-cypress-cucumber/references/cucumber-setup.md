@@ -37,16 +37,16 @@ npm install --save-dev cypress typescript
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@pages/*":    ["tests/e2e/pages/*"],
-      "@utils/*":    ["tests/e2e/utils/*"],
-      "@support/*":  ["tests/e2e/support/*"],
-      "@fixtures/*": ["tests/e2e/fixtures/*"]
+      "@pages/*":    ["test/e2e/pages/*"],
+      "@utils/*":    ["test/e2e/utils/*"],
+      "@support/*":  ["test/e2e/support/*"],
+      "@fixtures/*": ["test/e2e/fixtures/*"]
     },
     "types": ["cypress"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "tests/e2e/**/*.ts", "**/*.feature", "cypress.config.ts"],
-  "exclude": ["node_modules", "dist", "tests/e2e/reports", "tests/e2e/cucumber-json"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/e2e/**/*.ts", "**/*.feature", "cypress.config.ts"],
+  "exclude": ["node_modules", "dist", "test/e2e/reports", "test/e2e/cucumber-json"]
 }
 ```
 
@@ -63,10 +63,10 @@ import createEsbuildPlugin from '@bahmutov/cypress-esbuild-preprocessor'
 export default defineConfig({
   e2e: {
     baseUrl:     process.env.VITE_APP_TO_TEST_URI ?? 'http://localhost:5173',
-    specPattern: "tests/e2e/features/**/*.feature",
-    supportFile: "tests/e2e/support/e2e.ts",
-    screenshotsFolder: "tests/e2e/screenshots",
-    videosFolder: "tests/e2e/videos",
+    specPattern: "test/e2e/features/**/*.feature",
+    supportFile: "test/e2e/support/e2e.ts",
+    screenshotsFolder: "test/e2e/screenshots",
+    videosFolder: "test/e2e/videos",
     env: {
       TAGS: '@regression',
     },
@@ -97,9 +97,9 @@ The preprocessor auto-discovers step definition files — no explicit registrati
 ```json
 {
   "stepDefinitions": [
-      "tests/e2e/features/[filepath]/**/*.{js,ts}",
-      "tests/e2e/features/[filepath].{js,ts}",
-      "tests/e2e/step_definitions/**/*.{js,ts}"
+      "test/e2e/features/[filepath]/**/*.{js,ts}",
+      "test/e2e/features/[filepath].{js,ts}",
+      "test/e2e/step_definitions/**/*.{js,ts}"
   ],
   "filterSpecs": true,
   "omitFiltered": true
@@ -112,7 +112,7 @@ Or inline in `package.json`:
 {
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
-      "tests/e2e/step_definitions/**/*.{js,ts}"
+      "test/e2e/step_definitions/**/*.{js,ts}"
     ],
     "filterSpecs": true,
     "omitFiltered": true
@@ -127,24 +127,24 @@ Or inline in `package.json`:
 
 ---
 
-## tests/e2e/support/e2e.ts
+## test/e2e/support/e2e.ts
 
 Cypress support entry point — import commands and hooks here:
 
 ```typescript
-// tests/e2e/support/e2e.ts
+// test/e2e/support/e2e.ts
 import './commands'
 import './hooks'
 ```
 
 ---
 
-## tests/e2e/utils/config.ts
+## test/e2e/utils/config.ts
 
 Centralize all environment configuration here. Never hardcode URLs or credentials in step files.
 
 ```typescript
-// tests/e2e/utils/config.ts
+// test/e2e/utils/config.ts
 export const config = {
   baseUrl:          Cypress.env('VITE_APP_TO_TEST_URI') ?? 'http://localhost:5173',
   environment:      Cypress.env('VITE_ENV') ?? 'dev',
@@ -194,7 +194,7 @@ npm run test:e2e
 npm run test:e2e:open
 
 # 6. Run a single feature file
-npx cypress run --spec "tests/e2e/features/auth/login.feature"
+npx cypress run --spec "test/e2e/features/auth/login.feature"
 
 # 7. Run by ad-hoc tag
 npx cypress run --env TAGS='@smoke and not @wip'
@@ -215,7 +215,7 @@ npm run test:e2e:report
 | `npm run test:e2e:full` | Run all scenarios |
 | `npm run test:e2e:open` | Open Cypress interactive runner |
 | `npx cypress run --env TAGS='@auth'` | Ad-hoc tag filter |
-| `npx cypress run --spec "tests/e2e/features/auth/login.feature"` | Single feature file |
+| `npx cypress run --spec "test/e2e/features/auth/login.feature"` | Single feature file |
 | `npm run test:e2e:report` | Generate HTML report from JSON output |
 
 ## More references

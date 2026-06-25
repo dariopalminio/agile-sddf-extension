@@ -52,7 +52,7 @@ import 'cypress-axe';
 ### Basic test
 
 ```typescript
-// tests/e2e/specs/a11y/homepage.cy.ts
+// test/e2e/specs/a11y/homepage.cy.ts
 describe('Accessibility', () => {
   it('homepage has no WCAG violations', () => {
     cy.visit('/');
@@ -147,7 +147,7 @@ Feature: Accesibilidad
 Step definitions:
 
 ```typescript
-// tests/e2e/step_definitions/a11y/accessibility.steps.ts
+// test/e2e/step_definitions/a11y/accessibility.steps.ts
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
 Given('el usuario ha iniciado sesión', () => {

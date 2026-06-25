@@ -17,7 +17,7 @@ In Cypress, **there is no browser lifecycle to manage in hooks**. Cypress launch
 ## Hooks
 
 ```typescript
-// tests/e2e/support/hooks.ts
+// test/e2e/support/hooks.ts
 import { Before, After, BeforeAll, AfterAll } from '@badeball/cypress-cucumber-preprocessor';
 
 // ── Global setup (runs once before ALL scenarios in a spec file) ───────────
@@ -95,7 +95,7 @@ The `World` is a per-scenario shared state object. Use it only when step definit
 **Use `function()` syntax (not arrow functions) in step definitions to access `this`.**
 
 ```typescript
-// tests/e2e/support/world.ts
+// test/e2e/support/world.ts
 import {
   setWorldConstructor,
   World,
@@ -127,7 +127,7 @@ setWorldConstructor(CypressWorld);
 Usage in step definitions (requires `function()` syntax, not arrow functions):
 
 ```typescript
-// tests/e2e/step_definitions/orders/orders.steps.ts
+// test/e2e/step_definitions/orders/orders.steps.ts
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { CypressWorld } from '../../support/world';
 
@@ -153,7 +153,7 @@ Then('la orden debería aparecer en el historial', function (this: CypressWorld)
 For expensive authentication flows, use `cy.session()` to cache and restore auth state across tests:
 
 ```typescript
-// tests/e2e/support/hooks.ts
+// test/e2e/support/hooks.ts
 Before({ tags: '@authenticated' }, function () {
   cy.session(
     'user-auth',

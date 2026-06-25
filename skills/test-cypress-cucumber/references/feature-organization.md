@@ -18,7 +18,7 @@ Start with a **flat structure** and migrate to **feature-based** when you cross 
 Best for: small apps, single developer, early stage projects.
 
 ```
-tests/e2e/
+test/e2e/
   features/
     login.feature
     register.feature
@@ -47,7 +47,7 @@ Simple, easy to navigate. No nesting required.
 Best for: growing teams, clear feature boundaries.
 
 ```
-tests/e2e/
+test/e2e/
   features/
     auth/
       login.feature
@@ -99,7 +99,7 @@ Mirror the feature structure between `features/`, `step_definitions/`, and `page
 Best for: monorepos, large teams, multiple product areas.
 
 ```
-tests/e2e/
+test/e2e/
   features/
     auth/
       login.feature
@@ -158,7 +158,7 @@ import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 export default defineConfig({
   e2e: {
     // Default: run all feature files
-    specPattern: 'tests/e2e/features/**/*.feature',
+    specPattern: 'test/e2e/features/**/*.feature',
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config);
       on('file:preprocessor', createBundler({ plugins: [createEsbuildPlugin(config)] }));
@@ -178,8 +178,8 @@ export default defineConfig({
 {
   "scripts": {
     "test:e2e": "cypress run",
-    "test:e2e:auth": "cypress run --spec='tests/e2e/features/auth/**/*.feature'",
-    "test:e2e:checkout": "cypress run --spec='tests/e2e/features/checkout/**/*.feature'",
+    "test:e2e:auth": "cypress run --spec='test/e2e/features/auth/**/*.feature'",
+    "test:e2e:checkout": "cypress run --spec='test/e2e/features/checkout/**/*.feature'",
     "test:e2e:a11y": "cypress run --env tags='@a11y'",
     "test:e2e:visual": "cypress run --env tags='@visual'",
     "test:e2e:smoke": "cypress run --env tags='@smoke'",
@@ -194,7 +194,7 @@ Run specific groups:
 npm run test:e2e:auth
 npm run test:e2e:checkout
 npm run test:e2e:a11y
-npx cypress run --spec="tests/e2e/features/cart/**"
+npx cypress run --spec="test/e2e/features/cart/**"
 ```
 
 ---
@@ -218,7 +218,7 @@ Given('la API de productos devuelve datos de prueba', () => {
 For shared test data builders, use utility functions:
 
 ```typescript
-// tests/e2e/utils/builders/user-builder.ts
+// test/e2e/utils/builders/user-builder.ts
 export function buildUser(overrides = {}) {
   return {
     email: `test-${Date.now()}@example.com`,

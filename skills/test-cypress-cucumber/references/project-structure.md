@@ -2,7 +2,7 @@
 
 Folder layout for `@badeball/cypress-cucumber-preprocessor` + Cypress projects by complexity level.
 
-All BDD test files live under `tests/e2e/` alongside existing app source. `cypress.config.ts` stays at the **project root** (where Cypress looks for it by default). Configure `specPattern` and `supportFile` to point into `tests/e2e/`.
+All BDD test files live under `test/e2e/` alongside existing app source. `cypress.config.ts` stays at the **project root** (where Cypress looks for it by default). Configure `specPattern` and `supportFile` to point into `test/e2e/`.
 
 ---
 
@@ -15,7 +15,7 @@ my-project/
 ├── package.json
 ├── .gitignore
 │
-└── tests/
+└── test/
       └── e2e/
           ├── features/                 ← Archivos .feature (Gherkin / Cucumber)
           │   └── login.feature
@@ -42,7 +42,7 @@ my-project/
 ├── tsconfig.json
 ├── package.json
 ├── .gitignore
-└── tests/
+└── test/
       └── e2e/
           ├── features/
           │   ├── auth/
@@ -87,7 +87,7 @@ my-project/
 ├── .env.dev
 ├── .env.qa
 ├── .env.prod
-└── tests/
+└── test/
       └── e2e/
           ├── features/
           │   ├── auth/
@@ -139,7 +139,7 @@ my-project/
 ├── .env.dev
 ├── .env.qa
 ├── .env.prod
-└── tests/
+└── test/
     └── e2e/
         ├── features/
         │   ├── auth/
@@ -194,14 +194,14 @@ my-project/
 
 | Folder | Contents | Notes |
 |--------|----------|-------|
-| `tests/e2e/features/` | `.feature` files (Gherkin) | Group by domain |
-| `tests/e2e/step_definitions/` | TypeScript step files | Mirror `tests/e2e/features/` structure |
-| `tests/e2e/pages/` | Page Object classes | See `cypress-automation` skill |
-| `tests/e2e/support/` | `e2e.ts`, `commands.ts`, `hooks.ts` | Cypress support entry point + lifecycle hooks |
-| `tests/e2e/utils/` | Config, helpers | Read from `Cypress.env()`, no `cy.*` in config |
-| `tests/e2e/fixtures/` | Static JSON test data | Loaded with `cy.fixture()` |
-| `tests/e2e/cucumber-json/` | JSON output from preprocessor | Must be gitignored |
-| `tests/e2e/reports/` | Generated HTML/JSON reports | Must be gitignored |
+| `test/e2e/features/` | `.feature` files (Gherkin) | Group by domain |
+| `test/e2e/step_definitions/` | TypeScript step files | Mirror `test/e2e/features/` structure |
+| `test/e2e/pages/` | Page Object classes | See `cypress-automation` skill |
+| `test/e2e/support/` | `e2e.ts`, `commands.ts`, `hooks.ts` | Cypress support entry point + lifecycle hooks |
+| `test/e2e/utils/` | Config, helpers | Read from `Cypress.env()`, no `cy.*` in config |
+| `test/e2e/fixtures/` | Static JSON test data | Loaded with `cy.fixture()` |
+| `test/e2e/cucumber-json/` | JSON output from preprocessor | Must be gitignored |
+| `test/e2e/reports/` | Generated HTML/JSON reports | Must be gitignored |
 
 ---
 
@@ -210,8 +210,8 @@ my-project/
 ```typescript
 export default defineConfig({
   e2e: {
-    specPattern: 'tests/e2e/features/**/*.feature',
-    supportFile: 'tests/e2e/support/e2e.ts',
+    specPattern: 'test/e2e/features/**/*.feature',
+    supportFile: 'test/e2e/support/e2e.ts',
     // ...
   },
 })
