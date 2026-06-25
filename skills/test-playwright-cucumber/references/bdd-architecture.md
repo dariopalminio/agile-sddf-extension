@@ -10,6 +10,8 @@ See file: `\bdd-architecture.plantuml`
 
 ## Feature creation process
 
+> All paths in this section are relative to the test root (`test/e2e/`). See `references/project-structure.md` for the full layout.
+
 - **Step 1 – Feature file**
 features/login.feature
 Write the behavior specification in Gherkin. Describe the feature, background (if needed), and scenario(s) using Given/When/Then. Use declarative style and tags like @happy.
@@ -34,9 +36,9 @@ Implement Before to initialize the World (launch browser, create page) and After
 
 **Example:** The architecture requires 5 components for a one-button component feature:
 
-1. Feature File:	test/e2e/features/components/button.feature
-2. Page Object:	test/e2e/pages/ButtonPage.ts
-3. Step Definitions:	test/e2e/step_definitions/components/button.steps.ts
-4. World:	test/e2e/support/world.ts
-5. Hooks:	test/e2e/support/hooks.ts
+1. Feature File:	features/components/button.feature
+2. Page Object:	pages/ButtonPage.ts
+3. Step Definitions:	step_definitions/components/button.steps.ts
+4. World:	support/world.ts
+5. Hooks:	support/hooks.ts
 

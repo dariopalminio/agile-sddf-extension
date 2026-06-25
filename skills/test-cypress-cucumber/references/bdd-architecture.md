@@ -12,40 +12,42 @@ In Cypress + `@badeball/cypress-cucumber-preprocessor`, there is **no World clas
 
 ## Feature Creation Process
 
+> All paths in this section are relative to the test root (`test/e2e/`). See `references/project-structure.md` for the full layout.
+
 - **Step 1 – Feature file**
-`test/e2e/features/login.feature`
+`features/login.feature`
 Write the behavior specification in Gherkin. Describe the feature, background (if needed), and scenario(s) using Given/When/Then. Use declarative style and tags like `@smoke` and `@regression`.
 
 - **Step 2 – Page Object**
-`test/e2e/pages/LoginPage.ts`
+`pages/LoginPage.ts`
 Create a class that encapsulates **static selector strings** for the page. This is the contract between the test suite and the app's `data-testid` attributes. Never hardcode selectors in step definitions.
 
 - **Step 3 – Step Definitions**
-`test/e2e/step_definitions/login.steps.ts`
+`step_definitions/login.steps.ts`
 Map each Gherkin step to Cypress commands, importing Page Objects for all selectors. Use `Given`, `When`, `Then` from `@badeball/cypress-cucumber-preprocessor`. Keep steps thin.
 
 - **Step 4 – Hooks (setup/teardown)**
-`test/e2e/support/hooks.ts`
+`support/hooks.ts`
 Implement `Before`/`After` hooks from `@badeball/cypress-cucumber-preprocessor` for scenario-level setup/teardown (e.g., seeding data via API, clearing cookies). Cypress manages the browser lifecycle automatically.
 
 - **Step 5 – World (optional, for shared scenario data)**
-`test/e2e/support/world.ts`
+`support/world.ts`
 Define a custom World class only when scenario steps need to pass data between each other (e.g., a created `orderId` used in later steps). Use `this` in step definition `function()` syntax to access World properties.
 
 **Summary:** The first time a feature is created (with its first scenario), steps 1 through 4 are always needed; step 5 is optional. To add more scenarios to the same feature, you only need to: Edit the `.feature` file (step 1). Optionally, extend the Page Object (step 2) and the step definitions (step 3) if the new steps don't already exist.
 
 **Example:** The architecture for a login feature:
 
-1. Feature File:     `test/e2e/features/auth/login.feature`
-2. Page Object:      `test/e2e/pages/LoginPage.ts`
-3. Step Definitions: `test/e2e/step_definitions/auth/login.steps.ts`
-4. Hooks:            `test/e2e/support/hooks.ts`
-5. World (optional): `test/e2e/support/world.ts`
+1. Feature File:     `features/auth/login.feature`
+2. Page Object:      `pages/LoginPage.ts`
+3. Step Definitions: `step_definitions/auth/login.steps.ts`
+4. Hooks:            `support/hooks.ts`
+5. World (optional): `support/world.ts`
 
 ## Minimal Example
 
 ```typescript
-// test/e2e/pages/LoginPage.ts — static selectors only
+// pages/LoginPage.ts — static selectors only
 export class LoginPage {
   static readonly url = '/login';
   static readonly emailInput = "[data-testid='email-input']";
@@ -57,7 +59,7 @@ export class LoginPage {
 ```
 
 ```typescript
-// test/e2e/step_definitions/auth/login.steps.ts
+// step_definitions/auth/login.steps.ts
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { LoginPage } from '../../pages/LoginPage';
 
@@ -77,7 +79,7 @@ Then('debería ver el mensaje de bienvenida', () => {
 ```
 
 ```typescript
-// test/e2e/support/hooks.ts
+// support/hooks.ts
 import { Before, After } from '@badeball/cypress-cucumber-preprocessor';
 
 Before(function() {
