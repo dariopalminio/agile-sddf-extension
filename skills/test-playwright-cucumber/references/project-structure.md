@@ -8,6 +8,11 @@ Folder layout for `@cucumber/cucumber` + Playwright projects by complexity level
 - All BDD test files live under test/e2e/ alongside existing Playwright specs. 
 - `cucumber.js` stays at the **project root** (where the Cucumber CLI looks for it by default).
 
+> **Note — why `test/e2e/` instead of the default convention?**
+> - **Cucumber.js default:** with no configuration, Cucumber auto-discovers a `features/` folder at the project root (`features/**/*.feature`) plus its support/step code under `features/`.
+> - **Common Playwright variant:** many projects place E2E tests in a root `e2e/` (or `tests/`) folder.
+> - **This skill's choice:** centralize everything under a single `test/e2e/` folder and point Cucumber there explicitly via `cucumber.js` (the `paths` / `require` / `import` options). This co-locates E2E/BDD with other test types under one top-level `test/`, keeps the repo root clean, and clearly separates E2E from unit/integration tests.
+
 ---
 
 ## Level 1 — Basic (1–5 feature files, single developer)
