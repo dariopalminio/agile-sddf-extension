@@ -51,6 +51,7 @@ npx skills add dariopalminio/agile-sddf-extension --all
 ## Repository Structure
 ```
 agile-sddf-extension/
+├── agents/
 ├── skills/
 │   └── <skill-name>/             # kebab-case, e.g. code-backend-nestjs
 │       ├── SKILL.md              # REQUIRED main file
