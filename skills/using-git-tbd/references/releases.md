@@ -6,7 +6,7 @@ A branch that only accepts commits accepted to stabilize a version of the produc
 
 Existen diferentes estrategias de lanzamiento dentro del desarrollo basado en la rama principal. Podemos lanzar directamente desde la rama principal o utilizando ramas de lanzamiento.
 
-### Directamente del tronco (main)
+### Release directamente desde el tronco (main)
 
 En el desarrollo basado en la rama principal, cada confirmación en la rama principal es publicable. Por lo tanto, es obvio que podemos publicar desde cualquier confirmación. Esto permite una alta frecuencia de lanzamiento, pero también deja el código base propenso a errores.
 
