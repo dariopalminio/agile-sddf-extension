@@ -1,5 +1,7 @@
 # Desarrollo de Features (Short-Lived Feature Branches)
 
+**Purpose**: Develop new features for the upcoming release.
+
 Put all work for a feature on its own branch, integrate into mainline when the feature is complete.
 
 ```
@@ -12,6 +14,8 @@ feature/2:    \-----------/
 ## Reglas
 
 * Usar ramas feature/<branch-name> para desarrollo de features.
+* **General Branch Naming Convention**: `feature/<short-description>` (e.g., `feature/user-login`).
+* **Jira/Branch Naming Convention**: `feature/<ticket-id>-<short-description>` (e.g., `feature/JIRA-123-user-login`).
 * Rama de corta duración: La rama de feature debe durar como máximo un par de días (idealmente menos de 24-48 horas). Si dura más, se convierte en una rama de larga duración, lo cual es la antítesis de TBD.
 * Un único desarrollador (o pareja): La rama debe ser trabajada por un solo desarrollador (o una pareja en programación en pares). No debe ser compartida para el desarrollo general del equipo.
 * Integración continua (CI): La rama debe ser verificada por un servidor de CI antes de que los commits se integren al tronco.

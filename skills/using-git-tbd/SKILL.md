@@ -1,8 +1,10 @@
 ---
 name: using-git-tbd
-description: Use when …
-author: …
+description: Use this skill when managing git branches, releases, or hotfixes according to the Trunk-Based Development (TBD). It enforces naming conventions and synchronization policies.
+author: dariopalminio
 version: 1.0.0
+metadata:
+  short-description: Expert guidance on Trunk-Based Development (TBD) branching and release management.
 ---
 
 # Using Git TBD (Branching Strategy)
@@ -53,9 +55,42 @@ For more details, consult these reference files (loaded on demand):
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
 | Desarrollo de Features (Short-Lived Feature Branches) | `references/features.md` | Crear ramas de feature, commitear cambios de feature, fusionarlas a main |
-| Lanzamiento de Releases (Branch for Release) | `references/releases.md` | Cortar rama de release (Release Branches), taggear release, despliegue a producción |
+| Lanzamiento de Releases (Branch for Release) | `references/release-branches.md` | Cortar rama de release (Release Branches), taggear release, despliegue a producción |
+| Lanzamiento desde Trunk (Continuous Deployment) | `references/release-from-trunk.md` | Publicar directamente desde main, alta frecuencia de releases |
 | Solución de Bugfix / Hotfix | `references/hotfixes.md` | Cortar rama de hotfix, solucionar hotfix, fusionar hotfix a main, aplicar el fix a la rama de release (Cherry-pick) |
+|  `Conventional Commits` | `references/convention.md` | Seguir la convención de commits para mantener un historial claro y estructurado |
+|  Pull Request | `references/pull-request.md` | Crear y gestionar Pull Requests en GitHub |
 
+## Estrategias de lanzamiento
+
+Existen diferentes estrategias de lanzamiento dentro del desarrollo basado en la rama principal. Podemos lanzar directamente desde la rama principal o utilizando ramas de lanzamiento. La forma de trabajar depende directamente de la cadencia de releases que tengas.
+
+1. Estrategia 1: Release desde trunk (Continuous Deployment): “Teams with a higher release cadence do the former [release from trunk]"
+2. Estrategia 2: Release desde rama de lanzamiento (Branch for Release): “Teams with a lower release cadence do the latter [branch for release].”
+
+La elección entre una y otra no es una cuestión de gusto, sino una decisión técnica basada en tu ciclo de entrega. Veamos cada una en detalle.
+
+
+## Buenas prácticas
+
+* **Convención de branches**: Respetar la "Convención de branches" recomendada [Conventional Branches](https://conventionalbranch.org/).
+* **Convención de Commits**: Usar "Convensión de Commits" [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) para mantener un historial de commits claro y estructurado, lo que facilita la generación de changelogs y la trazabilidad de cambios.
+* **Protección de ramas**: Configurar reglas en GitHub para exigir PRs y CI exitosos en main.
+* **Commits atómicos**: Cada commit debe tener un propósito claro y pasar todas las pruebas localmente.
+* **Pull Requests pequeños**: Una historia o PR debe ser atómica (menos de 200 líneas de cambio).
+* **Versionado Semántico**: Usa "Versionado Semántico 2.0.0" [Semantic Versioning 2.0.0](https://semver.org/) y actualizar la versión (en package.json) antes del merge a main.
+* Siempre actualiza tu rama fuente (main) con git pull antes de crear una nueva rama o abrir un PR para evitar conflictos.
+* **Limpieza de ramas efímeras**: Eliminar ramas feat/ después de fusionarlas y ramas release/ después de publicar.
+* Purpose-driven Branch Names: Each branch name clearly indicates its purpose, making it easy for all developers to understand what the branch is for.
+
+## Git Safety Protocol
+
+- NEVER commit secrets (.env, credentials.json, private keys).
+- NEVER update git config
+- NEVER run destructive commands (--force, hard reset) without explicit request
+- NEVER skip hooks (--no-verify) unless user asks
+- NEVER force push to main/master
+- If commit fails due to hooks, fix and create NEW commit (don't amend)
 
 Referencias externas:
 * [Trunk-Based Development](https://trunkbaseddevelopment.com)

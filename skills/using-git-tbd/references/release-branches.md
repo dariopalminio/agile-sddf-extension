@@ -2,21 +2,6 @@
 
 A branch that only accepts commits accepted to stabilize a version of the product ready for release.
 
-## Estrategias de lanzamiento
-
-Existen diferentes estrategias de lanzamiento dentro del desarrollo basado en la rama principal. Podemos lanzar directamente desde la rama principal o utilizando ramas de lanzamiento.
-
-### Release directamente desde el tronco (main)
-
-En el desarrollo basado en la rama principal, cada confirmación en la rama principal es publicable. Por lo tanto, es obvio que podemos publicar desde cualquier confirmación. Esto permite una alta frecuencia de lanzamiento, pero también deja el código base propenso a errores.
-
-```
-tag:     v1.1.0     v1.2.0   v1.3.0
-main:    --*--------*--------*-------- 
-            \      /        /
-feature/1:   \----/        /
-feature/2:    \-----------/
-```
 
 ### Release Branches
 

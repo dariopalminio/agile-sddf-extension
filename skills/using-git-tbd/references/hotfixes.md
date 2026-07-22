@@ -1,5 +1,7 @@
 # Solución de Bugfix / Hotfix
 
+**Purpose**: Fix critical bugs in the live production version.
+
 A branch to capture work to fix an urgent production defect.
 
 ```

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "git-commit": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/git-commit/SKILL.md",
+      "computedHash": "2607fc60629b82b257136dd2a7a373f0a4466c0b49df7746d845d59313c99b21"
+    },
+    "gitflow": {
+      "source": "metalagman/agent-skills",
+      "sourceType": "github",
+      "skillPath": "gitflow/SKILL.md",
+      "computedHash": "3c6d8f9f7c68027b61b4762058cb89ce4d897b928ae778891d312315118e9709"
+    },
+    "github": {
+      "source": "callstackincubator/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/github/SKILL.md",
+      "computedHash": "d9363153fa661a51fd19d9fb02c403c04393616032a108b91b179080b46b990f"
+    }
+  }
+}
