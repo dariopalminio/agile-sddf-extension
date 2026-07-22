@@ -9,78 +9,65 @@ metadata:
 
 # Using Git TBD (Branching Strategy)
 
-Usando Git branching con estrategia Trunk-Based Development (TBD)
+Using Git branching with the Trunk-Based Development (TBD) strategy.
 
 ## Overview
 
-El desarrollo basado en la rama principal (Trunk-Based Development) es un modelo de ramificación en el que los desarrolladores realizan confirmaciones frecuentes en la rama principal, que siempre está lista para su lanzamiento. Existen varios estilos de desarrollo basado en la rama principal, ya sea confirmando directamente en la rama principal o utilizando ramas de características de corta duración. Se basa en la integración y entrega continuas (CI/CD) para validar que las compilaciones se realicen correctamente y que los desarrolladores no rompan el proceso de compilación.
+Trunk-Based Development is a branching model in which developers make frequent commits to the main branch, which is always release-ready. There are several styles of trunk-based development, either committing directly to the main branch or using short-lived feature branches. It relies on continuous integration and continuous delivery (CI/CD) to validate that builds succeed and that developers don't break the build process.
 
-Las características de Trunk-Based Development son:
-* Existe una única rama principal (main) que actúa como trunk.
-* Los desarrolladores integran cambios frecuentemente a main.
-* Las ramas de feature, cuando existen, son de vida muy corta.
-* Todo el CI/CD está orientado a validar y desplegar desde main.
-* Se promueve realizar commits pequeños e incrementales.
-* No existen ramas de develop o release que se mezclen a main.
-* Los desarrolladores no hacen commits a las ramas release.
-* Las ramas release se desprenden desde la rama main.
-* En la rama release solo se pueden mezclar cambios desde la rama main.
+The characteristics of Trunk-Based Development are:
+* There is a single main branch (main) that acts as the trunk.
+* Developers integrate changes into main frequently.
+* Feature branches, when they exist, are very short-lived.
+* All CI/CD is oriented toward validating and deploying from main.
+* Small, incremental commits are encouraged.
+* There are no develop or release branches that get merged into main.
+* Developers do not commit to release branches.
+* Release branches are cut from the main branch.
+* Only changes from the main branch can be merged into a release branch.
 
-## Diagrama de flujo de ramas TBD
+## TBD Branch Flow Diagram
 
 ```
     main
      |
-     * ---> feature/login (desarrollo)
+     * ---> feature/login (development)
      * <---- feature/login * (merge)
      |
-     * ---> feature/payment (desarrollo) 
+     * ---> feature/payment (development) 
      * <---- feature/payment * (merge)
      |
-     * ---------> release/1.0 (cortar) --> (validar) --> tag v1.0
-     |           (no se fusiona)
+     * ---------> release/1.0 (cut) --> (validate) --> tag v1.0
+     |           (not merged back)
      |
-     * ---> hotfix/auth (cortar desde main)
+     * ---> hotfix/auth (cut from main)
      |           |
-     |           * (arreglar) 
-     * <---- hotfix/auth (merge a main)
+     |           * (fix) 
+     * <---- hotfix/auth (merge to main)
      |
-     * ---------> cherry-pick a release/1.0 --> tag v1.0.1
+     * ---------> cherry-pick to release/1.0 --> tag v1.0.1
 ```
 
-## References
+## Release Strategies
 
-For more details, consult these reference files (loaded on demand):
+There are different release strategies within trunk-based development. We can release directly from the main branch or by using release branches. How you work depends directly on your release cadence.
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Desarrollo de Features (Short-Lived Feature Branches) | `references/features.md` | Crear ramas de feature, commitear cambios de feature, fusionarlas a main |
-| Lanzamiento de Releases (Branch for Release) | `references/release-branches.md` | Cortar rama de release (Release Branches), taggear release, despliegue a producción |
-| Lanzamiento desde Trunk (Continuous Deployment) | `references/release-from-trunk.md` | Publicar directamente desde main, alta frecuencia de releases |
-| Solución de Bugfix / Hotfix | `references/hotfixes.md` | Cortar rama de hotfix, solucionar hotfix, fusionar hotfix a main, aplicar el fix a la rama de release (Cherry-pick) |
-|  `Conventional Commits` | `references/convention.md` | Seguir la convención de commits para mantener un historial claro y estructurado |
-|  Pull Request | `references/pull-request.md` | Crear y gestionar Pull Requests en GitHub |
+1. Strategy 1 (continuous): Release from trunk (Continuous Deployment): "Teams with a higher release cadence do the former [release from trunk]." (`references/release-from-trunk.md`)
+2. Strategy 2 (batch): Release from a release branch (Branch for Release): "Teams with a lower release cadence do the latter [branch for release]." (`references/release-branches.md`)
 
-## Estrategias de lanzamiento
-
-Existen diferentes estrategias de lanzamiento dentro del desarrollo basado en la rama principal. Podemos lanzar directamente desde la rama principal o utilizando ramas de lanzamiento. La forma de trabajar depende directamente de la cadencia de releases que tengas.
-
-1. Estrategia 1: Release desde trunk (Continuous Deployment): “Teams with a higher release cadence do the former [release from trunk]"
-2. Estrategia 2: Release desde rama de lanzamiento (Branch for Release): “Teams with a lower release cadence do the latter [branch for release].”
-
-La elección entre una y otra no es una cuestión de gusto, sino una decisión técnica basada en tu ciclo de entrega. Veamos cada una en detalle.
+Choosing between one and the other is not a matter of taste, but a technical decision based on your delivery cycle. Let's look at each one in detail.
 
 
-## Buenas prácticas
+## Best Practices
 
-* **Convención de branches**: Respetar la "Convención de branches" recomendada [Conventional Branches](https://conventionalbranch.org/).
-* **Convención de Commits**: Usar "Convensión de Commits" [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) para mantener un historial de commits claro y estructurado, lo que facilita la generación de changelogs y la trazabilidad de cambios.
-* **Protección de ramas**: Configurar reglas en GitHub para exigir PRs y CI exitosos en main.
-* **Commits atómicos**: Cada commit debe tener un propósito claro y pasar todas las pruebas localmente.
-* **Pull Requests pequeños**: Una historia o PR debe ser atómica (menos de 200 líneas de cambio).
-* **Versionado Semántico**: Usa "Versionado Semántico 2.0.0" [Semantic Versioning 2.0.0](https://semver.org/) y actualizar la versión (en package.json) antes del merge a main.
-* Siempre actualiza tu rama fuente (main) con git pull antes de crear una nueva rama o abrir un PR para evitar conflictos.
-* **Limpieza de ramas efímeras**: Eliminar ramas feat/ después de fusionarlas y ramas release/ después de publicar.
+* **Branch convention**: Follow the recommended "Branch Convention" [Conventional Branches](https://conventionalbranch.org/).
+* **Commit convention**: Use "Conventional Commits" [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to keep a clear, structured commit history, which makes it easier to generate changelogs and trace changes.
+* **Branch protection**: Configure rules in GitHub to require PRs and successful CI on main.
+* **Atomic commits**: Each commit should have a clear purpose and pass all tests locally.
+* **Small Pull Requests**: A story or PR should be atomic (fewer than 200 lines of change).
+* **Semantic Versioning**: Use "Semantic Versioning 2.0.0" [Semantic Versioning 2.0.0](https://semver.org/) and update the version (in package.json) before merging to main.
+* Always update your source branch (main) with git pull before creating a new branch or opening a PR to avoid conflicts.
+* **Ephemeral branch cleanup**: Delete feat/ branches after merging them and release/ branches after publishing.
 * Purpose-driven Branch Names: Each branch name clearly indicates its purpose, making it easy for all developers to understand what the branch is for.
 
 ## Git Safety Protocol
@@ -92,7 +79,20 @@ La elección entre una y otra no es una cuestión de gusto, sino una decisión t
 - NEVER force push to main/master
 - If commit fails due to hooks, fix and create NEW commit (don't amend)
 
-Referencias externas:
+## References
+
+For more details, consult these reference files (loaded on demand):
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Feature Development (Short-Lived Feature Branches) | `references/features.md` | Creating feature branches, committing feature changes, merging them into main |
+| Releases (Branch for Release) | `references/release-branches.md` | Cutting a release branch (Release Branches), tagging a release, deploying to production |
+| Release from Trunk (Continuous Deployment) | `references/release-from-trunk.md` | Publishing directly from main, high release frequency |
+| Bugfix / Hotfix Resolution | `references/hotfixes.md` | Cutting a hotfix branch, resolving a hotfix, merging a hotfix into main, applying the fix to the release branch (Cherry-pick) |
+| `Conventional Commits` | `references/conventional-commit.md` | Following the commit convention to keep a clear, structured history |
+| Pull Request | `references/pull-request.md` | Creating and managing Pull Requests on GitHub |
+
+External references:
 * [Trunk-Based Development](https://trunkbaseddevelopment.com)
 * [Trunk-Based Development: Branch for Release](https://trunkbaseddevelopment.com/branch-for-release/)
 * [Trunk-Based Development for Beginners](https://ingram.technology/blogs/20-11-2024-trunk-based-development-for-beginners.htm)

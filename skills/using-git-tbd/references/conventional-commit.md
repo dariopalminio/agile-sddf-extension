@@ -133,4 +133,4 @@ git commit -m "fix: This work resolves #123."
 
 ## External References
 
-* **Convención de Commits**: Se recomienda usar "Convensión de Commits" [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+* **Commit Convention**: Using "Conventional Commits" [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) is recommended.

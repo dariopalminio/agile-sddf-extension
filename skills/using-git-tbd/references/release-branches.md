@@ -1,11 +1,11 @@
-# Lanzamiento de Releases (Branch for Release)
+# Releases (Branch for Release)
 
 A branch that only accepts commits accepted to stabilize a version of the product ready for release.
 
 
 ### Release Branches
 
-Al usar ramas para las versiones, una organización crea una rama de lanzamiento poco antes de la fecha prevista. Esto mantiene la rama de lanzamiento independiente del trabajo que se incorpora a la rama principal; al fin y al cabo, el trabajo en la rama principal puede no afectar la compilación, pero podría introducir nuevos errores.
+When using branches for versions, an organization creates a release branch shortly before the planned date. This keeps the release branch independent from the work that goes into the main branch; after all, work on the main branch may not affect the build, but it could introduce new bugs.
 
 ```
 release/1.3.0:                       *--v1.3.0--x
@@ -17,128 +17,128 @@ feature/1:   \----/             /
 feature/2:    \----------------/
 ```
 
-#### Reglas de Release Branches
+#### Release Branch Rules
 
-* Rama de release just-in-time (en Release Branches): La rama de release se crea justo a tiempo, típicamente unos días antes del lanzamiento planificado.
-* Punto de corte no necesariamente el HEAD: No es obligatorio cortar la rama desde el último commit del tronco. Se puede elegir un commit anterior (un SHA conocido como bueno) para excluir cambios que no se quieran incluir en ese release.
-* No Congelación (freeze) del tronco: Los desarrolladores no deben ralentizar ni congelar sus commits al tronco mientras se acerca un release. El flujo de desarrollo hacia el tronco continúa a máxima velocidad.
-* Sin desarrollo en la rama de release: Los desarrolladores, como grupo, no commitean directamente a la rama de release. Esta es una política de "no continued development work".
-* Cherry-pick desde el tronco: Los fixes que necesite la rama de release deben ser cherry-picked desde el tronco (nunca al revés). Primero se arregla en el tronco y luego se aplica el fix a la rama de release.
-* CI duplicado: El pipeline de CI que protege el tronco debe duplicarse para proteger también las ramas de release activas.
-* Eliminación de ramas viejas: Las ramas de release antiguas deben ser eliminadas, sin necesidad de fusionarlas de vuelta al tronco
-Ejemplo lanzamiento de Release
+* Just-in-time release branch (in Release Branches): The release branch is created just in time, typically a few days before the planned release.
+* Cut point not necessarily the HEAD: It is not mandatory to cut the branch from the trunk's latest commit. An earlier commit (a known-good SHA) can be chosen to exclude changes you don't want to include in that release.
+* No trunk freeze: Developers should not slow down or freeze their commits to the trunk as a release approaches. The flow of development into the trunk continues at full speed.
+* No development in the release branch: Developers, as a group, do not commit directly to the release branch. This is a "no continued development work" policy.
+* Cherry-pick from the trunk: Fixes the release branch needs must be cherry-picked from the trunk (never the other way around). First fix it in the trunk, then apply the fix to the release branch.
+* Duplicated CI: The CI pipeline that protects the trunk should be duplicated to also protect the active release branches.
+* Deletion of old branches: Old release branches should be deleted, without needing to merge them back into the trunk.
+Example release
 
-## Flujo en comandos para Release Branches (cheatsheet)
+## Command flow for Release Branches (cheatsheet)
 
-### Paso 1: Actualizar la versión en main
+### Step 1: Update the version in main
 
 ```bash
-# Posiciónate en el tronco y asegúrate de tener lo último
+# Position yourself on the trunk and make sure you have the latest
 git checkout main
 git pull origin main
 
-# Actualiza el archivo de versión (ej. package.json, pom.xml, version.txt, etc.)
-# Abre el archivo, cambia "1.2.0" a "1.3.0" y guarda.
+# Update the version file (e.g. package.json, pom.xml, version.txt, etc.)
+# Open the file, change "1.2.0" to "1.3.0" and save.
 
-# Haz el commit del bump de versión
+# Commit the version bump
 git commit -am "chore: bump version to 1.3.0"
 
-# Sube el cambio al tronco
+# Push the change to the trunk
 git push origin main
 ```
 
-### Paso 2: Cortar la rama de release
+### Step 2: Cut the release branch
 
 ```bash
-# Creas la rama de release desde el último commit de main
+# Create the release branch from the latest commit on main
 git checkout -b release/1.3.0
 
-# La subes al remoto para que el CI comience a trabajar
+# Push it to the remote so CI starts working
 git push origin release/1.3.0
 ```
 
-### Paso 3: CI/CD y validaciones en pre-producción
+### Step 3: CI/CD and pre-production validations
 
-En este punto, tu pipeline automático (GitHub Actions, GitLab CI, Jenkins, etc.) debe estar configurado para:
-Ejecutar validaciones máximas sobre la rama release/1.3.0 (tests end-to-end, integración, seguridad, linting estricto, etc.).
-Desplegar automáticamente el artefacto construido desde esta rama a un entorno de pre-producción (staging).
-Ejecutar pruebas de humo y regresión en ese entorno.
+At this point, your automated pipeline (GitHub Actions, GitLab CI, Jenkins, etc.) should be configured to:
+Run maximum validations on the release/1.3.0 branch (end-to-end tests, integration, security, strict linting, etc.).
+Automatically deploy the artifact built from this branch to a pre-production (staging) environment.
+Run smoke and regression tests in that environment.
 
-### Paso 4: Validación manual (si aplica)
+### Step 4: Manual validation (if applicable)
 
-El equipo de QA o Producto valida en el entorno de pre-producción que todo funciona según lo esperado.
+The QA or Product team validates in the pre-production environment that everything works as expected.
 
 
-### Paso 5: Taggear el release oficial
+### Step 5: Tag the official release
 
 ```bash
-# Una vez que la rama release/1.3.0 ha pasado todas las pruebas en pre-producción, se procede a crear el tag definitivo.
-# Te aseguras de estar en el commit exacto de la rama de release
+# Once the release/1.3.0 branch has passed all pre-production tests, proceed to create the final tag.
+# Make sure you're on the exact commit of the release branch
 git checkout release/1.3.0
 
-# Creas el tag anotado (recomendado sobre el ligero)
+# Create the annotated tag (recommended over the lightweight one)
 git tag -a v1.3.0 -m "Release version 1.3.0"
 
-# Subes el tag al repositorio remoto
+# Push the tag to the remote repository
 git push origin v1.3.0
 ```
 
-### Paso 6: Despliegue a producción
+### Step 6: Deploy to production
 
-Tu pipeline de CI/CD debe estar configurado para escuchar la creación de nuevos tags (v1.3.0) y desplegar automáticamente ese artefacto a producción.
-(Alternativa): Si el despliegue es manual, despliegas desde el commit apuntado por v1.3.0.
+Your CI/CD pipeline should be configured to listen for the creation of new tags (v1.3.0) and automatically deploy that artifact to production.
+(Alternative): If deployment is manual, deploy from the commit pointed to by v1.3.0.
 
-### Paso 7: Limpieza de la rama de release (sin merge a main)
+### Step 7: Clean up the release branch (no merge to main)
 
 ```bash
 
-# Eliminas la rama remota (ya no es necesaria)
+# Delete the remote branch (no longer needed)
 git push origin --delete release/1.3.0
 
-# Eliminas la rama local (opcional, pero recomendado para mantener limpio)
+# Delete the local branch (optional, but recommended to keep things clean)
 git branch -d release/1.3.0
 ```
 
-### Paso 8: Post-release (Preparar el próximo ciclo)
+### Step 8: Post-release (Prepare the next cycle)
 
 ```bash
 git checkout main
 git pull origin main
-# Actualizas el archivo de versión a 1.4.0-SNAPSHOT
+# Update the version file to 1.4.0-SNAPSHOT
 git commit -am "chore: bump version to 1.4.0-SNAPSHOT"
 git push origin main
 ```
 
-## Resumen del flujo en comandos para release (cheatsheet)
+## Command flow summary for release (cheatsheet)
 
 ```bash
-# 1. Bump en main
+# 1. Bump in main
 git checkout main && git pull
-# Editar archivo de versión a 1.3.0
+# Edit version file to 1.3.0
 git commit -am "chore: bump version to 1.3.0" && git push
 
-# 2. Cortar release
+# 2. Cut release
 git checkout -b release/1.3.0 && git push origin release/1.3.0
 
-# 3. CI/CD despliega a pre-producción automáticamente
-# 4. Validar en pre-producción (todo OK)
+# 3. CI/CD deploys to pre-production automatically
+# 4. Validate in pre-production (all OK)
 
-# 5. Taggear
+# 5. Tag
 git tag -a v1.3.0 -m "Release 1.3.0" && git push origin v1.3.0
 
-# 6. Desplegar a producción (automático desde el tag)
+# 6. Deploy to production (automatic from the tag)
 
-# 7. Limpiar
+# 7. Clean up
 git push origin --delete release/1.3.0 && git branch -d release/1.3.0
 
-# 8. Preparar siguiente versión en main
+# 8. Prepare the next version in main
 git checkout main && git pull
-# Editar archivo de versión a 1.4.0-SNAPSHOT
+# Edit version file to 1.4.0-SNAPSHOT
 git commit -am "chore: bump to next dev version" && git push
 ```
 
 
-### Referencias externas:
+### External references:
 
 * [Trunk-Based Development: Branch for Release](https://trunkbaseddevelopment.com/branch-for-release/)
 * [Branching Patterns - Martin Fowler](https://martinfowler.com/articles/branching-patterns.html#release-branch)

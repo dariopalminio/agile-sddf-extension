@@ -1,4 +1,4 @@
-# Solución de Bugfix / Hotfix
+# Bugfix / Hotfix Resolution
 
 **Purpose**: Fix critical bugs in the live production version.
 
@@ -7,157 +7,156 @@ A branch to capture work to fix an urgent production defect.
 ```
     main
      |
-     * ---> hotfix/login-timeout (cortar desde main)
+     * ---> hotfix/login-timeout (cut from main)
      |           |
-     |           * (arreglar) 
-     * <---- hotfix/login-timeout (merge a main)
+     |           * (fix) 
+     * <---- hotfix/login-timeout (merge to main)
      |
-     * ---------> cherry-pick a release/1.3.0 --> tag v1.3.1
+     * ---------> cherry-pick to release/1.3.0 --> tag v1.3.1
 ```
 
-## Reglas
+## Rules
 
-* Arreglar en el tronco primero: La mejor práctica es reproducir el bug en el tronco, arreglarlo allí con una prueba y esperar la verificación del CI.
-* Cherry-pick a la rama de release: Una vez verificado el fix en el tronco, se hace cherry-pick del commit a la rama de release para lanzar el parche.
-* Nunca arreglar directamente en la rama de release: No se deben arreglar bugs directamente en la rama de release con la expectativa de cherry-pickearlos de vuelta al tronco. Esto introduce el riesgo de olvidar el merge y generar una regresión en producción.
-* Crear una rama hotfix/ pare el fix con PR (es más seguro y auditable).  
-* Excepción: bug no reproducible en tronco: Si el bug no se puede reproducir en el tronco, se puede arreglar en la rama de release, pero se debe ser consciente del riesgo de regresión que esto introduce.
-* Estrategia de "roll-forward": Para equipos de alta frecuencia (CD), se prefiere una estrategia de "roll-forward": el fix se hace en el tronco y el siguiente release se lanza desde ahí, en lugar de crear un hotfix de una versión anterior.
-* Uso de Feature Flags: Para evitar hotfixes, se recomienda el uso de Feature Flags para desactivar funcionalidades problemáticas en producción sin necesidad de un nuevo deployment
+* Fix in the trunk first: The best practice is to reproduce the bug in the trunk, fix it there with a test, and wait for CI verification.
+* Cherry-pick to the release branch: Once the fix is verified in the trunk, cherry-pick the commit to the release branch to ship the patch.
+* Never fix directly in the release branch: Bugs should not be fixed directly in the release branch with the expectation of cherry-picking them back to the trunk. This introduces the risk of forgetting the merge and causing a regression in production.
+* Create a hotfix/ branch for the fix with a PR (it is safer and auditable).
+* Exception: bug not reproducible in the trunk: If the bug cannot be reproduced in the trunk, it can be fixed in the release branch, but you must be aware of the regression risk this introduces.
+* "Roll-forward" strategy: For high-frequency teams (CD), a "roll-forward" strategy is preferred: the fix is made in the trunk and the next release is shipped from there, instead of creating a hotfix for an older version.
+* Use of Feature Flags: To avoid hotfixes, using Feature Flags is recommended to disable problematic functionality in production without needing a new deployment.
 
-## Cheatsheet: Hotfix (Bugfix para producción)
+## Cheatsheet: Hotfix (Bugfix for production)
 
-### 1. Arreglar el bug en main (SIEMPRE el paso #1)
+### 1. Fix the bug in main (ALWAYS step #1)
 
 ```bash
-# 1. Actualiza el tronco
+# 1. Update the trunk
 git checkout main
 git pull origin main
 
-# 2. Crea una rama temporal para el hotfix (buena práctica, aunque en TBD se permite commit directo si es trivial)
+# 2. Create a temporary branch for the hotfix (good practice, though in TBD a direct commit is allowed if trivial)
 git checkout -b hotfix/login-timeout
 
-# 3. Arregla el código (edita los archivos necesarios)
-# ... (editar código) ...
+# 3. Fix the code (edit the necessary files)
+# ... (edit code) ...
 
-# 4. Commit del fix (sin cambiar la versión aún)
+# 4. Commit the fix (without changing the version yet)
 git commit -am "fix(auth): resolve login timeout issue"
 
-# 5. Sube la rama y crea un Pull Request (recomendado) o fusiónalo directamente
+# 5. Push the branch and create a Pull Request (recommended) or merge it directly
 git push origin hotfix/login-timeout
-# (Crear PR, aprobar y hacer merge a 'main')
-# O si fusionas directo:
+# (Create PR, approve, and merge to 'main')
+# Or if you merge directly:
 git checkout main
 git merge hotfix/login-timeout --no-ff
 git push origin main
 
-# 6. ESPERA a que el CI pase en main (NUNCA continúes si el build está roto)
+# 6. WAIT for CI to pass on main (NEVER continue if the build is broken)
 ```
 
-### 2. Obtener el SHA del commit arreglado en main
+### 2. Get the SHA of the fixed commit on main
 
 ```bash
-# Busca el commit exacto (copia el hash, ej. "a1b2c3d")
+# Find the exact commit (copy the hash, e.g. "a1b2c3d")
 git log -1 --oneline main
-# Salida: a1b2c3d fix(auth): resolve login timeout issue
+# Output: a1b2c3d fix(auth): resolve login timeout issue
 ```
 
-### 3. Aplicar el fix a la rama de release (Cherry-pick)
+### 3. Apply the fix to the release branch (Cherry-pick)
 
-Un cherry-pick consiste en copiar una confirmación de una rama a otra, pero sin fusionar las ramas. Es decir, solo se copia esa confirmación, no las anteriores desde el punto de bifurcación. 
+A cherry-pick consists of copying a commit from one branch to another, but without merging the branches. That is, only that commit is copied, not the previous ones since the branch point.
 
 ```bash
-# A. Si la rama de release YA EXISTE en el remoto:
+# A. If the release branch ALREADY EXISTS on the remote:
 git checkout release/1.3.0
 git pull origin release/1.3.0
 
-# B. Si la rama de release FUE ELIMINADA (porque ya se había lanzado oficialmente):
-#    La recreamos desde el tag anterior (v1.3.0) para tener la base exacta de producción.
+# B. If the release branch WAS DELETED (because it had already been officially released):
+#    We recreate it from the previous tag (v1.3.0) to have the exact production base.
 git checkout -b release/1.3.0 v1.3.0
 git push origin release/1.3.0
 
-# C. Ahora, traemos el fix desde main mediante cherry-pick
-git cherry-pick a1b2c3d   # <--- Reemplaza con el SHA real de main
+# C. Now, bring the fix from main via cherry-pick
+git cherry-pick a1b2c3d   # <--- Replace with the real SHA from main
 
-# ⚠️ ¿CONFLICTOS? Resuélvelos manualmente:
-# git status (ver archivos en conflicto)
-# (Editar archivos para resolver)
+# ⚠️ CONFLICTS? Resolve them manually:
+# git status (see conflicting files)
+# (Edit files to resolve)
 # git add .
 # git cherry-pick --continue
 
-# D. Sube la rama de release actualizada
+# D. Push the updated release branch
 git push origin release/1.3.0
 ```
 
-### 4. Subir el número de versión (Patch) en la rama de release
+### 4. Bump the version number (Patch) in the release branch
 
 ```bash
-# 1. Edita el archivo de versión (package.json, pom.xml, VERSION.txt, etc.)
-#    Cambia "1.3.0" a "1.3.1"
+# 1. Edit the version file (package.json, pom.xml, VERSION.txt, etc.)
+#    Change "1.3.0" to "1.3.1"
 
-# 2. Commit del bump de versión (SOLO en la rama de release)
+# 2. Commit the version bump (ONLY in the release branch)
 git commit -am "chore: bump version to 1.3.1"
 git push origin release/1.3.0
 
 ```
 
-### 5. Crear el Tag del nuevo release parcheado
+### 5. Create the Tag for the new patched release
 
 ```bash
-# Posiciónate en el commit exacto de la rama de release
+# Position yourself on the exact commit of the release branch
 git checkout release/1.3.0
 
-# Crea el tag anotado para la nueva versión
+# Create the annotated tag for the new version
 git tag -a v1.3.1 -m "Hotfix release 1.3.1 - login timeout fix"
 
-# Sube el tag al remoto
+# Push the tag to the remote
 git push origin v1.3.1
 ```
 
-### 6. Desplegar a producción
-Tu pipeline de CI/CD debe estar escuchando la creación del tag v1.3.1 y desplegar ese artefacto a producción automáticamente.
-(Alternativa manual): Despliega directamente desde el commit apuntado por v1.3.1.
+### 6. Deploy to production
+Your CI/CD pipeline should be listening for the creation of the v1.3.1 tag and automatically deploy that artifact to production.
+(Manual alternative): Deploy directly from the commit pointed to by v1.3.1.
 
-### 7. Limpieza post-hotfix
+### 7. Post-hotfix cleanup
 
 ```bash
-# Opción A: Si este parche es definitivo y NO esperas más fixes para 1.3.x
+# Option A: If this patch is final and you expect no more fixes for 1.3.x
 git push origin --delete release/1.3.0
 git branch -d release/1.3.0
 
-# Opción B: Si esperas aplicar más parches (ej. 1.3.2, 1.3.3), 
-#          DEJAS la rama release/1.3.0 activa para futuros cherry-picks.
-# (No se elimina en este caso)
+# Option B: If you expect to apply more patches (e.g. 1.3.2, 1.3.3), 
+#          LEAVE the release/1.3.0 branch active for future cherry-picks.
+# (It is not deleted in this case)
 ```
 
-### 8. (Opcional) Sincronizar el bump de versión en main
+### 8. (Optional) Sync the version bump on main
 
 
-Dado que main ahora tiene el fix pero aún tiene la versión 1.3.0 (o 1.4.0-SNAPSHOT), no necesitas traer el 1.3.1 de vuelta, porque main ya es numéricamente superior. No hagas merge de la rama de release a main.
-Simplemente asegúrate de que el próximo desarrollo en main tenga el fix incluido (ya lo tiene, porque el fix se hizo allí primero).
-Resumen visual de los comandos (Mini-Cheatsheet)
+Since main now has the fix but still has version 1.3.0 (or 1.4.0-SNAPSHOT), you don't need to bring 1.3.1 back, because main is already numerically higher. Do not merge the release branch into main.
+Just make sure that the next development on main includes the fix (it already does, because the fix was made there first).
+Visual summary of the commands (Mini-Cheatsheet)
 
 ```bash
-# 1. Fix en main
+# 1. Fix in main
 git checkout main && git pull
 git checkout -b hotfix/issue
-# ... arreglar ...
+# ... fix ...
 git commit -am "fix: description"
-git push origin hotfix/issue   # → Hacer PR y merge a main
+git push origin hotfix/issue   # → Make PR and merge to main
 
-# 2. Cherry-pick a release
+# 2. Cherry-pick to release
 git checkout release/1.3.0 || git checkout -b release/1.3.0 v1.3.0
-git cherry-pick <SHA-del-fix-en-main>
+git cherry-pick <SHA-of-the-fix-on-main>
 git push origin release/1.3.0
 
-# 3. Bump de versión en release
-# (editar archivo a 1.3.1)
+# 3. Version bump in release
+# (edit file to 1.3.1)
 git commit -am "chore: bump to 1.3.1" && git push
 
-# 4. Tag y deploy
+# 4. Tag and deploy
 git tag -a v1.3.1 -m "Hotfix 1.3.1" && git push origin v1.3.1
 
-# 5. Limpiar (si no se esperan más parches)
+# 5. Clean up (if no more patches are expected)
 git push origin --delete release/1.3.0 && git branch -d release/1.3.0
 ```
-
