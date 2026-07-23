@@ -61,11 +61,11 @@ Choosing between one and the other is not a matter of taste, but a technical dec
 ## Best Practices
 
 * **Branch convention**: Follow the recommended "Branch Convention" [Conventional Branches](https://conventionalbranch.org/).
-* **Commit convention**: Use "Conventional Commits" [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to keep a clear, structured commit history, which makes it easier to generate changelogs and trace changes.
+* **Commit convention**: Use [Conventional Commit](references/conventional-commit.md) to keep a clear, structured commit history, which makes it easier to generate changelogs and trace changes.
 * **Branch protection**: Configure rules in GitHub to require PRs and successful CI on main.
 * **Atomic commits**: Each commit should have a clear purpose and pass all tests locally.
 * **Small Pull Requests**: A story or PR should be atomic (fewer than 200 lines of change).
-* **Semantic Versioning**: Use "Semantic Versioning 2.0.0" [Semantic Versioning 2.0.0](https://semver.org/) and update the version (in package.json) before merging to main.
+* **Semantic Versioning**: Use [Semantic Versioning 2.0.0](references/semantic-versioning.md) for batch strategies and update the version (in package.json) before merging to main.
 * Always update your source branch (main) with git pull before creating a new branch or opening a PR to avoid conflicts.
 * **Ephemeral branch cleanup**: Delete feat/ branches after merging them and release/ branches after publishing.
 * Purpose-driven Branch Names: Each branch name clearly indicates its purpose, making it easy for all developers to understand what the branch is for.
@@ -90,6 +90,7 @@ For more details, consult these reference files (loaded on demand):
 | Release from Trunk (Continuous Deployment) | `references/release-from-trunk.md` | Publishing directly from main, high release frequency |
 | Bugfix / Hotfix Resolution | `references/hotfixes.md` | Cutting a hotfix branch, resolving a hotfix, merging a hotfix into main, applying the fix to the release branch (Cherry-pick) |
 | `Conventional Commits` | `references/conventional-commit.md` | Following the commit convention to keep a clear, structured history |
+| Semantic Versioning | `references/semantic-versioning.md` | When following semantic versioning principles |
 | Pull Request | `references/pull-request.md` | Creating and managing Pull Requests on GitHub |
 
 External references:

@@ -118,6 +118,7 @@ git merge --squash feature/feature-name
 git status
 git commit -m "feat: full description of the feature"
 git push origin main
+# In team development uses pull requests to merge, not local merges.
 # In professional practice, don't type these commands. Use GitHub's green button.
 
 # ✅ "Rebase and merge" (if you want to preserve the individual commits)
@@ -128,8 +129,8 @@ git rebase main                    # Relocate your commits
 git checkout main
 git merge feature/my-feature --ff-only  # Pure fast-forward
 git push origin main               # ⚠️ DANGER: Bypasses protections
+# In team development uses pull requests to merge, not local merges.
 # In professional practice, don't type these commands. Use GitHub's green button.
-
 # ❌ Avoid "Create a merge commit" unless strictly necessary.
 
 # ⚠️ NEVER merge locally and then push to main.
