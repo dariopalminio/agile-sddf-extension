@@ -132,16 +132,17 @@ For more details, consult these reference files (loaded on demand):
 | BDD Architecture Diagram | `references/bdd-architecture.plantuml` | Visual representation of BDD architecture |
 | Feature Organization | `references/feature-organization.md` | Organizing tests by feature, domain, and complexity level |
 | Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, World typing |
-| Page Objects | `references/page-object-template.md` | Template for creating Page Object classes |
+| Page Objects | `references/page-object-template.ts` | Template for creating Page Object classes |
 | Selectors & Locators | `references/selectors-locators.md` | Best practices for selecting elements in Playwright tests |
 | Hooks & World | `references/hooks-and-world.md` | World class, Before/After, browser lifecycle |
 | Tags & Profiles | `references/tags-and-profiles.md` | Tag expressions, cucumber.js profiles, parallel |
 | Reporting | `references/reporting.md` | HTML/JSON/JUnit reports, screenshot embedding, CI artifacts |
 | Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
+| Best Practices | `references/cucumber-best-practices.md` | Scenario design principles: declarative vs imperative, one behavior per scenario |
 | Visual Regression | `references/visual-regression.md` | Visual regression testing, screenshot comparison, baseline management |
 | Naming Conventions | `references/naming-conventions.md` | File and class naming patterns, folder structure, Page Objects, components |
-| Debugging & Flaky Tests | `references/debugging-flaky.md` | Techniques for debugging flaky tests, common causes, and mitigation strategies |
 | E2E Testing without Cucumber | `references/e2e-testing-without-cucumber.md` | BDD/Gherkin user flow testing without Cucumber, classic user flow testing, checkout flow |
+| E2E Test Template | `references/e2e-test-template.ts` | Annotated Playwright E2E test template: page objects, API data setup, explicit waits |
 | API Mocking | `references/api-mocking.md` | Mocking API responses, stubbing endpoints, and testing edge cases |
 | API/REST Testing | `references/api-rest-testing.md` | Testing RESTful APIs, endpoints, and response validation |
 | WCAG E2E Testing | `references/wcag-e2e-testing.md` | Automated WCAG 2.2 accessibility checks in E2E tests with Playwright + axe-core |
