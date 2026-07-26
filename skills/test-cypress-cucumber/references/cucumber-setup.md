@@ -68,7 +68,7 @@ export default defineConfig({
     screenshotsFolder: "test/e2e/screenshots",
     videosFolder: "test/e2e/videos",
     env: {
-      TAGS: '@regression',
+      tags: '@regression',
     },
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config)
@@ -83,7 +83,7 @@ export default defineConfig({
 |-----|---------|
 | `specPattern` | Glob to `.feature` files under `e2e/features/` |
 | `supportFile` | Cypress support entry point — loads commands and hooks |
-| `env.TAGS` | Default tag filter when no `--env TAGS=` is passed |
+| `env.tags` | Default tag filter when no `--env tags=` is passed |
 | `addCucumberPreprocessorPlugin` | Wires feature files to step definitions |
 | `createEsbuildPlugin` | Compiles TypeScript step files via ESBuild |
 | `return config` | Required — preprocessor modifies config; must be returned |
@@ -163,11 +163,9 @@ export const config = {
   "scripts": {
     "test:e2e": "cypress run",
     "test:e2e:open": "cypress open",
-    "test:e2e:smoke": "cypress run --env tags=@smoke",
-    "test:e2e:full": "cypress run",
-    "test:e2e:core": "cypress run --env tags=@core",
-    "test:e2e:regression": "cypress run --env tags=@regression",
-    "test:e2e:tags": "npx cypress run --env TAGS=@regression",
+    "test:e2e:smoke": "cypress run --env tags='@smoke'",
+    "test:e2e:sanity": "cypress run --env tags='@smoke or @sanity'",
+    "test:e2e:regression": "cypress run --env tags='@smoke or @regression'",
     "test:e2e:report": "node cucumber-html-report.js"
   }
 }
@@ -197,7 +195,7 @@ npm run test:e2e:open
 npx cypress run --spec "test/e2e/features/auth/login.feature"
 
 # 7. Run by ad-hoc tag
-npx cypress run --env TAGS='@smoke and not @wip'
+npx cypress run --env tags='@smoke and not @wip'
 
 # 8. Generate HTML report
 npm run test:e2e:report
@@ -209,12 +207,12 @@ npm run test:e2e:report
 
 | Command | Purpose |
 |---------|---------|
-| `npm run test:e2e` | Run default tag filter (from `env.TAGS` in config) |
+| `npm run test:e2e` | Run default tag filter (from `env.tags` in config) |
 | `npm run test:e2e:smoke` | Run `@smoke` tagged scenarios |
-| `npm run test:e2e:core` | Run `@core` and `@smoke` tagged scenarios |
-| `npm run test:e2e:full` | Run all scenarios |
+| `npm run test:e2e:sanity` | Run `@smoke` and `@sanity` tagged scenarios |
+| `npm run test:e2e:regression` | Run `@smoke` and `@regression` tagged scenarios |
 | `npm run test:e2e:open` | Open Cypress interactive runner |
-| `npx cypress run --env TAGS='@auth'` | Ad-hoc tag filter |
+| `npx cypress run --env tags='@auth'` | Ad-hoc tag filter |
 | `npx cypress run --spec "test/e2e/features/auth/login.feature"` | Single feature file |
 | `npm run test:e2e:report` | Generate HTML report from JSON output |
 

@@ -152,6 +152,21 @@ export default defineConfig({
 });
 ```
 
+### Alternative: preprocessor rc file
+
+`filterSpecs` / `omitFiltered` can also be set in a dedicated `.cypress-cucumber-preprocessorrc.json` instead of the `env` block:
+
+```json
+// .cypress-cucumber-preprocessorrc.json
+{
+  "filterSpecs": true,
+  "omitFiltered": true
+}
+```
+
+- `filterSpecs: true` — skip feature files with no matching scenarios before running (faster startup on large suites)
+- `omitFiltered: true` — hide filtered-out specs from the Cypress runner UI
+
 ---
 
 ## package.json Scripts (Profiles)

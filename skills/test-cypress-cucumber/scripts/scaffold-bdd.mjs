@@ -72,7 +72,7 @@ for (const dir of dirs) {
 
 const filterSpecsConfig =
   level >= 2
-    ? `\n    env: {\n      TAGS: '@regression',\n    },`
+    ? `\n    env: {\n      tags: '@regression',\n    },`
     : ''
 
 const cypressConfig = `import { defineConfig } from 'cypress'
@@ -359,9 +359,9 @@ console.log('\nCypress Cucumber BDD project structure created successfully.')
 console.log('\nAdd these scripts to your package.json:')
 console.log('  "test:e2e":            "cypress run"')
 console.log('  "test:e2e:open":       "cypress open"')
-console.log('  "test:e2e:smoke":      "cypress run --env TAGS=\'@smoke\'"')
-console.log('  "test:e2e:regression": "cypress run --env TAGS=\'@regression\'"')
-console.log('  "test:e2e:full":       "cypress run --env TAGS=\'@full\'"')
+console.log('  "test:e2e:smoke":      "cypress run --env tags=\'@smoke\'"')
+console.log('  "test:e2e:sanity":     "cypress run --env tags=\'@smoke or @sanity\'"')
+console.log('  "test:e2e:regression": "cypress run --env tags=\'@smoke or @regression\'"')
 
 if (level >= 4) {
   console.log('  "test:e2e:report":     "node cucumber-html-report.js"')

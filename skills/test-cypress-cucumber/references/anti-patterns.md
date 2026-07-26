@@ -75,7 +75,7 @@ async setupNodeEvents(on, config) {
 
 ```typescript
 // WRONG — all feature files are compiled even when only @smoke runs
-cypress run --env TAGS='@smoke'   // loads 100 feature files
+cypress run --env tags='@smoke'   // loads 100 feature files
 
 // CORRECT — add to .cypress-cucumber-preprocessorrc.json
 {

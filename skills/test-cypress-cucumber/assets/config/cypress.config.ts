@@ -13,7 +13,7 @@ export default defineConfig({
     screenshotOnRunFailure: true,
     retries: { runMode: 0, openMode: 0 },
     env: {
-      TAGS: '@regression',
+      tags: '@regression',
     },
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config)

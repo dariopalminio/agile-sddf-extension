@@ -161,11 +161,11 @@ cucumber --tags "@smoke"
 # Run all except WIP
 cucumber --tags "not @wip"
 
-# Run smoke AND core (sanity)
-cucumber --tags "@smoke and @core"
+# Run smoke AND sanity
+cucumber --tags "@smoke and @sanity"
 
-# Run smoke OR core (sanity)
-cucumber --tags "@smoke or @core"
+# Run smoke OR sanity
+cucumber --tags "@smoke or @sanity"
 ```
 
 ## Writing Good Gherkin

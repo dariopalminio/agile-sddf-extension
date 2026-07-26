@@ -42,7 +42,7 @@ Use this skill when:
 - IMPLEMENT step definitions (`Given`/`When`/`Then`) in TypeScript
 - Writing `Before`/`After` hooks from `@badeball/cypress-cucumber-preprocessor`
 - Configuring `cypress.config.ts` with the cucumber preprocessor plugin
-- Running tests with tag expressions via `--env TAGS=`
+- Running tests with tag expressions via `--env tags=`
 - Setting up HTML reporting with `multiple-cucumber-html-reporter`
 - Integrating Cypress Cucumber into a GitHub Actions CI pipeline
 - Debugging step definition issues and flaky BDD scenarios
@@ -68,7 +68,7 @@ Use this skill when:
 - Call `await addCucumberPreprocessorPlugin(on, config)` inside `setupNodeEvents` and **always return `config`**
 - Set `specPattern: 'cypress/e2e/**/*.feature'` in `cypress.config.ts`
 - Use `data-testid` attributes for all test selectors — never CSS classes or HTML elements
-- Tag every scenario with at least one domain tag (`@auth`, `@checkout`) and one run-level tag (`@smoke`, `@regression`, or `@full`); every spec must have at least one `@smoke` scenario
+- Tag every scenario with at least one domain tag (`@auth`, `@checkout`) and one run-level tag (`@smoke`, `@sanity`, or `@regression`); every spec must have at least one `@smoke` scenario
 - Use `{string}`, `{int}`, `{float}` Cucumber expressions for step parameters
 - Import `Given`, `When`, `Then`, `Before`, `After` from `@badeball/cypress-cucumber-preprocessor`
 
@@ -114,7 +114,7 @@ All of Level 3, plus:
 
 ## Knowledge Reference
 
-@badeball/cypress-cucumber-preprocessor, @bahmutov/cypress-esbuild-preprocessor, Cypress, BDD, Gherkin, Given When Then, feature files, step definitions, Scenario Outline, Background, DataTable, DocString, tags, tag expressions, TAGS env var, filterSpecs, omitFiltered, Before, After, BeforeAll, AfterAll, hooks, custom commands, cy.session, cy.intercept, cy.visit, Page Objects, data-testid, multiple-cucumber-html-reporter, JSON reporter, screenshot embedding, smoke testing, regression testing, full testing, CI/CD, GitHub Actions
+@badeball/cypress-cucumber-preprocessor, @bahmutov/cypress-esbuild-preprocessor, Cypress, BDD, Gherkin, Given When Then, feature files, step definitions, Scenario Outline, Background, DataTable, DocString, tags, tag expressions, tags env var, filterSpecs, omitFiltered, Before, After, BeforeAll, AfterAll, hooks, custom commands, cy.session, cy.intercept, cy.visit, Page Objects, data-testid, multiple-cucumber-html-reporter, JSON reporter, screenshot embedding, smoke testing, sanity testing, regression testing, CI/CD, GitHub Actions
 
 ## References
 
@@ -126,12 +126,25 @@ For more details, consult these reference files (loaded on demand):
 | Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
 | Starter Templates | `assets/` | Ready-to-use template files: `config/cypress.config.ts`, `features/sample.feature`, `steps/sample.steps.ts`, `support/hooks.ts`, `support/commands.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
 | Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
+| Feature Organization | `references/feature-organization.md` | Organizing tests by feature, domain, and complexity level |
 | Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, state sharing |
+| BDD Architecture | `references/bdd-architecture.md` | Page Objects, selectors, naming conventions, folder structure |
+| BDD Architecture Diagram | `references/bdd-architecture.plantuml` | Visual representation of BDD architecture |
+| Page Objects | `references/page-object-template.ts` | Cypress Page Object template: static data-testid selectors, no cy.* inside |
+| Selectors & Locators | `references/selectors-locators.md` | Best practices for selecting elements in Cypress tests |
+| Naming Conventions | `references/naming-conventions.md` | File and class naming patterns, folder structure, Page Objects, components |
 | Hooks & Commands | `references/hooks-and-commands.md` | Before/After hooks, custom commands, cy.session() |
-| Tags & Filtering | `references/tags-and-filtering.md` | Tag expressions, TAGS env var, filterSpecs |
+| Hooks & World | `references/hooks-and-world.md` | Scenario lifecycle & shared World context; key differences vs Playwright Cucumber |
+| Tags & Profiles | `references/tags-and-profiles.md` | Tag expressions, cascading Feature→Scenario, filterSpecs, run profiles |
 | Reporting | `references/reporting.md` | multiple-cucumber-html-reporter, screenshots, CI artifacts |
 | Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
 | Best Practices | `references/cucumber-best-practices.md` | Scenario Design Principles, Feature Organization, Writing Good Gherkin, Scenario Outlines, Step Definition Patterns, Error Handling, Performance, Testing Pyramid |
+| Visual Regression | `references/visual-regression.md` | Visual regression testing, screenshot comparison, baseline management |
+| E2E Testing without Cucumber | `references/e2e-testing-without-cucumber.md` | Classic user-flow E2E testing without Cucumber, checkout flow |
+| E2E Test Template | `references/e2e-test-template.ts` | Annotated Cypress E2E test template: Page Objects, cy.request() data setup, cy.session() |
+| API Mocking | `references/api-mocking.md` | Mocking API responses with cy.intercept(), stubbing endpoints, edge cases |
+| API/REST Testing | `references/api-rest-testing.md` | Testing RESTful APIs, endpoints, and response validation |
+| WCAG E2E Testing | `references/wcag-e2e-testing.md` | Automated WCAG 2.2 accessibility checks in E2E tests with Cypress + axe |
 
 > These files are only loaded if the agent needs additional context.
 

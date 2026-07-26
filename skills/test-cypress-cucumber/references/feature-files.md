@@ -20,7 +20,7 @@ Característica: User Authentication
 ## Scenario Outline (Data-Driven)
 
 ```gherkin
-@core
+@sanity
 Esquema del escenario: Login fails with missing fields
   When the user submits the form with email "<email>" and password "<password>"
   Then a validation error appears for the "<field>" field
@@ -74,7 +74,7 @@ Escenario: Submit feedback form
 | Category | Examples | Purpose |
 |---|---|---|
 | Domain | `@auth`, `@checkout`, `@catalog` | Which feature area |
-| Run level | `@smoke`, `@core`, `@full` | Execution tier |
+| Run level | `@smoke`, `@sanity`, `@regression` | Execution tier |
 | Status | `@wip`, `@flaky`, `@skip` | Lifecycle state |
 | Type | `@positive`, `@negative`, `@edge-case` | Test intent |
 
