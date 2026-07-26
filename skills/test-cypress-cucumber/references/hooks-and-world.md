@@ -1,6 +1,6 @@
-# Hooks & World
+# Hooks, World & Custom Commands
 
-Managing scenario lifecycle, shared scenario context, and setup/teardown with `@badeball/cypress-cucumber-preprocessor`.
+Managing scenario lifecycle, shared scenario context, setup/teardown, and reusable custom commands with `@badeball/cypress-cucumber-preprocessor`.
 
 ---
 
@@ -179,6 +179,31 @@ Before({ tags: '@authenticated' }, function () {
   );
 });
 ```
+
+---
+
+## Custom Commands
+
+Custom commands reduce repetition in step definitions. Define them in `cypress/support/commands.ts` and import them in `cypress/support/e2e.ts`.
+
+### getByTestId
+
+```typescript
+Cypress.Commands.add('getByTestId', (id: string) =>
+  cy.get(`[data-testid="${id}"]`)
+)
+
+// Usage in step definitions (via Page Objects):
+// cy.getByTestId('submit-button').click()
+```
+
+### Custom Commands vs Page Objects
+
+| Use Case | Correct Abstraction |
+|---|---|
+| Repeatable UI interactions tied to a feature (login, add to cart) | Page Object method |
+| Cross-cutting Cypress utilities (`getByTestId`, `login`, `interceptApi`) | Custom Command |
+| One-off assertions in a single step | Inline `cy.get().should()` in the step |
 
 ---
 

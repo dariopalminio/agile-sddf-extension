@@ -133,8 +133,7 @@ For more details, consult these reference files (loaded on demand):
 | Page Objects | `references/page-object-template.ts` | Cypress Page Object template: static data-testid selectors, no cy.* inside |
 | Selectors & Locators | `references/selectors-locators.md` | Best practices for selecting elements in Cypress tests |
 | Naming Conventions | `references/naming-conventions.md` | File and class naming patterns, folder structure, Page Objects, components |
-| Hooks & Commands | `references/hooks-and-commands.md` | Before/After hooks, custom commands, cy.session() |
-| Hooks & World | `references/hooks-and-world.md` | Scenario lifecycle & shared World context; key differences vs Playwright Cucumber |
+| Hooks & World | `references/hooks-and-world.md` | Scenario lifecycle, shared World context, custom commands (getByTestId), cy.session(); key differences vs Playwright Cucumber |
 | Tags & Profiles | `references/tags-and-profiles.md` | Tag expressions, cascading Feature→Scenario, filterSpecs, run profiles |
 | Reporting | `references/reporting.md` | multiple-cucumber-html-reporter, screenshots, CI artifacts |
 | Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |
