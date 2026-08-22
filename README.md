@@ -20,6 +20,7 @@ Public repository of agent skills to extend agile-sddf
 ### Utilities
 
 - **`doc-release-notes`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
+- **`ui-generate-design-md`** — Create or update a DESIGN.md (design tokens + UI rules) from a product repository or a public website
 
 ### OpenSpec support
 
