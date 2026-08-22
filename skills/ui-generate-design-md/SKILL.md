@@ -208,3 +208,7 @@ In URL mode, label the output as a reconstructed draft.
 | Output template | `assets/DESIGN.template.md` | Required. Read before writing any `DESIGN.md`; it defines the frontmatter schema, canonical section order, per-section rules, and the pre-save checklist |
 | Published examples | `examples/` | Comparing against completed documents: `DESIGN-vercel.md`, `DESIGN-hero-centric.md`, `DESIGN-general-intelligence.md` — reference shape only, never a source of evidence for the audited product |
 
+Resources:
+- [DESIGN.md format specification](https://github.com/google-labs-code/design.md) — upstream schema, linting rules, and export targets. The installed version is authoritative at runtime: run `npx @google/design.md spec`.
+- [What is DESIGN.md](https://designmd.app/what-is-design-md) — format overview and canonical section order.
+
