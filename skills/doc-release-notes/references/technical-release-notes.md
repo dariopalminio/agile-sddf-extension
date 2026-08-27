@@ -3,6 +3,10 @@
 Use for detailed, table-based release documentation aimed at developers, with IDs, PRs,
 severities, dependency updates, and migration notes.
 
+- **Template:** `assets/release-notes-technical.template.md`
+- **Finished example:** `examples/RELEASE_NOTES_TECHNICAL.md`
+- **Target file:** `RELEASE_NOTES_TECHNICAL.md` at the project root (or under `docs/`)
+
 ## Strategy: snapshot / overwrite
 
 `RELEASE_NOTES_TECHNICAL.md` lives at the project root (or under `docs/`) and **always represents
@@ -30,44 +34,25 @@ Overwriting the file does not lose history, because:
 
 The summarized, human-readable history lives in `CHANGELOG.md`; the full history lives in Git.
 
-## Template
+## Routing changes into the tables
 
-```markdown
-# Release v2.1.0
+Every row must be traceable — an ID and a PR, so QA and DevOps can open the work item.
 
-**Release Date**: 2026-01-29
-**Type**: Minor Release
-**Compatibility**: Breaking changes: None
+| Change | Destination |
+|--------|-------------|
+| Shipped feature | `Features` table — ID, description, PR |
+| Bug fix | `Fixes` table — ID, description, **severity**, PR |
+| Dependency version bump | `Dependencies Updated` table — package, from, to, reason |
+| Schema change, data backfill, config change | `Migration Guide` as ordered steps |
+| Defect shipping unfixed, with its workaround | `Known Issues` |
 
-## Summary
-This release introduces dark mode, CSV export, and significant performance improvements.
+Severity drives QA's verification order, so it is required on every fix row; use the project's own
+scale, or Critical / High / Medium / Low if it has none. A dependency moved for a CVE says so in
+its Reason — that is the row DevOps reads first.
 
-## Changes
+Unlike the other two formats, internal changes belong here. A refactor with no user-visible effect
+still matters to whoever verifies the deployment.
 
-### Features
-| ID | Description | PR |
-|----|-------------|-----|
-| FEAT-123 | Dark mode theme support | #456 |
-| FEAT-124 | CSV export functionality | #457 |
-| FEAT-125 | Keyboard shortcuts | #458 |
+State "No migration required for this release" explicitly rather than leaving the section empty —
+an empty section reads as an oversight, not as an all-clear.
 
-### Fixes
-| ID | Description | Severity | PR |
-|----|-------------|----------|-----|
-| BUG-789 | Login timeout on slow connections | High | #459 |
-| BUG-790 | Mobile export button | Medium | #460 |
-
-### Dependencies Updated
-| Package | From | To | Reason |
-|---------|------|-----|--------|
-| lodash | 4.17.20 | 4.17.21 | Security patch |
-
-## Migration Guide
-No migration required for this release.
-
-## Known Issues
-- Dark mode does not apply to embedded iframes
-
-## Contributors
-@developer1, @developer2, @designer1
-```

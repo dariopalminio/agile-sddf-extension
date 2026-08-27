@@ -1,0 +1,167 @@
+{
+  "skill": "doc-policy-creator",
+  "version": "1.0.0",
+  "description": "Test cases for doc-policy-creator: generating *-policy.md executable specification artifacts by instantiating assets/policy.template.md.",
+  "cases": [
+    {
+      "id": "TC-001",
+      "name": "code-review-domain-produces-full-policy",
+      "type": "happy-path",
+      "description": "A well-specified domain with guardrails, best practices and operational steps produces a complete policy instantiated from the template.",
+      "input": {
+        "prompt": "Create a policy for AI agents that review pull requests in our NestJS backend. Agents must never approve their own PRs, never commit secrets, and must always run the test suite before approving. Owner: Platform Team.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "docs/policies/code-review-policy.md",
+        "contains": [
+          "**Versión:** 1.0.0",
+          "**Propietario:** Platform Team",
+          "## 1. [CONTEXT] Propósito y Alcance",
+          "## 3. [GUARDRAIL - BLOQUEANTE] Reglas No Negociables",
+          "**G-01**",
+          "El agente debe **ABORTAR**",
+          "**BP-01**",
+          "[CONTEXT] Resumen de Categorías",
+          "## Historial de Cambios"
+        ],
+        "not_contains": [
+          "[NOMBRE DE LA POLÍTICA",
+          "[Nombre del responsable o equipo]",
+          "YYYY-MM-DD",
+          "<!-- TEMPLATE PARA POLÍTICAS",
+          "<!-- Define el QUÉ y el POR QUÉ",
+          "[Término 1]",
+          "[práctica prohibida]",
+          "(si aplica)",
+          "TODO"
+        ]
+      },
+      "threshold": 0.95
+    },
+    {
+      "id": "TC-002",
+      "name": "narrow-domain-omits-inapplicable-sections",
+      "type": "edge-case",
+      "description": "A domain with no file-layout or metadata concerns drops sections 6 and 7, renumbers the remaining sections, and updates the category table in section 10 to match.",
+      "input": {
+        "prompt": "Write a policy that governs how agents word customer-facing error messages. There are no file structure or frontmatter rules involved.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "docs/policies/error-messages-policy.md",
+        "contains": [
+          "[GUARDRAIL - BLOQUEANTE]",
+          "[CONTEXT] Resumen de Categorías",
+          "**G-01**"
+        ],
+        "not_contains": [
+          "[GUIDE - ESTRUCTURA] Organización de Archivos",
+          "[GUIDE - METADATOS] Reglas para el Descubrimiento",
+          "(si aplica)",
+          "Secciones 4 a 8",
+          "[nombre-base]/"
+        ]
+      },
+      "threshold": 0.9
+    },
+    {
+      "id": "TC-003",
+      "name": "missing-domain-asks-before-writing",
+      "type": "fail-fast",
+      "description": "A request with no identifiable domain must stop and ask for it instead of inventing a policy.",
+      "input": {
+        "prompt": "Create a policy file.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": null,
+        "contains": [
+          "domain"
+        ],
+        "not_contains": [
+          "## 3. [GUARDRAIL - BLOQUEANTE]",
+          "Historial de Cambios"
+        ],
+        "decision": "REFINE",
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-004",
+      "name": "existing-policy-not-overwritten-silently",
+      "type": "error-handling",
+      "description": "When the target *-policy.md already exists, the skill must offer regenerate / skip / compare instead of overwriting.",
+      "input": {
+        "prompt": "Create a security policy for our agents.",
+        "existing_files": ["docs/policies/security-policy.md"],
+        "flags": []
+      },
+      "expected": {
+        "contains": [
+          "docs/policies/security-policy.md",
+          "(r)",
+          "(n)",
+          "(c)"
+        ],
+        "not_contains": [
+          "sobreescrito con --force"
+        ],
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-005",
+      "name": "dry-run-plans-without-writing",
+      "type": "edge-case",
+      "description": "With --dry-run the skill reports the target path and the sections it would keep or drop, and writes nothing to disk.",
+      "input": {
+        "prompt": "Create a policy for database migration agents --dry-run",
+        "flags": ["--dry-run"]
+      },
+      "expected": {
+        "output_file": null,
+        "contains": [
+          "docs/policies/database-migration-policy.md",
+          "dry-run"
+        ],
+        "not_contains": [
+          "Historial de Cambios"
+        ],
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-006",
+      "name": "adapts-to-modified-template-without-skill-edits",
+      "type": "edge-case",
+      "description": "Guards the decoupling: the skill derives its structure from the template at run time. A template with an extra section and a renamed placeholder must flow through to the output with no edit to SKILL.md.",
+      "input": {
+        "prompt": "Create a policy for deployment agents, using the template at .tmp/policy.template.modified.md",
+        "template_override": ".tmp/policy.template.modified.md",
+        "template_mutations": [
+          "insert section '## 11. [GUIDE - OBSERVABILIDAD] Telemetría Mínima' with placeholder '[Indica qué eventos debe emitir el agente]'",
+          "rename placeholder '[Nombre del responsable o equipo]' to '[Equipo dueño de la política]'"
+        ],
+        "flags": []
+      },
+      "expected": {
+        "output_file": "docs/policies/deployment-policy.md",
+        "contains": [
+          "[GUIDE - OBSERVABILIDAD] Telemetría Mínima",
+          "[GUARDRAIL - BLOQUEANTE]"
+        ],
+        "not_contains": [
+          "[Indica qué eventos debe emitir el agente]",
+          "[Equipo dueño de la política]",
+          "[Nombre del responsable o equipo]",
+          "YYYY-MM-DD"
+        ]
+      },
+      "threshold": 1.0
+    }
+  ]
+}

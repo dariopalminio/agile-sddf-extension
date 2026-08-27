@@ -3,62 +3,47 @@
 Use for public, end-user-facing announcements that highlight new features and improvements
 in approachable language.
 
-**Approach:** a cumulative `RELEASE_NOTES.md` at the project root. Keep a single fixed
-`# What's New` title and add a new `## Version X.X.X (YYYY-MM-DD)` section for each release,
-newest on top, so versions accumulate in the same file.
+- **Template:** `assets/release-notes.template.md`
+- **Finished example:** `examples/RELEASE_NOTES.md`
+- **Target file:** `RELEASE_NOTES.md` at the project root
+- **Strategy:** cumulative. Keep a single fixed `# What's New` title and insert a new
+  `## Version X.X (YYYY-MM-DD)` block directly below it, newest on top, so versions accumulate in
+  the same file.
 
-```markdown
-# What's New
+This file is loaded only during release preparation, by the product team or a tech writer — never
+during day-to-day development. On release day CI extracts just the top block for the public
+announcement, so that block must stand alone without the rest of the file.
 
-## Version 2.1 (2026-01-29)
+## Routing changes into sections
 
-We're excited to announce version 2.1 with dark mode and major performance improvements!
+The four sections are audience-driven, not commit-driven. Ask what the user experiences, not what
+the code did.
 
-### ✨ New Features
+| Change | Section |
+|--------|---------|
+| Something the user could not do before | ✨ New Features |
+| Something that existed and is now better or faster | 🚀 Improvements |
+| Something that was broken and now works | 🐛 Bug Fixes |
+| Something demanding user action — deprecation, dropped platform, migration | ⚠️ Important Notes |
+| Internal refactor, test, or chore with no user-visible effect | Omitted entirely |
 
-#### Dark Mode
-Finally here! Switch between light and dark themes in Settings > Appearance. Your preference syncs across devices.
+The mapping from `standard-changelog.md` does not apply here. A `perf` commit is an Improvement,
+not a "Changed"; a `refactor` commit usually produces nothing at all.
 
-#### CSV Export
-Export your data to CSV with one click. Find it in the Actions menu on any data view.
+## Writing the entries
 
-#### Keyboard Shortcuts
-Work faster with shortcuts:
-- `Ctrl/Cmd + K` - Quick search
-- `Ctrl/Cmd + N` - New item
-- `?` - Show all shortcuts
+✅ **Do**:
+- Write from the user's perspective
+- Be specific about what changed
+- Say where in the product to find it
+- Group related changes
+- Quantify a gain when you have a real measurement
 
-### 🚀 Improvements
+❌ **Don't**:
+- Use technical jargon
+- Include internal changes
+- Be vague ("various fixes")
+- Include commit hashes or internal ticket IDs
 
-- **50% Faster Loading** - Completely rebuilt our data loading pipeline
-- **New Dashboard** - Cleaner design with customizable widgets
-- **Better Authentication** - Upgraded to OAuth 2.0 for enhanced security
-
-### 🐛 Bug Fixes
-
-- Fixed login timeouts on slower connections
-- Export button now works properly on mobile devices
-- Resolved memory issues with real-time updates
-
-### ⚠️ Important Notes
-
-- **Deprecation Notice**: Legacy API v1 will be removed in version 3.0
-- **Browser Support**: Internet Explorer is no longer supported
-
-## Version 2.0 (2025-12-01)
-
-A major release with a redesigned experience and team workspaces.
-
-### ✨ New Features
-
-- Brand-new dashboard and navigation
-- Team workspaces with shared views
-
-### 🐛 Bug Fixes
-
-- Various stability and performance improvements
-
----
-
-Questions? Contact support@example.com or visit our [Help Center](link).
-```
+Lead each version block with one or two sentences naming the headline change — that sentence is
+often what gets quoted in the release email.
