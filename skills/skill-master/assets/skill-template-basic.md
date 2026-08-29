@@ -2,7 +2,7 @@
 name: skill-name
 description: Replace with description of the skill and when Claude should use it.
 ---
-
+<!-- Este es el template alternativo del skill simple, no es el oficial -->
 # Your Skill Title
 
 ## Overview

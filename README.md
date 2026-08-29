@@ -4,6 +4,12 @@ Public repository of agent skills to extend agile-sddf
 
 ## Available Skills
 
+### Meta-framework de skills
+
+- **`skill-master`**: crea y benchmarkea nuevas skills con ciclo iterativo — `skill-master` orquesta el flujo completo de creación; 
+
+- **`skill-test-evals`**: gestiona el ciclo de vida de los evals (generar, ejecutar, benchmarkear) con tres modos: `generate` (crea `evals/evals.json` + skeleton SKILL.md desde descripción libre o SKILL.md existente), `evals` (1 run → informe pass/fail con evidencia) y `benchmark` (N runs × caso → métricas estadísticas mean ± stddev);
+
 ### Implementation
 
 - **`code-backend-nestjs`** — NestJS best practices and architecture patterns for production-ready applications
@@ -68,6 +74,23 @@ agile-sddf-extension/
 ├── AGENTS.md                     # Guide for AI agents working in the repo
 ├── README.md                     # Main repository documentation
 └── .gitignore
+```
+
+## Crear una nueva skill
+
+* **Creation skill**
+
+```bash
+# Ciclo iterativo de creación y benchmarking
+/skill-master
+```
+
+* **Running Tests**
+
+El framework no tiene suite de tests automatizados para el pipeline principal. La calidad de los skills se valida con el meta-skill `skill-master` mediante ejecución paralela (con skill vs sin skill) y un viewer HTML de benchmarking:
+
+```bash
+/skill-master
 ```
 
 ## Creating or Contributing a Skill

@@ -30,6 +30,30 @@ npx skills add dariopalminio/agile-sddf-extension --all
 
 After installation the skill is invoked automatically by context or directly by name.
 
+## Usage
+
+Using OpenSpec is optional. This section assumes you have OpenSpec configured in your project. SDDF provides skills to integrate the OpenSpec change management process directly into your specification workflow, allowing you to generate change proposals, implement them, and archive them without leaving the SDDF environment.
+
+```bash
+# Initialize the project context in openspec/config.yaml
+/openspec-init-config
+
+# Generate OpenSpec specification baseline from existing source code
+/openspec-generate-baseline
+
+# Explore an idea without implementing it
+/openspec-explore
+
+# Propose a change with all generated artifacts
+/openspec-propose "agregar soporte para exportar historias a CSV"
+
+# Implement the tasks of a change
+/openspec-apply-change
+
+# Archive a completed change
+/openspec-archive-change
+```
+
 ## Contents
 
 - `SKILL.md` — main instructions
