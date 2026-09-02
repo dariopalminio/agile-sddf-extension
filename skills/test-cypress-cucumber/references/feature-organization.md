@@ -183,7 +183,8 @@ export default defineConfig({
     "test:e2e:a11y": "cypress run --env tags='@a11y'",
     "test:e2e:visual": "cypress run --env tags='@visual'",
     "test:e2e:smoke": "cypress run --env tags='@smoke'",
-    "test:e2e:regression": "cypress run --env tags='@smoke or @regression'"
+    "test:e2e:sanity": "cypress run --env tags='@smoke or @sanity'",
+    "test:e2e:regression": "cypress run --env tags='@smoke or @sanity or @regression'"
   }
 }
 ```

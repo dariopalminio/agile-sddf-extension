@@ -361,7 +361,7 @@ console.log('  "test:e2e":            "cypress run"')
 console.log('  "test:e2e:open":       "cypress open"')
 console.log('  "test:e2e:smoke":      "cypress run --env tags=\'@smoke\'"')
 console.log('  "test:e2e:sanity":     "cypress run --env tags=\'@smoke or @sanity\'"')
-console.log('  "test:e2e:regression": "cypress run --env tags=\'@smoke or @regression\'"')
+console.log('  "test:e2e:regression": "cypress run --env tags=\'@smoke or @sanity or @regression\'"')
 
 if (level >= 4) {
   console.log('  "test:e2e:report":     "node cucumber-html-report.js"')

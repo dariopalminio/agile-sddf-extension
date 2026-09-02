@@ -178,7 +178,7 @@ export default defineConfig({
     "test:e2e:open": "cypress open",
     "test:e2e:smoke": "cypress run --env tags='@smoke'",
     "test:e2e:sanity": "cypress run --env tags='@smoke or @sanity'",
-    "test:e2e:regression": "cypress run --env tags='@smoke or @regression'",
+    "test:e2e:regression": "cypress run --env tags='@smoke or @sanity or @regression'",
     "test:e2e:wip": "cypress run --env tags='@wip'",
     "test:e2e:headed": "cypress run --headed",
     "test:e2e:report": "node cucumber-html-report.js"
@@ -230,7 +230,7 @@ npx cypress run --env tags='@smoke or @sanity'
 npx cypress run --env tags='not @wip'
 
 # Complex expression
-npx cypress run --env tags='(@smoke or @regression) and not @wip'
+npx cypress run --env tags='(@smoke or @sanity or @regression) and not @wip'
 ```
 
 ---
@@ -267,7 +267,7 @@ npx cypress run --env tags='@checkout'
 |------|---------|
 | Happy-path gate | `npm run test:e2e:smoke` — `@smoke` |
 | Sanity regression | `npm run test:e2e:sanity` — `@smoke or @sanity` |
-| Full regression | `npm run test:e2e:regression` — `@smoke or @regression` |
+| Full regression | `npm run test:e2e:regression` — `@smoke or @sanity or @regression` |
 | Filter by tag (CLI) | `npx cypress run --env tags='@checkout and not @wip'` |
 | Exclude a tag | `--env tags='not @wip'` |
 | Combine tags (AND) | `--env tags='@sanity and @auth'` |

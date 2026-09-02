@@ -51,7 +51,7 @@
       "type": "happy-path",
       "description": "El skill genera scripts npm con filtrado por tag (@smoke, @regression) y workflow GitHub Actions que ejecuta smoke en PR, regression en push a main, con reporte HTML y upload de artefactos.",
       "input": {
-        "context": "Tenemos la suite BDD funcionando localmente. Ahora quiero configurar los scripts de npm para ejecutar tests por tag: uno para smoke (solo @smoke), uno para sanity (@smoke or @sanity), y uno para regression (@smoke or @regression). También quiero el workflow de GitHub Actions para que en cada pull request corra el perfil smoke, y en push a main corra regression completo. Usamos Node 20. También quiero que se genere el reporte HTML al final."
+        "context": "Tenemos la suite BDD funcionando localmente. Ahora quiero configurar los scripts de npm para ejecutar tests por tag: uno para smoke (solo @smoke), uno para sanity (@smoke or @sanity), y uno para regression (@smoke or @sanity or @regression). También quiero el workflow de GitHub Actions para que en cada pull request corra el perfil smoke, y en push a main corra regression completo. Usamos Node 20. También quiero que se genere el reporte HTML al final."
       },
       "expected": {
         "contains": [

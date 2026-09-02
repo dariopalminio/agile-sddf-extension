@@ -47,17 +47,19 @@ Three layered levels with **cumulative inclusion** — each level includes all s
 | Tag | Scope | When to use |
 |-----|-------|-------------|
 | `@smoke` | ~2–3 per spec | Happy path: component/page renders and responds. Required on every spec. Runs on every deploy gate. |
+| `@sanity` | ~4–6 per spec | Basic validations, variations, and some error scenarios. Runs on major deploys. |
 | `@regression` | ~4–8 per spec | Variants, state transitions, keyboard interaction. |
 
 
 **Inclusion rule:**
 
 ```
-test:e2e:smoke  →  @smoke                    (fast gate, every deploy, cucumber and Playwright)
-test:e2e:regression   →  (@smoke or @regression)   (includes smoke, cucumber and Playwright)
+test:e2e:smoke       →  @smoke and not @wip                (fast gate, every deploy)
+test:e2e:sanity      →  (@smoke or @sanity) and not @wip   (includes smoke)
+test:e2e:regression  →  not @wip                           (includes smoke and sanity)
 ```
 
-**Tagging rule:** every spec file must have at least `@smoke` scenarios. Add `@regression` for state/variant coverage.
+**Tagging rule:** every spec file must have at least `@smoke` scenarios. Add `@sanity` and `@regression` for broader coverage.
 ---
 
 ## Tag Expressions
@@ -169,27 +171,27 @@ module.exports = {
     ],
   },
 
-  // Core — smoke + variants/state/interaction (@smoke or @sanity)
-  core: {
+  // Sanity — smoke + variants/state/interaction (@smoke or @sanity)
+  sanity: {
     ...common,
     paths:  ['test/e2e/features/**/*.feature'],
     tags:   '(@smoke or @sanity) and not @wip',
     format: [
       'progress',
-      'html:test/e2e/reports/core-report.html',
-      'json:test/e2e/reports/core-report.json',
+      'html:test/e2e/reports/sanity-report.html',
+      'json:test/e2e/reports/sanity-report.json',
     ],
   },
 
-  // Full — complete regression, all non-wip scenarios
-  full: {
+  // Regression — complete regression, all non-wip scenarios
+  regression: {
     ...common,
     paths:  ['test/e2e/features/**/*.feature'],
     tags:   'not @wip',
     format: [
       'progress',
-      'html:test/e2e/reports/full-report.html',
-      'json:test/e2e/reports/full-report.json',
+      'html:test/e2e/reports/regression-report.html',
+      'json:test/e2e/reports/regression-report.json',
     ],
   },
 
@@ -216,13 +218,13 @@ module.exports = {
 # Happy-path gate — runs on every deploy (~2–3 scenarios per spec)
 pnpm test:e2e:smoke
 
-# Core regression — smoke + variants/state (~4–8 per spec, includes smoke)
+# Sanity regression — smoke + variants/state (~4–8 per spec, includes smoke)
 pnpm test:e2e:sanity
 
 # Full regression — all non-wip scenarios (accessibility + edge cases)
 pnpm test:e2e:regression
 
-# Default profile (equivalent to full, uses default report paths)
+# Default profile (equivalent to regression, uses default report paths)
 pnpm test:e2e
 
 # Ad-hoc tag filter from CLI
@@ -275,7 +277,7 @@ npx cucumber-js --parallel 4
 | Goal | Config / Command |
 |------|-----------------|
 | Happy-path gate | `pnpm test:e2e:smoke` — `@smoke and not @wip` |
-| Core regression | `pnpm test:e2e:sanity` — `(@smoke and @sanity) and not @wip` |
+| Sanity regression | `pnpm test:e2e:sanity` — `(@smoke or @sanity) and not @wip` |
 | Full regression | `pnpm test:e2e:regression` — `not @wip` |
 | Run a profile | `npx cucumber-js --profile <name>` |
 | Filter by tag (CLI) | `npx cucumber-js --tags "@button and not @wip"` |

@@ -118,8 +118,8 @@ The cucumber.cjs file following is configured for a project that uses modern ES 
 // Usage:
 //   npx cucumber-js --config cucumber.cjs                  (default profile — all non-wip)
 //   npx cucumber-js --config cucumber.cjs --profile smoke  (smoke: happy path only)
-//   npx cucumber-js --config cucumber.cjs --profile core   (core: smoke + variants/state)
-//   npx cucumber-js --config cucumber.cjs --profile full   (full: all scenarios)
+//   npx cucumber-js --config cucumber.cjs --profile sanity     (sanity: smoke + variants/state)
+//   npx cucumber-js --config cucumber.cjs --profile regression (regression: all scenarios)
 //   npx cucumber-js --config cucumber.cjs --profile ci     (CI: all + JUnit XML)
 
 // TS_NODE_PROJECT must be set in the environment before running cucumber-js

@@ -165,7 +165,7 @@ export const config = {
     "test:e2e:open": "cypress open",
     "test:e2e:smoke": "cypress run --env tags='@smoke'",
     "test:e2e:sanity": "cypress run --env tags='@smoke or @sanity'",
-    "test:e2e:regression": "cypress run --env tags='@smoke or @regression'",
+    "test:e2e:regression": "cypress run --env tags='@smoke or @sanity or @regression'",
     "test:e2e:report": "node cucumber-html-report.js"
   }
 }
@@ -210,7 +210,7 @@ npm run test:e2e:report
 | `npm run test:e2e` | Run default tag filter (from `env.tags` in config) |
 | `npm run test:e2e:smoke` | Run `@smoke` tagged scenarios |
 | `npm run test:e2e:sanity` | Run `@smoke` and `@sanity` tagged scenarios |
-| `npm run test:e2e:regression` | Run `@smoke` and `@regression` tagged scenarios |
+| `npm run test:e2e:regression` | Run `@smoke`, `@sanity` and `@regression` tagged scenarios |
 | `npm run test:e2e:open` | Open Cypress interactive runner |
 | `npx cypress run --env tags='@auth'` | Ad-hoc tag filter |
 | `npx cypress run --spec "test/e2e/features/auth/login.feature"` | Single feature file |

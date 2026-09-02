@@ -10,6 +10,19 @@ This repository is a collection of **reusable Agent Skills** for software engine
 
 For the list of skills currently published in this repo and how end users install them, see [README.md](README.md).
 
+## 🌐 Language
+
+**Every file in this repository must be written in English.** This is repository-wide and admits no
+per-directory exception. It covers:
+
+*   Markdown — `SKILL.md`, `README.md`, `AGENTS.md`, `references/`, `guardrails/`, templates and examples.
+*   Frontmatter — `name`, `description` and every other field.
+*   Code — source, scripts, identifiers, comments and log output.
+*   Data and fixtures — `evals/*.json` (including `input` and `expected`), `assets/`, `.feature` files and any sample content.
+
+Applies equally to files an agent generates on the user's behalf. When a user writes to you in
+another language, answer them in that language but keep the committed files in English.
+
 ## 🧠 Core Principles for Skills
 
 Every skill in this repository must adhere to these principles:
@@ -18,7 +31,7 @@ Every skill in this repository must adhere to these principles:
 2.  **Progressive Disclosure**: Keep the main `SKILL.md` **under 500 lines**. Put detailed reference material, examples, and long-form documentation in `references/`, loaded only on demand. If `SKILL.md` keeps growing, split its content into separate files inside `references/` rather than letting it become unwieldy.
 3.  **Script over Explanation**: For repetitive or deterministic tasks, prefer executable scripts (`scripts/`) over long inline instructions. Scripts run outside the agent's context, saving tokens.
 4.  **Clarity for Agents**: The `description` in the skill's frontmatter must be specific and include trigger phrases so the agent knows exactly when to use it.
-5.  **English Only**: All `SKILL.md` files and their references must be written in English.
+5.  **English Only**: See [Language](#-language) — the requirement is repository-wide, not limited to `SKILL.md` and its references.
 6.  **README.md (recommended)**: A README.md file that explains what the skills do and how to install them.
 7.  **Clear License**: Include license (MIT) and ownership information (dariopalminio/agile-sddf).
 
