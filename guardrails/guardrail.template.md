@@ -28,6 +28,17 @@ Applies to [concrete scope]. Does not apply to [exclusion that prevents misuse].
 
 ## Mandatory rules
 
+<!-- Keep this paragraph verbatim. Severity alone is linter vocabulary — -->
+<!-- an agent reading "(error)" does not know whether to stop the task or -->
+<!-- merely note it. This line is what turns a severity marker into an    -->
+<!-- instruction, and it is the one thing a governance policy does better -->
+<!-- than a bare rule list. Without it the document is a checklist, not a -->
+<!-- guardrail.                                                          -->
+
+**On breach:** `(error)` blocks delivery — stop, name the rule id, fix it before continuing.
+`(warn)` does not block — apply it, or state why you did not. A semantic rule that fails is raised
+for human judgement; never resolve one silently.
+
 <!-- ================================================================== -->
 <!-- THE AXIS IS VERIFIABILITY, NOT SEVERITY.                           -->
 <!--                                                                    -->

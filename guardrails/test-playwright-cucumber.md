@@ -5,6 +5,10 @@ Does not apply to unit tests, component tests, or backend/API-only tests.
 
 ## Mandatory rules
 
+**On breach:** `(error)` blocks delivery — stop, name the rule id, fix it before continuing.
+`(warn)` does not block — apply it, or state why you did not. A semantic rule that fails is raised
+for human judgement; never resolve one silently.
+
 ### Deterministic rules (ESLint / tsc / cucumber-js)
 
 Rule ids below are emitted as the message prefix of each `no-restricted-syntax` entry, so they are
