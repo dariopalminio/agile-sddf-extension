@@ -1,0 +1,221 @@
+{
+  "skill": "doc-guardrail-creator",
+  "version": "1.0.0",
+  "description": "Test cases for doc-guardrail-creator: producing a single-pass guardrail Markdown file by instantiating assets/guardrail.template.md, with every rule classified by how it is verified (deterministic vs semantic).",
+  "cases": [
+    {
+      "id": "TC-001",
+      "name": "full-arguments-produce-complete-guardrail",
+      "type": "happy-path",
+      "description": "Name, output folder, candidate rules and a source of truth are all given. The output instantiates the template end to end: scope line, the verbatim on-breach paragraph, both rule layers, runnable commands and a source-of-truth section. No template comment or placeholder survives.",
+      "input": {
+        "prompt": "Create a guardrail named docker-compose-services in guardrails/. It governs our Docker Compose service definitions: every service pins an image digest, no container runs as root, secrets are never plain environment values, and every service declares a healthcheck. Source of truth: skills/code-backend-nestjs/SKILL.md and the Compose Specification at https://compose-spec.io.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/docker-compose-services.md",
+        "contains": [
+          "# Guardrail:",
+          "Applies to",
+          "## Mandatory rules",
+          "**On breach:** `(error)` blocks delivery",
+          "### Deterministic rules",
+          "### Semantic rules (AI / human review)",
+          "## Minimum expected structure",
+          "## How to run the validation",
+          "## Verification",
+          "## Source of truth",
+          "(error)"
+        ],
+        "not_contains": [
+          "<!--",
+          "[Domain or standard]",
+          "[Verifiable rule",
+          "[rule-id]",
+          "[Group 1",
+          "[Tool]",
+          "[concrete scope]",
+          "TODO"
+        ]
+      },
+      "threshold": 0.95
+    },
+    {
+      "id": "TC-002",
+      "name": "topic-only-derives-name-and-default-path",
+      "type": "edge-case",
+      "description": "Only the topic is given — no name and no output folder. The skill derives a kebab-case file name from the domain and writes into the repository's existing guardrails/ directory without asking for either.",
+      "input": {
+        "prompt": "I need a guardrail for our GitHub Actions workflows: actions pinned to a full commit SHA, no plaintext secrets in the YAML, and an explicit permissions block on every job.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/*.md",
+        "contains": [
+          "# Guardrail:",
+          "**On breach:** `(error)` blocks delivery",
+          "### Deterministic rules",
+          "### Semantic rules (AI / human review)"
+        ],
+        "not_contains": [
+          "<!--",
+          "[Domain or standard]",
+          "docs/guardrails/",
+          "TODO"
+        ]
+      },
+      "threshold": 0.9
+    },
+    {
+      "id": "TC-003",
+      "name": "no-domain-asks-before-writing",
+      "type": "fail-fast",
+      "description": "A request that names neither a guardrail nor a subject to regulate must stop and ask what the guardrail governs. Nothing is written to disk.",
+      "input": {
+        "prompt": "Create a guardrail.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": null,
+        "contains": [
+          "guardrail"
+        ],
+        "not_contains": [
+          "## Mandatory rules",
+          "### Deterministic rules",
+          "## Source of truth"
+        ],
+        "decision": "REFINE",
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-004",
+      "name": "existing-guardrail-not-overwritten-silently",
+      "type": "error-handling",
+      "description": "When the target file already exists, the skill reports the path and offers regenerate / skip / compare instead of overwriting it.",
+      "input": {
+        "prompt": "Create a guardrail for E2E testing with Cypress and Cucumber in guardrails/.",
+        "existing_files": ["guardrails/test-cypress-cucumber.md"],
+        "flags": []
+      },
+      "expected": {
+        "contains": [
+          "guardrails/test-cypress-cucumber.md",
+          "(r)",
+          "(n)",
+          "(c)"
+        ],
+        "not_contains": [
+          "overwritten with --force"
+        ],
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-005",
+      "name": "unverifiable-rules-land-in-the-semantic-layer",
+      "type": "edge-case",
+      "description": "The core classification behaviour. Rules a named command can decide go to the deterministic layer with tool, rule id and severity; rules requiring judgement go to the semantic layer as prose, with no rule id and no (error)/(warn) marker.",
+      "input": {
+        "prompt": "Create a guardrail named api-error-handling in guardrails/. Rules: every endpoint returns application/problem+json (we run Spectral), no stack trace is ever serialised into a response body (greppable), and error messages must be meaningful to the end user and must never leak internal domain terminology.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/api-error-handling.md",
+        "contains": [
+          "### Deterministic rules",
+          "Spectral",
+          "(error)",
+          "### Semantic rules (AI / human review)",
+          "## How to run the validation"
+        ],
+        "not_contains": [
+          "<!--",
+          "[rule-id]",
+          "TODO"
+        ]
+      },
+      "threshold": 0.9
+    },
+    {
+      "id": "TC-006",
+      "name": "missing-source-of-truth-warns-and-does-not-invent",
+      "type": "error-handling",
+      "description": "A cited source-of-truth file that does not exist must be reported, not silently ignored and not fabricated. The skill asks whether to continue from the request alone rather than inventing rules attributed to the missing file.",
+      "input": {
+        "prompt": "Create a guardrail for our Terraform modules based on docs/standards/terraform-standard.md",
+        "existing_files": [],
+        "flags": []
+      },
+      "expected": {
+        "output_file": null,
+        "contains": [
+          "docs/standards/terraform-standard.md",
+          "not found"
+        ],
+        "not_contains": [
+          "## Mandatory rules",
+          "### Deterministic rules"
+        ],
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-007",
+      "name": "dry-run-plans-without-writing",
+      "type": "edge-case",
+      "description": "With --dry-run the skill reports the target path and the rules it would classify into each layer, and writes nothing to disk.",
+      "input": {
+        "prompt": "Create a guardrail for our REST API versioning conventions --dry-run",
+        "flags": ["--dry-run"]
+      },
+      "expected": {
+        "output_file": null,
+        "contains": [
+          "guardrails/",
+          "dry-run"
+        ],
+        "not_contains": [
+          "## Verification",
+          "## Source of truth"
+        ],
+        "exit_gracefully": true
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-008",
+      "name": "adapts-to-modified-template-without-skill-edits",
+      "type": "edge-case",
+      "description": "Guards the decoupling: the output shape comes from the template at run time, never from SKILL.md. A template carrying an extra section and a renamed placeholder must flow through to the output with no edit to SKILL.md.",
+      "input": {
+        "prompt": "Create a guardrail for our database migrations, using the template at .tmp/guardrail.template.modified.md",
+        "template_override": ".tmp/guardrail.template.modified.md",
+        "template_mutations": [
+          "insert section '## Rollback expectations' with placeholder '[How the change is reverted and who signs it off]'",
+          "rename placeholder '[concrete scope]' to '[the exact scope this guardrail binds]'"
+        ],
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/database-migrations.md",
+        "contains": [
+          "## Rollback expectations",
+          "## Mandatory rules",
+          "### Semantic rules (AI / human review)"
+        ],
+        "not_contains": [
+          "[How the change is reverted and who signs it off]",
+          "[the exact scope this guardrail binds]",
+          "[concrete scope]",
+          "<!--"
+        ]
+      },
+      "threshold": 1.0
+    }
+  ]
+}

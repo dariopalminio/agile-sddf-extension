@@ -25,6 +25,7 @@ Public repository of agent skills to extend agile-sddf
 
 ### Utilities
 
+- **`doc-guardrail-creator`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
 - **`doc-policy-creator`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
 - **`doc-release-notes`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
 - **`ui-generate-design-md`** — Create or update a DESIGN.md (design tokens + UI rules) from a product repository or a public website
