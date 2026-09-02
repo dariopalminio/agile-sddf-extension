@@ -102,24 +102,30 @@ describe('Users (API integration)', () => {
   });
 
   describe('/users/:id (DELETE)', () => {
-    let userId: string;
-
-    beforeAll(async () => {
-      const res = await request(app.getHttpServer())
+    // Deleting and confirming the deletion are one behaviour, so they live in
+    // one test. Splitting them across two it() blocks would make the second
+    // depend on the first having run — see common-pitfalls.md (Pitfall 5).
+    it('should delete an existing user and stop returning it', async () => {
+      // Arrange — this test creates the state it needs
+      const created = await request(app.getHttpServer())
         .post('/users')
-        .send({ name: 'Temp', email: 'temp@test.com' });
-      userId = res.body.id;
-    });
+        .send({ name: 'Temp', email: 'temp@test.com' })
+        .expect(201);
 
-    it('should delete an existing user', () => {
-      return request(app.getHttpServer())
-        .delete(`/users/${userId}`)
+      // Act
+      await request(app.getHttpServer())
+        .delete(`/users/${created.body.id}`)
         .expect(204);
+
+      // Assert
+      await request(app.getHttpServer())
+        .get(`/users/${created.body.id}`)
+        .expect(404);
     });
 
-    it('should confirm the user no longer exists', () => {
+    it('should return 404 when deleting a non-existent user', () => {
       return request(app.getHttpServer())
-        .get(`/users/${userId}`)
+        .delete('/users/non-existent-id')
         .expect(404);
     });
   });

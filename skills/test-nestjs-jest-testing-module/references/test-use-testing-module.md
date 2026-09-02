@@ -24,18 +24,28 @@ describe('UsersService', () => {
   });
 });
 
-// Test implementation details
+// Manual instantiation again, plus a hollow assertion
 describe('UsersController', () => {
   it('should call service', async () => {
     const service = { create: jest.fn() };
-    const controller = new UsersController(service as any);
+    const controller = new UsersController(service as any); // `as any` disables
+                                                            // the DI contract check
 
     await controller.create({ name: 'Test' });
 
-    expect(service.create).toHaveBeenCalled(); // Tests implementation, not behavior
+    expect(service.create).toHaveBeenCalled(); // never asserts WHAT was passed,
+                                               // nor what the controller returned
   });
 });
 ```
+
+> **On the second example:** asserting that a controller delegates to its service is
+> *not* an implementation detail — delegating is precisely a controller's behaviour.
+> The problems here are different: `as any` disables the check that would catch a
+> changed constructor signature, and `toHaveBeenCalled()` asserts neither the
+> arguments nor the returned value, so the test passes even if the controller drops
+> the DTO or returns `undefined`. The fix is `Test.createTestingModule` plus
+> `toHaveBeenCalledWith(dto)` and an assertion on the result.
 
 **Correct (use Test.createTestingModule with mocked dependencies):**
 
@@ -75,6 +85,10 @@ describe('UsersService', () => {
       const dto = { name: 'John', email: 'john@test.com' };
       const expectedUser = { id: '1', ...dto };
 
+      // Stub EVERY call the method makes, not just the one being asserted.
+      // `create` checks for duplicates first; leaving findOne unstubbed makes the
+      // test pass by accident (undefined is falsy) and break later for the wrong reason.
+      repo.findOne.mockResolvedValue(null);
       repo.save.mockResolvedValue(expectedUser);
 
       const result = await service.create(dto);
@@ -113,40 +127,78 @@ describe('UsersService', () => {
 // Testing guards and interceptors
 describe('RolesGuard', () => {
   let guard: RolesGuard;
-  let reflector: Reflector;
+  let reflector: jest.Mocked<Reflector>;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [RolesGuard, Reflector],
+      providers: [
+        RolesGuard,
+        { provide: Reflector, useValue: { getAllAndOverride: jest.fn() } },
+      ],
     }).compile();
 
     guard = module.get<RolesGuard>(RolesGuard);
-    reflector = module.get<Reflector>(Reflector);
+    reflector = module.get(Reflector);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should allow when no roles required', () => {
+    reflector.getAllAndOverride.mockReturnValue(undefined);
     const context = createMockExecutionContext({ user: { roles: [] } });
-    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(undefined);
 
     expect(guard.canActivate(context)).toBe(true);
   });
 
   it('should allow admin for admin-only route', () => {
+    reflector.getAllAndOverride.mockReturnValue(['admin']);
     const context = createMockExecutionContext({ user: { roles: ['admin'] } });
-    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(['admin']);
 
     expect(guard.canActivate(context)).toBe(true);
   });
+
+  // The cases that give the suite its value: without them a guard that always
+  // returned `true` would pass every test above.
+  it('should deny a user missing the required role', () => {
+    reflector.getAllAndOverride.mockReturnValue(['admin']);
+    const context = createMockExecutionContext({ user: { roles: ['user'] } });
+
+    expect(guard.canActivate(context)).toBe(false);
+  });
+
+  it('should deny when the request carries no user', () => {
+    reflector.getAllAndOverride.mockReturnValue(['admin']);
+    const context = createMockExecutionContext({});
+
+    expect(guard.canActivate(context)).toBe(false);
+  });
 });
 
-function createMockExecutionContext(request: Partial<Request>): ExecutionContext {
+/**
+ * Minimal ExecutionContext double for HTTP guards.
+ * Only the members a guard actually consumes are implemented; the cast is
+ * deliberate. If several guards need this, extract it to a shared
+ * `src/test/mocks/execution-context.ts` instead of copying it per spec file.
+ */
+function createMockExecutionContext(
+  request: Record<string, unknown> = {},
+): ExecutionContext {
   return {
     switchToHttp: () => ({
       getRequest: () => request,
+      getResponse: () => ({}),
+      getNext: () => ({}),
     }),
-    getHandler: () => jest.fn(),
-    getClass: () => jest.fn(),
-  } as ExecutionContext;
+    getHandler: () => function handler() {},
+    getClass: () => class TestController {},
+    getType: () => 'http',
+    getArgs: () => [request],
+    getArgByIndex: () => request,
+    switchToRpc: () => ({}),
+    switchToWs: () => ({}),
+  } as unknown as ExecutionContext;
 }
 ```
 

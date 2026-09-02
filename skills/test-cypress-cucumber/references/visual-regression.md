@@ -12,18 +12,18 @@ npm install --save-dev cypress-image-snapshot
 ```
 
 ```typescript
-// cypress/support/commands.ts
+// test/e2e/support/commands.ts
 import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
 addMatchImageSnapshotCommand({
   failureThreshold: 0.01,       // 1% pixel difference allowed
   failureThresholdType: 'percent',
-  customSnapshotsDir: 'cypress/snapshots',
-  customDiffDir: 'cypress/snapshots/__diff__',
+  customSnapshotsDir: 'test/e2e/snapshots',
+  customDiffDir: 'test/e2e/snapshots/__diff__',
 });
 ```
 
 ```typescript
-// cypress/support/index.ts
+// test/e2e/support/e2e.ts
 import './commands';
 ```
 
@@ -49,7 +49,7 @@ npm install --save-dev @percy/cypress @percy/cli
 ```
 
 ```typescript
-// cypress/support/commands.ts
+// test/e2e/support/commands.ts
 import '@percy/cypress';
 ```
 
@@ -157,7 +157,7 @@ jobs:
         if: failure()
         with:
           name: visual-diffs
-          path: cypress/snapshots/__diff__/
+          path: test/e2e/snapshots/__diff__/
 
 # Update snapshots: npx cypress run --env updateSnapshots=true
 # Store snapshots in git for PR review

@@ -154,10 +154,10 @@ describe('Checkout Flow', () => {
 ## Test Data Management
 
 It is excellent practice to keep data out of scenarios, especially when complex or reused.
-Externalize data to `cypress/fixtures/` JSON files and reference them in tests.
+Externalize data to `test/e2e/fixtures/` JSON files and reference them in tests.
 
 ```typescript
-// cypress/fixtures/testUsers.json
+// test/e2e/fixtures/testUsers.json
 // {
 //   "standard": { "email": "standard@test.com", "password": "TestPass123!" },
 //   "admin":    { "email": "admin@test.com",    "password": "AdminPass123!" }

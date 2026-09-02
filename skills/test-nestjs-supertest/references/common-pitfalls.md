@@ -26,7 +26,7 @@ of the HTTP stack was actually verified.
 
 **Fix:** drive the test through `request(app.getHttpServer())` against a
 real `INestApplication`, as shown in
-[setup-and-teardown.md](setup-and-teardown.md).
+[bootstrap-and-teardown.md](bootstrap-and-teardown.md).
 
 ## Pitfall 2 — Integration test with no setup/teardown
 
@@ -71,7 +71,7 @@ afterAll(async () => {
 If `main.ts` registers `app.useGlobalPipes(new ValidationPipe(...))` but the
 test module skips it, requests that should fail validation in production
 pass silently in the test — the suite is green but doesn't reflect real
-behavior. See [setup-and-teardown.md](setup-and-teardown.md) for the
+behavior. See [bootstrap-and-teardown.md](bootstrap-and-teardown.md) for the
 mirroring pattern.
 
 ## Pitfall 5 — Shared mutable state between tests

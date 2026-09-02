@@ -68,7 +68,7 @@ Used in `cucumber.js` profiles and CLI to filter scenarios:
 
 
 
-A continuación tienes una propuesta de **listado estandarizado de tipos de escenarios de prueba**, pensado para ser usado como **etiquetas (tags)** en herramientas como Playwright, Cucumber, Cypress, etc. Está organizado por categorías y priorizado según la frecuencia de uso en regresiones completas (etiqueta `@regression`) y rápidas (`@smoke`).
+Below is a standardised catalogue of **scenario types**, meant to be used as **tags** in Playwright, Cucumber, Cypress and similar tools. It is grouped by category and ordered by how often each type is used in full (`@regression`) versus fast (`@smoke`) regression runs.
 
 ---
 

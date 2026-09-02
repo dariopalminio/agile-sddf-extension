@@ -9,13 +9,13 @@ The `@badeball/cypress-cucumber-preprocessor` can emit JSON results after each r
   "cypress-cucumber-preprocessor": {
     "json": {
       "enabled": true,
-      "output": "cypress/cucumber-json/cucumber-report.json"
+      "output": "test/e2e/cucumber-json/cucumber-report.json"
     }
   }
 }
 ```
 
-JSON files accumulate in `cypress/cucumber-json/` — add this directory to `.gitignore`.
+JSON files accumulate in `test/e2e/cucumber-json/` — add this directory to `.gitignore`.
 
 ## HTML Report with multiple-cucumber-html-reporter
 
@@ -29,7 +29,7 @@ npm install --save-dev multiple-cucumber-html-reporter
 import { generate } from 'multiple-cucumber-html-reporter'
 
 generate({
-  jsonDir: 'cypress/cucumber-json',
+  jsonDir: 'test/e2e/cucumber-json',
   reportPath: 'reports/cucumber',
   metadata: {
     browser: { name: 'chrome', version: 'latest' },
@@ -51,7 +51,7 @@ Run: `node cucumber-html-report.js`
 
 ## Screenshots
 
-Screenshots on failure are captured automatically when `screenshotOnRunFailure: true` is set in `cypress.config.ts`. They land in `cypress/screenshots/` and are embedded in the Cypress run summary.
+Screenshots on failure are captured automatically when `screenshotOnRunFailure: true` is set in `cypress.config.ts`. They land in `test/e2e/screenshots/` and are embedded in the Cypress run summary.
 
 For custom screenshot attachment in hooks:
 
@@ -66,12 +66,12 @@ After(function () {
 
 ## Video Recording
 
-Videos of full runs land in `cypress/videos/` when `video: true`. Add to `.gitignore`:
+Videos of full runs land in `test/e2e/videos/` when `video: true`. Add to `.gitignore`:
 
 ```
-cypress/videos/
-cypress/screenshots/
-cypress/cucumber-json/
+test/e2e/videos/
+test/e2e/screenshots/
+test/e2e/cucumber-json/
 reports/
 ```
 
@@ -91,7 +91,7 @@ reports/
     name: cucumber-report
     path: |
       reports/cucumber/
-      cypress/videos/
-      cypress/screenshots/
+      test/e2e/videos/
+      test/e2e/screenshots/
     retention-days: 14
 ```

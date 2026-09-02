@@ -27,7 +27,7 @@ test("example", async () => {
 ```ts
 const user = userEvent.setup({
   delay: null, // no delay between events (faster tests)
-  advanceTimers: jest.advanceTimersByTime, // for fake timers
+  advanceTimers: vi.advanceTimersByTime, // REQUIRED when using vi.useFakeTimers()
   pointerEventsCheck: 0, // disable pointer-events check
   skipHover: true, // skip hover before click
 });
@@ -262,7 +262,7 @@ import userEvent from "@testing-library/user-event";
 
 test("form submission", async () => {
   const user = userEvent.setup();
-  const handleSubmit = jest.fn();
+  const handleSubmit = vi.fn();
 
   render(<LoginForm onSubmit={handleSubmit} />);
 
@@ -288,10 +288,10 @@ test("form submission", async () => {
 
 ## Options Reference
 
-| Option               | Default | Description                 |
-| -------------------- | ------- | --------------------------- |
-| `delay`              | 0       | Delay between events (ms)   |
-| `advanceTimers`      | -       | Function to advance timers  |
+| Option               | Default | Description                                        |
+| -------------------- | ------- | -------------------------------------------------- |
+| `delay`              | 0       | Delay between events (ms)                          |
+| `advanceTimers`      | -       | `vi.advanceTimersByTime` — required with fake timers |
 | `skipHover`          | false   | Skip hover before click     |
 | `skipClick`          | false   | Skip click before type      |
 | `skipAutoClose`      | false   | Don't release keys at end   |

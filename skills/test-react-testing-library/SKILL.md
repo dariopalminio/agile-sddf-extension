@@ -293,7 +293,9 @@ screen.debug(undefined, 10000); // max length
 ## jest-dom Matchers
 
 ```ts
-import "@testing-library/jest-dom";
+// In a Vitest project always import the /vitest entry point — it is the one that
+// registers the matchers on Vitest's `expect`.
+import "@testing-library/jest-dom/vitest";
 
 expect(element).toBeInTheDocument();
 expect(element).toBeVisible();
@@ -412,7 +414,7 @@ getByText((content, element) => {
 | ------------------- | --------------------------------- |
 | `render`            | Render component to DOM           |
 | `screen`            | Query the rendered DOM            |
-| `cleanup`           | Unmount components (auto in Jest) |
+| `cleanup`           | Unmount components (automatic in Vitest with `globals: true`) |
 | `act`               | Wrap state updates                |
 | `renderHook`        | Test custom hooks                 |
 | `within`            | Scope queries to element          |
@@ -429,7 +431,7 @@ For more details, consult these reference files (loaded on demand):
 | Topic       | Link                                                   |
 | ----------- | ------------------------------------------------------ |
 | Installation | [references/testing-library-installation.md](references/testing-library-installation.md) |
-| Queries     | [references/testing-library-queries.md](references/queries.md)         |
+| Queries     | [references/testing-library-queries.md](references/testing-library-queries.md) |
 | User Events | [references/testing-library-user-events.md](references/testing-library-user-events.md) |
 | API         | [references/testing-library-api.md](references/testing-library-api.md)                 |
 | Async       | [references/testing-library-async.md](references/testing-library-async.md)             |

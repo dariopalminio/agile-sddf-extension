@@ -128,7 +128,7 @@ test/e2e/
     catalog/
     cart/
     checkout/
-  fixtures/          ← cypress/fixtures/ JSON files per domain
+  fixtures/          ← test/e2e/fixtures/ JSON files per domain
     auth/
     catalog/
     checkout/
@@ -202,7 +202,7 @@ npx cypress run --spec="test/e2e/features/cart/**"
 
 ## Sharing Fixtures Across Features
 
-Cypress fixtures are JSON files in `cypress/fixtures/`. Load them in steps or hooks:
+Cypress fixtures are JSON files in `test/e2e/fixtures/`. Load them in steps or hooks:
 
 ```typescript
 // Load a fixture in a step

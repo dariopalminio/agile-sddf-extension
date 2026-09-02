@@ -90,8 +90,8 @@ Then('the response should contain the details of the post', async function () {
 
 ## 2b. Step Definitions against a NestJS app (recommended)
 
-When integrating with a real `INestApplication` (see Part 1b in
-`cucumber-integration.md`), the steps fire requests at `app.getHttpServer()`
+When integrating with a real `INestApplication` (see Part 2 in
+`bdd-cucumber-integration.md`), the steps fire requests at `app.getHttpServer()`
 via the typed `CustomWorld`, instead of a hard-coded external URL.
 
 **Feature:** `test/bdd/features/hello.feature`
@@ -145,7 +145,7 @@ Then(
 ```
 
 > Use `import request from 'supertest'` (default import) — it works because
-> `esModuleInterop` is enabled in the CommonJS tsconfig from Part 1b. For a
+> `esModuleInterop` is enabled in the CommonJS tsconfig from Part 2. For a
 > JSON endpoint assert against `this.response.body` instead of `.text`.
 
 ## 3. Running Cucumber Tests

@@ -205,13 +205,15 @@ test("loads and updates data", async () => {
 
 ### Testing Error States
 
+Mocking the module directly:
+
 ```tsx
+import { fetchData } from "@/api/client";
+
+vi.mock("@/api/client");
+
 test("shows error on failure", async () => {
-  server.use(
-    rest.get("/api/data", (req, res, ctx) => {
-      return res(ctx.status(500));
-    })
-  );
+  vi.mocked(fetchData).mockRejectedValueOnce(new Error("boom"));
 
   render(<DataComponent />);
 
@@ -219,6 +221,25 @@ test("shows error on failure", async () => {
   expect(await screen.findByRole("alert")).toHaveTextContent("Error loading data");
 });
 ```
+
+Or, if the project intercepts requests with MSW (v2 API — `http` + `HttpResponse`):
+
+```tsx
+import { http, HttpResponse } from "msw";
+
+test("shows error on failure", async () => {
+  server.use(
+    http.get("/api/data", () => new HttpResponse(null, { status: 500 }))
+  );
+
+  render(<DataComponent />);
+
+  expect(await screen.findByRole("alert")).toHaveTextContent("Error loading data");
+});
+```
+
+> MSW v1 used `rest.get("/api/data", (req, res, ctx) => res(ctx.status(500)))`. That API was
+> removed in v2 — use `http` and `HttpResponse` instead.
 
 ---
 

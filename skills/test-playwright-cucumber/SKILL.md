@@ -126,7 +126,7 @@ For more details, consult these reference files (loaded on demand):
 |-------|-----------|-----------|
 | Setup & Installation | `references/cucumber-setup.md` | Installing packages, tsconfig, first run |
 | Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
-| Starter Templates | `assets/` | Ready-to-use template files: `config/cucumber.js`, `features/sample.feature`, `steps/sample.steps.ts`, `support/world.ts`, `support/hooks.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
+| Starter Templates | `assets/` | Ready-to-use template files: `config/cucumber.js`, `features/sample.feature`, `steps/sample.steps.ts`, `pages/LoginPage.ts`, `support/world.ts`, `support/hooks.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
 | Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
 | BDD Architecture | `references/bdd-architecture.md` | Page Objects, selectors, naming conventions, folder structure |
 | BDD Architecture Diagram | `references/bdd-architecture.plantuml` | Visual representation of BDD architecture |

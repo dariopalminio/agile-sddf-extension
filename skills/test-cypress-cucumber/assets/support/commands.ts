@@ -1,5 +1,5 @@
 // Custom Cypress commands for BDD step definitions
-// Import this file from cypress/support/e2e.ts
+// Import this file from test/e2e/support/e2e.ts
 
 Cypress.Commands.add('getByTestId', (id: string) =>
   cy.get(`[data-testid="${id}"]`)
@@ -9,7 +9,7 @@ Cypress.Commands.add('findByTestId', { prevSubject: 'element' }, (subject, id: s
   cy.wrap(subject).find(`[data-testid="${id}"]`)
 )
 
-// TypeScript declarations — add to cypress/support/index.d.ts or global.d.ts
+// TypeScript declarations — add to test/e2e/support/index.d.ts or global.d.ts
 declare global {
   namespace Cypress {
     interface Chainable {

@@ -1,16 +1,19 @@
-# Hooks, World & Custom Commands
+# Hooks, Shared State & Custom Commands
 
-Managing scenario lifecycle, shared scenario context, setup/teardown, and reusable custom commands with `@badeball/cypress-cucumber-preprocessor`.
+Managing scenario lifecycle, sharing state between steps, setup/teardown, and reusable custom commands with `@badeball/cypress-cucumber-preprocessor`.
 
 ---
 
-## Key Difference from Playwright Cucumber
+## Key Differences from Playwright Cucumber
 
-In Cypress, **there is no browser lifecycle to manage in hooks**. Cypress launches and manages the browser automatically. Hooks are only needed for:
-- Seeding/cleaning test data via `cy.request()`
-- Setting cookies or local storage before a scenario
-- Taking screenshots on failure
-- Running tagged setup (e.g., authenticate before `@authenticated` scenarios)
+Two things work differently here, and both invert a rule from the Cucumber.js + Playwright stack:
+
+1. **There is no browser lifecycle to manage in hooks.** Cypress launches and manages the browser automatically. Hooks are only needed for:
+   - Seeding/cleaning test data via `cy.request()`
+   - Setting cookies or local storage before a scenario
+   - Taking screenshots on failure
+   - Running tagged setup (e.g., authenticate before `@authenticated` scenarios)
+2. **There is no World class.** `@badeball/cypress-cucumber-preprocessor` does not export `setWorldConstructor`/`World`; scenario state is shared with `.as()` aliases. See [Sharing State Between Steps](#sharing-state-between-steps--use-as-aliases) below.
 
 ---
 
@@ -88,63 +91,57 @@ Before({ order: 2, tags: '@authenticated' }, function () {
 
 ---
 
-## World Class (Optional)
+## Sharing State Between Steps — use `.as()` aliases
 
-The `World` is a per-scenario shared state object. Use it only when step definitions need to pass data between each other (e.g., an `orderId` created in a `Given` step must be used in a `Then` step).
+> **There is no World class in this stack.** Cypress runs in the browser on top
+> of Mocha, and `@badeball/cypress-cucumber-preprocessor` does **not** export
+> `setWorldConstructor`, `World` or `IWorldOptions` — those belong to
+> Cucumber.js, the runner used with Playwright. A `support/world.ts` written
+> against that API does not compile here. Share scenario state with Cypress
+> **aliases** instead.
 
-**Use `function()` syntax (not arrow functions) in step definitions to access `this`.**
-
-```typescript
-// test/e2e/support/world.ts
-import {
-  setWorldConstructor,
-  World,
-  IWorldOptions,
-} from '@badeball/cypress-cucumber-preprocessor';
-
-export interface CustomWorld extends World {
-  // Scenario-scoped data — no browser/page/context (Cypress manages those)
-  authToken?: string;
-  userId?: string;
-  orderId?: string;
-  createdResourceId?: string;
-}
-
-export class CypressWorld extends World implements CustomWorld {
-  authToken?: string;
-  userId?: string;
-  orderId?: string;
-  createdResourceId?: string;
-
-  constructor(options: IWorldOptions) {
-    super(options);
-  }
-}
-
-setWorldConstructor(CypressWorld);
-```
-
-Usage in step definitions (requires `function()` syntax, not arrow functions):
+Aliases are scoped to the current test and cleared automatically between
+scenarios, which is exactly the lifetime a World would have given you.
 
 ```typescript
 // test/e2e/step_definitions/orders/orders.steps.ts
-import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import { CypressWorld } from '../../support/world';
+import { Given, Then } from '@badeball/cypress-cucumber-preprocessor';
+import { config } from '@utils/config';
+import { OrdersPage } from '@pages/orders/OrdersPage';
 
-Given('el usuario crea una orden', function (this: CypressWorld) {
-  cy.request('POST', `${Cypress.env('API_BASE_URL')}/api/orders`, {
+Given('the user has created an order', () => {
+  cy.request('POST', `${config.apiBaseUrl}/api/orders`, {
     productId: 'prod-1',
     quantity: 1,
-  }).then((res) => {
-    this.orderId = res.body.id; // Store for use in later steps
-  });
+  })
+    .its('body.id')
+    .as('orderId');          // stored for later steps in this scenario
 });
 
-Then('la orden debería aparecer en el historial', function (this: CypressWorld) {
-  cy.visit('/orders');
-  cy.contains(this.orderId!).should('be.visible');
+Then('the order appears in the history', () => {
+  cy.get('@orderId').then((orderId) => {
+    cy.visit(OrdersPage.url);
+    cy.contains(String(orderId)).should('be.visible');
+  });
 });
 ```
+
+Module-level `let`/`var` is **not** an alternative: it survives across scenarios
+and makes tests order-dependent — see `bdd-no-module-state` in the guardrail and
+`references/anti-patterns.md` (Anti-pattern 6).
+
+Aliases work for elements, fixtures and network intercepts too:
+
+```typescript
+cy.get(LoginPage.submitButton).as('submitBtn');   // element
+cy.fixture('auth/users.json').as('users');        // fixture
+cy.intercept('GET', '**/api/orders').as('getOrders');   // request
+cy.wait('@getOrders');
+```
+
+> Because there is no `this`-bound World, **arrow functions are correct** in
+> Cypress step definitions. Do not carry over the opposite rule from a
+> Cucumber.js + Playwright suite.
 
 ---
 
@@ -184,7 +181,7 @@ Before({ tags: '@authenticated' }, function () {
 
 ## Custom Commands
 
-Custom commands reduce repetition in step definitions. Define them in `cypress/support/commands.ts` and import them in `cypress/support/e2e.ts`.
+Custom commands reduce repetition in step definitions. Define them in `test/e2e/support/commands.ts` and import them in `test/e2e/support/e2e.ts`.
 
 ### getByTestId
 
@@ -215,7 +212,7 @@ Cypress.Commands.add('getByTestId', (id: string) =>
 | Runs per | Scenario | Once per spec file |
 | Parallel note | Each spec file has its own lifecycle | Runs per spec file, not globally |
 
-> For true global setup across all spec files, use `cypress/support/e2e.ts` or a `setupNodeEvents` task in `cypress.config.ts`.
+> For true global setup across all spec files, use `test/e2e/support/e2e.ts` or a `setupNodeEvents` task in `cypress.config.ts`.
 
 ---
 

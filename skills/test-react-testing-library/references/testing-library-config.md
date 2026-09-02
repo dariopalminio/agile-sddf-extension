@@ -136,7 +136,7 @@ Enable pseudo-element support in `getComputedStyle`:
 configure({ computedStyleSupportsPseudoElements: true });
 ```
 
-Set to `true` in real browsers, `false` for jsdom.
+Set to `true` in real browsers, `false` for happy-dom and jsdom.
 
 Default: `false`
 
@@ -171,23 +171,14 @@ Default: `false`
 Apply configuration globally:
 
 ```ts
-// setupTests.ts
+// vitest.setup.ts
+import "@testing-library/jest-dom/vitest";
 import { configure } from "@testing-library/react";
-import "@testing-library/jest-dom";
 
 configure({
   testIdAttribute: "data-test-id",
   asyncUtilTimeout: 3000,
 });
-```
-
-Jest config:
-
-```js
-// jest.config.js
-module.exports = {
-  setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
-};
 ```
 
 Vitest config:
@@ -196,7 +187,7 @@ Vitest config:
 // vitest.config.ts
 export default defineConfig({
   test: {
-    setupFiles: ["./setupTests.ts"],
+    setupFiles: ["./vitest.setup.ts"],
   },
 });
 ```
@@ -239,50 +230,59 @@ import "@testing-library/react/dont-cleanup-after-each";
 
 ---
 
-## Jest Configuration
-
-### jsdom Environment
-
-```js
-// jest.config.js
-module.exports = {
-  testEnvironment: "jsdom", // Required for Jest 27+
-};
-```
-
-Or per file:
-
-```ts
-/**
- * @jest-environment jsdom
- */
-```
-
-### Module Resolution
-
-```js
-// jest.config.js
-module.exports = {
-  moduleDirectories: ["node_modules", "utils"],
-  moduleNameMapper: {
-    "^test-utils$": "<rootDir>/utils/test-utils",
-  },
-};
-```
-
----
-
 ## Vitest Configuration
 
 ```ts
 // vitest.config.ts
 import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  plugins: [react()],
   test: {
-    environment: "jsdom",
-    globals: true, // Enables auto-cleanup
-    setupFiles: ["./setupTests.ts"],
+    environment: "happy-dom", // this skill's default; jsdom is the slower, more complete alternative
+    globals: true, // enables RTL auto-cleanup
+    setupFiles: ["./vitest.setup.ts"],
+  },
+});
+```
+
+### DOM environment
+
+`happy-dom` is the default here: it is markedly faster and covers what a component test needs.
+Switch to `jsdom` only when you hit a browser API happy-dom does not implement — it is more
+complete and closer to the spec, at the cost of speed.
+
+```ts
+test: {
+  environment: "jsdom",
+}
+```
+
+Or per file, with a docblock comment:
+
+```ts
+/**
+ * @vitest-environment jsdom
+ */
+```
+
+### Module Resolution
+
+Path aliases come from Vite, so they are shared with the app build — no separate mapping is
+needed:
+
+```ts
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+import path from "node:path";
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "test-utils": path.resolve(__dirname, "./src/test/test-utils"),
+    },
   },
 });
 ```
@@ -290,7 +290,7 @@ export default defineConfig({
 ### Manual Cleanup (if globals: false)
 
 ```ts
-// setupTests.ts
+// vitest.setup.ts
 import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
 

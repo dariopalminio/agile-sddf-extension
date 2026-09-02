@@ -151,7 +151,7 @@ npm install --save-dev @testing-library/cypress
 ```
 
 ```typescript
-// cypress/support/commands.ts
+// test/e2e/support/commands.ts
 import '@testing-library/cypress/add-commands';
 ```
 

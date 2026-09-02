@@ -56,10 +56,10 @@ export class UsersPage {
   static readonly paginationNext  = "[data-testid='pagination-next']";
   static readonly paginationPrev  = "[data-testid='pagination-prev']";
 
-  // Action method: encapsulates a multi-step interaction
+  // Action method: encapsulates a multi-step interaction.
+  // No assertions here — the step asserts on UsersPage.loadingSpinner afterwards.
   static searchFor(query: string): void {
     cy.get(UsersPage.searchInput).clear().type(query);
-    cy.get(UsersPage.loadingSpinner).should('not.exist');
   }
 
   // Action method: returns a scoped element (chain-friendly)
@@ -89,13 +89,10 @@ export class CreateUserDialog {
   static readonly cancelButton  = "[data-testid='dialog-cancel-button']";
   static readonly emailError    = "[data-testid='dialog-email-error']";
 
-  static waitForOpen(): void {
-    cy.get(CreateUserDialog.container).should('be.visible');
-  }
-
-  static waitForClose(): void {
-    cy.get(CreateUserDialog.container).should('not.exist');
-  }
+  // No waitForOpen()/waitForClose() helpers: those are assertions, and
+  // assertions belong in Then steps. The step writes them directly:
+  //   cy.get(CreateUserDialog.container).should('be.visible');
+  //   cy.get(CreateUserDialog.container).should('not.exist');
 
   static fill(data: { email: string; name: string; role?: string }): void {
     cy.get(CreateUserDialog.emailInput).type(data.email);

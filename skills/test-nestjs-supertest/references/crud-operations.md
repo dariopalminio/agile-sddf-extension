@@ -2,7 +2,7 @@
 
 Request assertions for the four basic HTTP verbs against a REST resource.
 Every block below assumes `app: INestApplication` is already initialized as
-shown in [setup-and-teardown.md](setup-and-teardown.md).
+shown in [bootstrap-and-teardown.md](bootstrap-and-teardown.md).
 
 ## POST — create a resource
 
@@ -78,26 +78,34 @@ describe('/users/:id (PUT)', () => {
 
 ## DELETE — remove a resource
 
+Deleting and confirming the deletion are one behaviour, so they belong in one
+test. Splitting them across two `it()` blocks makes the second depend on the
+first having run — it then breaks under `.only`, reordering, or parallel
+execution (see [common-pitfalls.md](common-pitfalls.md), Pitfall 5).
+
 ```typescript
 describe('/users/:id (DELETE)', () => {
-  let userId: string;
-
-  beforeAll(async () => {
-    const res = await request(app.getHttpServer())
+  it('should delete an existing user and stop returning it', async () => {
+    // Arrange — this test creates the state it needs
+    const created = await request(app.getHttpServer())
       .post('/users')
-      .send({ name: 'Temp', email: 'temp@test.com' });
-    userId = res.body.id;
-  });
+      .send({ name: 'Temp', email: 'temp@test.com' })
+      .expect(201);
 
-  it('should delete an existing user', () => {
-    return request(app.getHttpServer())
-      .delete(`/users/${userId}`)
+    // Act
+    await request(app.getHttpServer())
+      .delete(`/users/${created.body.id}`)
       .expect(204);
+
+    // Assert
+    await request(app.getHttpServer())
+      .get(`/users/${created.body.id}`)
+      .expect(404);
   });
 
-  it('should confirm the user no longer exists', () => {
+  it('should return 404 when deleting a non-existent user', () => {
     return request(app.getHttpServer())
-      .get(`/users/${userId}`)
+      .delete('/users/non-existent-id')
       .expect(404);
   });
 });

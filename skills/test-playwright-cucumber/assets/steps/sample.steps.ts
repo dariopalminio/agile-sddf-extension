@@ -1,41 +1,32 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { expect } from '@playwright/test';
+import { expect } from '@playwright/test';        // never `test` from this package
 import { PlaywrightWorld } from '../support/world';
+import { LoginPage } from '../pages/LoginPage';
 import { config } from '../utils/config';
-// NOTE: Replace direct page interactions below with a LoginPage Page Object.
-// See playwright-automation-expert > references/page-object-model.md
-// import { LoginPage } from '../pages/auth/LoginPage';
+
+// Always `async function (this: PlaywrightWorld)` — arrow functions lose the World binding.
+// Given/When delegate to a Page Object; expect() appears only in Then steps.
 
 // ── Given ─────────────────────────────────────────────────────────────────
 
 Given('I am on the login page', async function (this: PlaywrightWorld) {
-  await this.page.goto('/login');
-  // Navigate only — no assertions in Given steps
+  await new LoginPage(this.page).open();
 });
 
 // ── When ──────────────────────────────────────────────────────────────────
 
 When('I enter valid credentials', async function (this: PlaywrightWorld) {
-  // TODO: replace with LoginPage.login() once Page Object is created
-  await this.page.getByLabel('Email').fill(config.testUserEmail);
-  await this.page.getByLabel('Password').fill(config.testUserPassword);
-  await this.page.getByRole('button', { name: 'Log in' }).click();
+  await new LoginPage(this.page).login(config.testUserEmail, config.testUserPassword);
 });
 
 When('I enter an invalid password', async function (this: PlaywrightWorld) {
-  // TODO: replace with LoginPage.login() once Page Object is created
-  await this.page.getByLabel('Email').fill(config.testUserEmail);
-  await this.page.getByLabel('Password').fill('wrong-password');
-  await this.page.getByRole('button', { name: 'Log in' }).click();
+  await new LoginPage(this.page).login(config.testUserEmail, 'wrong-password');
 });
 
 When(
   'I submit the login form with email {string} and password {string}',
   async function (this: PlaywrightWorld, email: string, password: string) {
-    // TODO: replace with LoginPage.login() once Page Object is created
-    await this.page.getByLabel('Email').fill(email);
-    await this.page.getByLabel('Password').fill(password);
-    await this.page.getByRole('button', { name: 'Log in' }).click();
+    await new LoginPage(this.page).login(email, password);
   }
 );
 
@@ -63,7 +54,9 @@ Then('I should remain on the login page', async function (this: PlaywrightWorld)
 Then(
   'I should see a validation error for the {string} field',
   async function (this: PlaywrightWorld, fieldName: string) {
-    const field = this.page.getByLabel(new RegExp(fieldName, 'i'));
-    await expect(field).toHaveAttribute('aria-invalid', 'true');
+    await expect(new LoginPage(this.page).fieldError(fieldName)).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    );
   }
 );

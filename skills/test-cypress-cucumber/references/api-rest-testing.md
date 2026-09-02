@@ -25,7 +25,7 @@ export default defineConfig({
 Para reutilizar headers de autenticación, usar un custom command:
 
 ```typescript
-// cypress/support/commands.ts
+// test/e2e/support/commands.ts
 Cypress.Commands.add('loginApi', (email: string, password: string) => {
   cy.request({
     method: 'POST',

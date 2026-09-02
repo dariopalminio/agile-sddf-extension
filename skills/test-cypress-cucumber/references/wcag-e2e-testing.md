@@ -29,19 +29,19 @@ npm install --save-dev cypress-axe axe-core
 ### Register commands
 
 ```typescript
-// cypress/support/commands.ts
+// test/e2e/support/commands.ts
 import 'cypress-axe';
 ```
 
 ```typescript
-// cypress/support/e2e.ts
+// test/e2e/support/e2e.ts
 import './commands';
 ```
 
 ### TypeScript types (if needed)
 
 ```typescript
-// cypress/support/index.d.ts
+// test/e2e/support/index.d.ts
 import 'cypress-axe';
 ```
 
@@ -200,7 +200,7 @@ Then('la página no debería tener violaciones de accesibilidad', () => {
   uses: actions/upload-artifact@v4
   with:
     name: a11y-failures
-    path: cypress/screenshots/
+    path: test/e2e/screenshots/
 ```
 
 ---

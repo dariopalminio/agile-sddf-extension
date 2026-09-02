@@ -6,6 +6,14 @@ This guide documents the setup and usage of a BDD testing framework for REST API
 
 # BDD: Part 1 - Installation and Configuration
 
+> **Scope of Part 1 — standalone setup, not the NestJS one.** This part sets up
+> Cucumber against an **external URL** with a root `features/` folder. It is a
+> self-contained introduction to the stack; its folder layout, `cucumber.js` and
+> npm scripts do **not** apply to a NestJS project. For that, follow **Part 2**,
+> which boots a real `INestApplication` in-process, puts the suite under
+> `test/bdd/`, and keeps Cucumber off the existing Jest `test` script. Where the
+> two parts differ, **Part 2 wins for NestJS projects**.
+
 ## 1. Introduction
 
 This stack allows you to write API tests using:
@@ -96,7 +104,8 @@ module.exports = {
   default: {
     require: ['features/support/**/*.ts'],
     format: ['progress', 'json:results/cucumber-report.json'],
-    publishQuiet: true,
+    // No `publishQuiet`: it is deprecated on cucumber >= 10 and emits a warning.
+    // The publish banner is already off by default.
   },
 };
 ```
@@ -108,10 +117,13 @@ module.exports = {
   "scripts": {
     "test:supertest": "jest specs/",
     "test:cucumber": "cucumber-js --require features/support/*.ts features/*.feature",
-    "test": "npm run test:supertest && npm run test:cucumber"
+    "test:api": "npm run test:supertest && npm run test:cucumber"
   }
 }
 ```
+
+> The aggregate script is named `test:api`, not `test`. In a NestJS project
+> `test` already runs the Jest unit suite — see §10.
 
 ## 5. SuperTest + Jest (Optional but Recommended)
 

@@ -55,7 +55,7 @@ Use this skill when:
 4. **Implement steps** — TypeScript step definitions using `Given`/`When`/`Then`
 5. **Build Page Objects** — POM classes consumed by steps (see `cypress-automation`)
 6. **Configure cypress.config.ts** — Add preprocessor plugin + `filterSpecs` / `omitFiltered`
-7. **Set up hooks** — Lifecycle hooks in `cypress/support/hooks.ts`
+7. **Set up hooks** — Lifecycle hooks in `test/e2e/support/hooks.ts`
 8. **Integrate CI** — GitHub Actions with tag-based execution
 
 ## Constraints
@@ -66,7 +66,7 @@ Use this skill when:
 - Put assertions (`should(...)`, `expect(...)`) only in `Then` steps
 - Configure `filterSpecs: true` and `omitFiltered: true` in `cypress.config.ts` for performance
 - Call `await addCucumberPreprocessorPlugin(on, config)` inside `setupNodeEvents` and **always return `config`**
-- Set `specPattern: 'cypress/e2e/**/*.feature'` in `cypress.config.ts`
+- Set `specPattern: 'test/e2e/features/**/*.feature'` in `cypress.config.ts`
 - Use `data-testid` attributes for all test selectors — never CSS classes or HTML elements
 - Tag every scenario with at least one domain tag (`@auth`, `@checkout`) and one run-level tag (`@smoke`, `@sanity`, or `@regression`); every spec must have at least one `@smoke` scenario
 - Use `{string}`, `{int}`, `{float}` Cucumber expressions for step parameters
@@ -82,7 +82,7 @@ Use this skill when:
 - Use fragile CSS class selectors or element tag selectors
 - Use `cy.intercept()` without `.as()` when you need to wait on the request
 - Omit `return config` from `setupNodeEvents` (preprocessor silently breaks)
-- Commit `cypress/videos`, `cypress/screenshots`, `cypress/cucumber-json`, or `reports/` to source control
+- Commit `test/e2e/videos`, `test/e2e/screenshots`, `test/e2e/cucumber-json`, or `reports/` to source control
 
 ## Output Templates
 
@@ -92,18 +92,18 @@ When IMPLEMENT Cypress Cucumber BDD tests, always confirm the complexity level f
 1. Scaffolding commands
 2. `cypress.config.ts` with preprocessor plugin
 3. One `.feature` file
-4. Matching `cypress/support/step_definitions/<name>.steps.ts`
+4. Matching `test/e2e/step_definitions/<name>.steps.ts`
 
 **Level 2 — Intermediate** (Page Objects added)
 All of Level 1, plus:
-5. Page Object classes for each feature under `cypress/support/pages/`
+5. Page Object classes for each feature under `test/e2e/pages/`
 6. Updated steps delegating to Page Objects
 
 **Level 3 — Advanced** (hooks + config + fixtures)
 All of Level 2, plus:
-7. `cypress/support/hooks.ts` — Before/After lifecycle hooks
-8. `cypress/utils/config.ts` — Environment configuration via `Cypress.env()`
-9. `cypress/fixtures/` — Test data files
+7. `test/e2e/support/hooks.ts` — Before/After lifecycle hooks
+8. `test/e2e/utils/config.ts` — Environment configuration via `Cypress.env()`
+9. `test/e2e/fixtures/` — Test data files
 
 **Level 4 — Enterprise** (multi-env + CI + reporting)
 All of Level 3, plus:
@@ -124,7 +124,7 @@ For more details, consult these reference files (loaded on demand):
 |-------|-----------|-----------|
 | Setup & Installation | `references/cucumber-setup.md` | Installing packages, cypress.config.ts, first run |
 | Project Structure | `references/project-structure.md` | Folder layout by complexity level — run `node scripts/scaffold-bdd.mjs --level <1-4>` to generate the full directory structure automatically |
-| Starter Templates | `assets/` | Ready-to-use template files: `config/cypress.config.ts`, `features/sample.feature`, `steps/sample.steps.ts`, `support/hooks.ts`, `support/commands.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
+| Starter Templates | `assets/` | Ready-to-use template files: `config/cypress.config.ts`, `features/sample.feature`, `steps/sample.steps.ts`, `pages/LoginPage.ts`, `support/hooks.ts`, `support/commands.ts`, `utils/config.ts`, `tsconfig/tsconfig.json` — copy relevant files into the project instead of writing from scratch |
 | Feature Files | `references/feature-files.md` | Writing Gherkin: Scenario, Outline, Background, DataTable |
 | Feature Organization | `references/feature-organization.md` | Organizing tests by feature, domain, and complexity level |
 | Step Definitions | `references/step-definitions.md` | Given/When/Then, parameter types, state sharing |
@@ -133,7 +133,7 @@ For more details, consult these reference files (loaded on demand):
 | Page Objects | `references/page-object-template.ts` | Cypress Page Object template: static data-testid selectors, no cy.* inside |
 | Selectors & Locators | `references/selectors-locators.md` | Best practices for selecting elements in Cypress tests |
 | Naming Conventions | `references/naming-conventions.md` | File and class naming patterns, folder structure, Page Objects, components |
-| Hooks & World | `references/hooks-and-world.md` | Scenario lifecycle, shared World context, custom commands (getByTestId), cy.session(); key differences vs Playwright Cucumber |
+| Hooks & Shared State | `references/hooks-and-commands.md` | Scenario lifecycle, sharing state with `.as()` aliases (there is no World in this stack), custom commands (getByTestId), cy.session(); key differences vs Playwright Cucumber |
 | Tags & Profiles | `references/tags-and-profiles.md` | Tag expressions, cascading Feature→Scenario, filterSpecs, run profiles |
 | Reporting | `references/reporting.md` | multiple-cucumber-html-reporter, screenshots, CI artifacts |
 | Anti-patterns | `references/anti-patterns.md` | Common mistakes and how to fix them |

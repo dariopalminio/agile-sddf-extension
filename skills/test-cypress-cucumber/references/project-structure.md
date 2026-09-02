@@ -5,7 +5,7 @@ Folder layout for `@badeball/cypress-cucumber-preprocessor` + Cypress projects b
 All BDD test files live under `test/e2e/` alongside existing app source. `cypress.config.ts` stays at the **project root** (where Cypress looks for it by default). Configure `specPattern` and `supportFile` to point into `test/e2e/`.
 
 > **Note — why `test/e2e/` instead of the default convention?**
-> - **Cypress default:** Cypress expects specs in `cypress/e2e/`, with `cypress/support/` (`e2e.ts`, `commands.ts`) and `cypress/fixtures/` at the project root.
+> - **Cypress default:** Cypress expects specs in `cypress/e2e/`, with `cypress/support/` (`e2e.ts`, `commands.ts`) and `cypress/fixtures/` at the project root. **This skill does not use that layout** — the paths below are the ones to follow.
 > - **This skill's choice:** centralize everything under a single `test/e2e/` folder and point Cypress there explicitly via `cypress.config.ts` (`specPattern` + `supportFile`). This co-locates E2E/BDD with other test types under one top-level `test/`, keeps the repo root clean, and clearly separates E2E from unit/integration tests.
 
 ---
@@ -229,8 +229,8 @@ export default defineConfig({
 # Cypress runtime output
 e2e/cucumber-json/
 e2e/reports/
-cypress/videos/
-cypress/screenshots/
+test/e2e/videos/
+test/e2e/screenshots/
 
 # Node
 node_modules/

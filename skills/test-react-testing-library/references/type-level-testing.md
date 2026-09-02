@@ -68,7 +68,9 @@ import { describe, expectTypeOf, it } from "vitest";
 expectTypeOf<ButtonColor>().toEqualTypeOf<"default" | "primary">();
 
 // Assignability (less strict)
-expectTypeOf<"primary">().toMatchTypeOf<ButtonColor>();
+expectTypeOf<"primary">().toExtend<ButtonColor>();
+// On Vitest 2 and earlier this matcher is called `toMatchTypeOf`; it still works on
+// Vitest 3 but is deprecated in favour of `toExtend`.
 
 // Type checks
 expectTypeOf(value).toBeString();
@@ -148,7 +150,7 @@ describe("ButtonProps", () => {
 
   it("extends button HTML attributes", () => {
     // ButtonProps should accept standard button attrs like onClick, aria-label
-    expectTypeOf<ButtonProps>().toMatchTypeOf<{
+    expectTypeOf<ButtonProps>().toExtend<{
       onClick?: React.MouseEventHandler<HTMLButtonElement>;
       "aria-label"?: string;
     }>();
@@ -170,7 +172,7 @@ describe("Input forwardRef", () => {
     // The component should be typed to accept a ref to HTMLInputElement
     const ref = React.createRef<HTMLInputElement>();
     // If this compiles, the ref type is correct
-    expectTypeOf(ref).toMatchTypeOf<React.RefObject<HTMLInputElement>>();
+    expectTypeOf(ref).toExtend<React.RefObject<HTMLInputElement>>();
   });
 
   it("errorMessage is optional string", () => {
@@ -218,11 +220,11 @@ describe("Public API exports", () => {
 describe("ButtonColor — regression guard", () => {
   it("secondary variant is still in ButtonColor (regression: was removed in v1.2)", () => {
     // If "secondary" is accidentally removed from ButtonColor, this test fails
-    expectTypeOf<"secondary">().toMatchTypeOf<ButtonColor>();
+    expectTypeOf<"secondary">().toExtend<ButtonColor>();
   });
 
   it("danger variant is still in ButtonColor", () => {
-    expectTypeOf<"danger">().toMatchTypeOf<ButtonColor>();
+    expectTypeOf<"danger">().toExtend<ButtonColor>();
   });
 });
 ```

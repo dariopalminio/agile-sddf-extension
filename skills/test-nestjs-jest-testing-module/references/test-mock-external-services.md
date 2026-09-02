@@ -138,8 +138,12 @@ describe('UsersService', () => {
   });
 });
 
-// Create mock factory for complex SDKs
-function createMockStripe(): jest.Mocked<Stripe> {
+// Create mock factory for complex SDKs.
+// Do NOT annotate the return as `jest.Mocked<Stripe>`: that forces you to implement
+// hundreds of methods, and the usual escape hatch (`as any`) throws away all typing.
+// Let the return type be inferred and derive the mock type from the factory itself —
+// you keep exact typing for the members you did mock.
+function createMockStripe() {
   return {
     paymentIntents: {
       create: jest.fn(),
@@ -151,8 +155,23 @@ function createMockStripe(): jest.Mocked<Stripe> {
       create: jest.fn(),
       retrieve: jest.fn(),
     },
-  } as any;
+  };
 }
+
+type MockStripe = ReturnType<typeof createMockStripe>;
+
+// Usage: `stripe.paymentIntents.create` is fully typed as a jest.Mock
+let stripe: MockStripe;
+
+beforeEach(async () => {
+  stripe = createMockStripe();
+
+  const module = await Test.createTestingModule({
+    providers: [PaymentService, { provide: STRIPE_CLIENT, useValue: stripe }],
+  }).compile();
+
+  service = module.get(PaymentService);
+});
 
 // Mock time for time-dependent tests
 describe('TokenService', () => {

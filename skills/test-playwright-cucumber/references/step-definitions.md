@@ -14,9 +14,9 @@ Given('the user is on the login page', async () => {
   await this.page.goto('/login'); // TypeError: Cannot read properties of undefined
 });
 
-// CORRECT — regular async function
+// CORRECT — regular async function, delegating to a Page Object
 Given('the user is on the login page', async function (this: PlaywrightWorld) {
-  await this.page.goto('/login');
+  await new LoginPage(this.page).open();
 });
 ```
 
@@ -24,24 +24,25 @@ Given('the user is on the login page', async function (this: PlaywrightWorld) {
 
 ## Basic Step Definition Structure
 
+`Given` and `When` steps **delegate to a Page Object** — they never drive `this.page` themselves
+(`bdd-no-page-in-given-when`). Passing `this.page` to a Page Object constructor is allowed and is
+the intended shape. `this.page` appears in a `Then` only to build the locator being asserted on.
+
 ```typescript
 // step_definitions/auth/login.steps.ts
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { PlaywrightWorld } from '../../utils/world';
-import { LoginPage } from '../../pages/auth/LoginPage';
+import { PlaywrightWorld } from '@support/world';
+import { LoginPage } from '@pages/auth/LoginPage';
 
 Given('the user is on the login page', async function (this: PlaywrightWorld) {
-  await this.page.goto('/login');
+  await new LoginPage(this.page).open();
 });
 
 When(
   'the user enters email {string} and password {string}',
   async function (this: PlaywrightWorld, email: string, password: string) {
-    const loginPage = new LoginPage(this.page);
-    await loginPage.fillEmail(email);
-    await loginPage.fillPassword(password);
-    await loginPage.submit();
+    await new LoginPage(this.page).login(email, password);
   }
 );
 
@@ -77,7 +78,7 @@ Then(
 ```typescript
 // {string} — most common, for names, labels, URLs
 When('the user searches for {string}', async function (this: PlaywrightWorld, query: string) {
-  await this.page.getByRole('searchbox').fill(query);
+  await new CatalogPage(this.page).search(query);
 });
 
 // {int} — for counts, quantities
@@ -90,7 +91,7 @@ Given(/the user is logged in as (?:an? )?(admin|buyer|seller)/, async function (
   this: PlaywrightWorld,
   role: string
 ) {
-  await this.page.goto(`/login?role=${role}`);
+  await new LoginPage(this.page).loginAs(role);
 });
 ```
 
@@ -106,10 +107,7 @@ When(
   async function (this: PlaywrightWorld, dataTable: DataTable) {
     const data = dataTable.rowsHash(); // { firstName: 'John', lastName: 'Doe', ... }
 
-    await this.page.getByLabel('First name').fill(data['firstName']);
-    await this.page.getByLabel('Last name').fill(data['lastName']);
-    await this.page.getByLabel('Email').fill(data['email']);
-    await this.page.getByLabel('Password').fill(data['password']);
+    await new RegisterPage(this.page).fillForm(data);
   }
 );
 
@@ -117,14 +115,10 @@ When(
   'the user adds the following items to the cart:',
   async function (this: PlaywrightWorld, dataTable: DataTable) {
     const rows = dataTable.hashes(); // [{ product: 'Laptop Pro', quantity: '1' }, ...]
+    const catalog = new CatalogPage(this.page);
 
     for (const row of rows) {
-      await this.page.getByRole('row', { name: row['product'] })
-        .getByRole('spinbutton')
-        .fill(row['quantity']);
-      await this.page.getByRole('row', { name: row['product'] })
-        .getByRole('button', { name: 'Add to cart' })
-        .click();
+      await catalog.addToCart(row['product'], Number(row['quantity']));
     }
   }
 );
@@ -147,8 +141,7 @@ When(
 When(
   'the user submits a ticket with the following description:',
   async function (this: PlaywrightWorld, docString: string) {
-    await this.page.getByLabel('Description').fill(docString);
-    await this.page.getByRole('button', { name: 'Submit ticket' }).click();
+    await new SupportPage(this.page).submitTicket(docString);
   }
 );
 ```
@@ -161,21 +154,20 @@ Pass data between steps in the same scenario via `this`:
 
 ```typescript
 When('the user creates a new order', async function (this: PlaywrightWorld) {
-  const response = await this.page.waitForResponse('**/api/orders');
-  const body = await response.json();
-  this.orderId = body.id; // store for later steps
+  // The Page Object performs the action and returns the value; the step stores it.
+  this.orderId = await new CheckoutPage(this.page).placeOrder();
 });
 
 Then('the order confirmation page should show the order ID', async function (this: PlaywrightWorld) {
   await expect(
     this.page.getByTestId('order-id')
-  ).toHaveText(this.orderId);
+  ).toHaveText(this.orderId!);
 });
 ```
 
 Declare the property in the World class:
 ```typescript
-// utils/world.ts
+// support/world.ts
 export class PlaywrightWorld extends World {
   orderId?: string;
   // ...
@@ -191,8 +183,8 @@ Steps are global — a step defined in `auth/login.steps.ts` can be used in any 
 ```typescript
 // step_definitions/shared/common.steps.ts
 Given('the application is running', async function (this: PlaywrightWorld) {
-  await this.page.goto('/');
-  await this.page.waitForLoadState('networkidle');
+  // The Page Object navigates and waits for a specific element — never networkidle.
+  await new HomePage(this.page).open();
 });
 
 Then(

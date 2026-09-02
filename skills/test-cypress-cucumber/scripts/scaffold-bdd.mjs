@@ -21,40 +21,41 @@ if (![1, 2, 3, 4].includes(level)) {
 // ── Directory sets by level ───────────────────────────────────────────────
 
 const level1Dirs = [
-  'cypress/e2e/features',
-  'cypress/support/step_definitions',
-  'cypress/support',
+  'test/e2e/features',
+  'test/e2e/step_definitions',
+  'test/e2e/support',
+  'test/e2e/reports',
 ]
 
 const level2Dirs = [
   ...level1Dirs,
-  'cypress/e2e/features/auth',
-  'cypress/support/step_definitions/auth',
-  'cypress/support/step_definitions/shared',
-  'cypress/support/pages/auth',
+  'test/e2e/features/auth',
+  'test/e2e/step_definitions/auth',
+  'test/e2e/step_definitions/shared',
+  'test/e2e/pages/auth',
 ]
 
 const level3Dirs = [
   ...level2Dirs,
-  'cypress/e2e/features/checkout',
-  'cypress/support/step_definitions/checkout',
-  'cypress/support/pages/checkout',
-  'cypress/utils',
-  'cypress/fixtures/auth',
-  'cypress/fixtures/products',
+  'test/e2e/features/checkout',
+  'test/e2e/step_definitions/checkout',
+  'test/e2e/pages/checkout',
+  'test/e2e/utils',
+  'test/e2e/fixtures/auth',
+  'test/e2e/fixtures/products',
 ]
 
 const level4Dirs = [
   ...level3Dirs,
-  'cypress/e2e/features/catalog',
-  'cypress/e2e/features/cart',
-  'cypress/e2e/features/admin',
-  'cypress/support/step_definitions/catalog',
-  'cypress/support/step_definitions/cart',
-  'cypress/support/step_definitions/admin',
-  'cypress/support/pages/catalog',
-  'cypress/support/pages/cart',
-  'cypress/support/pages/admin',
+  'test/e2e/features/catalog',
+  'test/e2e/features/cart',
+  'test/e2e/features/admin',
+  'test/e2e/step_definitions/catalog',
+  'test/e2e/step_definitions/cart',
+  'test/e2e/step_definitions/admin',
+  'test/e2e/pages/catalog',
+  'test/e2e/pages/cart',
+  'test/e2e/pages/admin',
   '.github/workflows',
 ]
 
@@ -82,8 +83,8 @@ import createEsbuildPlugin from '@bahmutov/cypress-esbuild-preprocessor'
 export default defineConfig({
   e2e: {
     baseUrl: process.env.VITE_APP_TO_TEST_URI ?? 'http://localhost:5173',
-    specPattern: 'cypress/e2e/**/*.feature',
-    supportFile: 'cypress/support/e2e.ts',
+    specPattern: 'test/e2e/features/**/*.feature',
+    supportFile: 'test/e2e/support/e2e.ts',
     viewportWidth: 1280,
     viewportHeight: 720,
     video: true,
@@ -106,9 +107,9 @@ console.log('  created: cypress.config.ts')
 const preprocessorRc = JSON.stringify(
   {
     stepDefinitions: [
-      'cypress/e2e/[filepath]/**/*.{js,ts}',
-      'cypress/e2e/[filepath].{js,ts}',
-      'cypress/support/step_definitions/**/*.{js,ts}',
+      'test/e2e/features/[filepath]/**/*.{js,ts}',
+      'test/e2e/features/[filepath].{js,ts}',
+      'test/e2e/step_definitions/**/*.{js,ts}',
     ],
     filterSpecs: true,
     omitFiltered: true,
@@ -124,7 +125,7 @@ console.log('  created: .cypress-cucumber-preprocessorrc.json')
 
 const paths =
   level >= 2
-    ? `,\n    "paths": {\n      "@pages/*": ["cypress/support/pages/*"],\n      "@utils/*": ["cypress/utils/*"],\n      "@support/*": ["cypress/support/*"],\n      "@fixtures/*": ["cypress/fixtures/*"]\n    }`
+    ? `,\n    "paths": {\n      "@pages/*": ["test/e2e/pages/*"],\n      "@utils/*": ["test/e2e/utils/*"],\n      "@support/*": ["test/e2e/support/*"],\n      "@fixtures/*": ["test/e2e/fixtures/*"]\n    }`
     : ''
 
 const tsconfig = `{
@@ -141,27 +142,27 @@ const tsconfig = `{
     "types": ["cypress"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "cypress/**/*.ts", "**/*.feature", "cypress.config.ts"],
-  "exclude": ["node_modules", "dist", "reports", "cypress/videos", "cypress/screenshots"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/e2e/**/*.ts", "**/*.feature", "cypress.config.ts"],
+  "exclude": ["node_modules", "dist", "test/e2e/reports", "test/e2e/videos", "test/e2e/screenshots"]
 }
 `
 
 writeFileSync('tsconfig.json', tsconfig)
 console.log('  created: tsconfig.json')
 
-// ── cypress/support/e2e.ts ────────────────────────────────────────────────
+// ── test/e2e/support/e2e.ts ────────────────────────────────────────────────
 
 const e2eSupport = level >= 3
   ? `import './commands'\nimport './hooks'\n`
   : `import './commands'\n`
 
-writeFileSync('cypress/support/e2e.ts', e2eSupport)
-console.log('  created: cypress/support/e2e.ts')
+writeFileSync('test/e2e/support/e2e.ts', e2eSupport)
+console.log('  created: test/e2e/support/e2e.ts')
 
-// ── cypress/support/commands.ts ───────────────────────────────────────────
+// ── test/e2e/support/commands.ts ───────────────────────────────────────────
 
 writeFileSync(
-  'cypress/support/commands.ts',
+  'test/e2e/support/commands.ts',
   `Cypress.Commands.add('getByTestId', (id: string) =>
   cy.get(\`[data-testid="\${id}"]\`)
 )
@@ -175,13 +176,13 @@ declare global {
 }
 `
 )
-console.log('  created: cypress/support/commands.ts')
+console.log('  created: test/e2e/support/commands.ts')
 
-// ── cypress/utils/config.ts (Level 3+) ───────────────────────────────────
+// ── test/e2e/utils/config.ts (Level 3+) ───────────────────────────────────
 
 if (level >= 3) {
   writeFileSync(
-    'cypress/utils/config.ts',
+    'test/e2e/utils/config.ts',
     `export const config = {
   baseUrl:          Cypress.env('VITE_APP_TO_TEST_URI') ?? 'http://localhost:5173',
   environment:      Cypress.env('VITE_ENV') ?? 'dev',
@@ -191,11 +192,11 @@ if (level >= 3) {
 }
 `
   )
-  console.log('  created: cypress/utils/config.ts')
+  console.log('  created: test/e2e/utils/config.ts')
 
-  // ── cypress/support/hooks.ts ───────────────────────────────────────────
+  // ── test/e2e/support/hooks.ts ───────────────────────────────────────────
   writeFileSync(
-    'cypress/support/hooks.ts',
+    'test/e2e/support/hooks.ts',
     `import { Before, After, BeforeAll, AfterAll } from '@badeball/cypress-cucumber-preprocessor'
 
 BeforeAll(() => {
@@ -227,19 +228,19 @@ AfterAll(() => {
 })
 `
   )
-  console.log('  created: cypress/support/hooks.ts')
+  console.log('  created: test/e2e/support/hooks.ts')
 }
 
 // ── .gitignore ────────────────────────────────────────────────────────────
 
 const gitignoreContent = [
   '# Cypress runtime output',
-  'cypress/videos/',
-  'cypress/screenshots/',
-  'cypress/cucumber-json/',
+  'test/e2e/videos/',
+  'test/e2e/screenshots/',
+  'test/e2e/cucumber-json/',
   '',
   '# Test reports',
-  'reports/',
+  'test/e2e/reports/',
   '',
   '# Node',
   'node_modules/',
@@ -266,8 +267,8 @@ if (level >= 4) {
     `import { generate } from 'multiple-cucumber-html-reporter'
 
 generate({
-  jsonDir: 'cypress/cucumber-json',
-  reportPath: 'reports/cucumber',
+  jsonDir: 'test/e2e/cucumber-json',
+  reportPath: 'test/e2e/reports/cucumber',
   metadata: {
     browser: { name: 'chrome', version: 'latest' },
     device: 'CI/Local',
@@ -317,9 +318,9 @@ jobs:
         with:
           name: smoke-report
           path: |
-            reports/cucumber/
-            cypress/videos/
-            cypress/screenshots/
+            test/e2e/reports/cucumber/
+            test/e2e/videos/
+            test/e2e/screenshots/
           retention-days: 14
 
   regression:
@@ -344,9 +345,9 @@ jobs:
         with:
           name: regression-report
           path: |
-            reports/cucumber/
-            cypress/videos/
-            cypress/screenshots/
+            test/e2e/reports/cucumber/
+            test/e2e/videos/
+            test/e2e/screenshots/
           retention-days: 14
 `
   )
@@ -371,6 +372,6 @@ console.log('\nNext steps:')
 console.log('  1. npm install --save-dev @badeball/cypress-cucumber-preprocessor @bahmutov/cypress-esbuild-preprocessor')
 console.log('  2. npm install --save-dev cypress typescript')
 console.log('  3. npx cypress install')
-console.log('  4. Write your first .feature file in cypress/e2e/features/')
+console.log('  4. Write your first .feature file in test/e2e/features/')
 console.log('  5. npm run test:e2e:open   — open the Cypress runner')
 console.log('  6. npm run test:e2e:smoke  — run smoke tests headless')

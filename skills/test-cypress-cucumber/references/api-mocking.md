@@ -52,7 +52,7 @@ it('modify real API response', () => {
 ## Usar fixtures como respuesta
 
 ```typescript
-// cypress/fixtures/orders.json
+// test/e2e/fixtures/orders.json
 // { "orders": [{ "id": "1", "total": 4999, "status": "completed" }] }
 
 it('loads orders from fixture', () => {
@@ -86,7 +86,7 @@ it('submit order', () => {
 ## Mock Data Factories
 
 ```typescript
-// cypress/support/factories.ts
+// test/e2e/support/factories.ts
 export function buildOrder(overrides: Partial<Order> = {}): Order {
   return {
     id: crypto.randomUUID(),

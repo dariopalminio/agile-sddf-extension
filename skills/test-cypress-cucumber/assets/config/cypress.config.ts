@@ -5,8 +5,8 @@ import createEsbuildPlugin from '@bahmutov/cypress-esbuild-preprocessor'
 export default defineConfig({
   e2e: {
     baseUrl: process.env.VITE_APP_TO_TEST_URI ?? 'http://localhost:5173',
-    specPattern: 'cypress/e2e/**/*.feature',
-    supportFile: 'cypress/support/e2e.ts',
+    specPattern: 'test/e2e/features/**/*.feature',
+    supportFile: 'test/e2e/support/e2e.ts',
     viewportWidth: 1280,
     viewportHeight: 720,
     video: true,

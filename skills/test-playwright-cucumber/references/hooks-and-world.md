@@ -9,7 +9,7 @@ Managing browser lifecycle, shared scenario context, and setup/teardown with `@c
 The `World` is a per-scenario shared state object. Every step function's `this` is bound to the current scenario's World instance. Use it to share `browser`, `context`, `page`, and any scenario-scoped data between steps.
 
 ```typescript
-// utils/world.ts
+// support/world.ts
 import { setWorldConstructor, World, IWorldOptions } from '@cucumber/cucumber';
 import { Browser, BrowserContext, Page } from '@playwright/test';
 

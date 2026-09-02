@@ -2,45 +2,54 @@
 
 ## Basic Structure
 
+Page Objects expose **static selector constants**; the step runs the `cy.*` commands. Selector
+literals never appear in a step file (`bdd-no-inline-selector`), and neither do URLs or
+credentials — those come from `utils/config.ts`.
+
 ```typescript
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor'
-import { LoginPage } from '../pages/LoginPage'
-
-const loginPage = new LoginPage()
+import { LoginPage } from '@pages/auth/LoginPage'
+import { DashboardPage } from '@pages/DashboardPage'
+import { config } from '@utils/config'
 
 Given('the user is on the login page', () => {
-  cy.visit('/login')
+  cy.visit(LoginPage.url)
 })
 
 When('the user enters valid credentials', () => {
-  loginPage.fillEmail(Cypress.env('TEST_USER_EMAIL'))
-  loginPage.fillPassword(Cypress.env('TEST_USER_PASSWORD'))
-  loginPage.submit()
+  cy.get(LoginPage.emailInput).type(config.testUserEmail)
+  cy.get(LoginPage.passwordInput).type(config.testUserPassword, { log: false })
+  cy.get(LoginPage.submitButton).click()
 })
 
 Then('the user is redirected to the dashboard', () => {
-  cy.url().should('include', '/dashboard')
+  cy.url().should('include', DashboardPage.url)
 })
 ```
 
 Arrow functions are **fine** in Cypress Cucumber — there is no `this`-based World to bind to.
 
+`{ log: false }` keeps the password out of the runner log and the recorded video.
+
 ## Parameter Expressions
+
+`{int}` and `{float}` are Cucumber expression names, not TypeScript types — the parameter they
+produce is a `number`.
 
 ```typescript
 // {string} — quoted string from Gherkin
 When('the user searches for {string}', (query: string) => {
-  searchPage.search(query)
+  cy.get(CatalogPage.searchInput).clear().type(`${query}{enter}`)
 })
 
 // {int} — integer
-Then('the cart should contain {int} items', (count: int) => {
-  cartPage.getItemCount().should('eq', count)
+Then('the cart should contain {int} items', (count: number) => {
+  cy.get(CartPage.item).should('have.length', count)
 })
 
 // {float} — decimal number
-Then('the total should be {float}', (amount: float) => {
-  cartPage.getTotal().should('eq', amount)
+Then('the total should be {float}', (amount: number) => {
+  cy.get(CartPage.total).should('contain.text', amount.toFixed(2))
 })
 
 // Regex — when expressions don't fit
@@ -51,36 +60,44 @@ Given(/^the user (?:is|has been) logged in$/, () => {
 
 ## Sharing State Between Steps in a Scenario
 
-Prefer closures over module-level variables. Use `cy.wrap()` or `Cypress.env()` for values that need to cross step boundaries:
+Use **`.as()` aliases**. They are scoped to the current test and cleared automatically between scenarios, which is exactly the lifetime scenario state needs.
 
 ```typescript
-// Option 1: closure variable (reset per test file load — safe within one feature)
-let createdOrderId: string
-
 When('the user places an order', () => {
-  orderPage.placeOrder().then((id) => {
-    createdOrderId = id
-  })
+  cy.request('POST', `${config.apiBaseUrl}/api/orders`, { productId: 'prod-1', quantity: 1 })
+    .its('body.id')
+    .as('orderId')
 })
 
 Then('the order confirmation shows the order number', () => {
-  cy.wrap(createdOrderId).should('not.be.undefined')
-  confirmationPage.getOrderId().should('eq', createdOrderId)
-})
-
-// Option 2: cy.wrap with alias
-When('the user places an order', () => {
-  orderPage.placeOrder().as('orderId')
-})
-
-Then('the order confirmation shows the order number', () => {
-  cy.get('@orderId').then((id) => {
-    confirmationPage.getOrderId().should('eq', id)
+  cy.get('@orderId').then((orderId) => {
+    cy.get(ConfirmationPage.orderId).should('have.text', String(orderId))
   })
 })
 ```
 
-**Never** use module-level variables that accumulate state across multiple test runs.
+**Never** use a module-level `let`/`var` for this. It survives across scenarios, makes tests order-dependent, and breaks under `.only`, reordering or parallel execution — it is an ESLint **error** under `bdd-no-module-state`:
+
+```typescript
+// WRONG — module-level state, shared across every scenario in the file
+let createdOrderId: string
+
+When('the user places an order', () => {
+  cy.get(CheckoutPage.placeOrderButton).click()
+  cy.get(ConfirmationPage.orderId).invoke('text').then((id) => {
+    createdOrderId = id
+  })
+})
+```
+
+Aliases work for elements, fixtures and network intercepts too:
+
+```typescript
+cy.get(LoginPage.submitButton).as('submitBtn')          // element
+cy.fixture('auth/users.json').as('users')               // fixture
+cy.intercept('GET', '**/api/orders').as('getOrders')    // request
+cy.wait('@getOrders')
+```
 
 ## DataTable Handling
 
@@ -89,16 +106,16 @@ import { DataTable } from '@badeball/cypress-cucumber-preprocessor'
 
 // hashes() — array of objects keyed by header row
 Given('the following products exist:', (table: DataTable) => {
-  table.hashes().forEach(row => {
+  table.hashes().forEach((row) => {
     // row = { name: 'Widget', price: '9.99', category: 'tools' }
-    adminPage.createProduct(row)
+    cy.request('POST', `${config.apiBaseUrl}/api/products`, row)
   })
 })
 
 // rows() — array of arrays (no header)
 When('the user selects the following options:', (table: DataTable) => {
   table.rows().forEach(([option]) => {
-    filterPage.select(option)
+    cy.get(FilterPage.optionCheckbox(option)).check()
   })
 })
 
@@ -106,16 +123,17 @@ When('the user selects the following options:', (table: DataTable) => {
 Given('the user profile has:', (table: DataTable) => {
   const data = table.rowsHash()
   // data = { name: 'Alice', role: 'admin' }
-  profilePage.fill(data)
+  cy.get(ProfilePage.nameInput).clear().type(data['name'])
+  cy.get(ProfilePage.roleSelect).select(data['role'])
 })
 ```
 
 ## Step Reuse Across Features
 
-Place shared steps in `cypress/support/step_definitions/shared/`:
+Place shared steps in `test/e2e/step_definitions/shared/`:
 
 ```typescript
-// cypress/support/step_definitions/shared/navigation.steps.ts
+// test/e2e/step_definitions/shared/navigation.steps.ts
 import { Given } from '@badeball/cypress-cucumber-preprocessor'
 
 Given('the user navigates to {string}', (path: string) => {

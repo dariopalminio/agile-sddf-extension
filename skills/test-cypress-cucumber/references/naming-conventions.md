@@ -133,7 +133,7 @@ Rules:
 
 ## Cypress Fixtures
 
-Cypress fixtures are JSON (or other static) files stored in `cypress/fixtures/`:
+Cypress fixtures are JSON (or other static) files stored in `test/e2e/fixtures/`:
 
 | File name pattern | Example |
 |-------------------|---------|
@@ -143,7 +143,7 @@ Cypress fixtures are JSON (or other static) files stored in `cypress/fixtures/`:
 
 Rules:
 - Use **kebab-case** for all fixture files
-- Group by domain in subfolders: `cypress/fixtures/auth/`, `cypress/fixtures/catalog/`
+- Group by domain in subfolders: `test/e2e/fixtures/auth/`, `test/e2e/fixtures/catalog/`
 - Load in tests or hooks: `cy.fixture('catalog/products.json')` or `{ fixture: 'auth/user.json' }` in `cy.intercept()`
 
 ```typescript
@@ -192,7 +192,7 @@ export function randomEmail() { ... }                  ✓
 
 Rules:
 - Use **kebab-case** for all test data files
-- Group by type in subfolders: `cypress/fixtures/images/`, `cypress/fixtures/auth/`
+- Group by type in subfolders: `test/e2e/fixtures/images/`, `test/e2e/fixtures/auth/`
 
 ---
 
@@ -203,13 +203,13 @@ Rules:
 | `cy.<domain><Action>()` | `cy.loginAs()`, `cy.seedOrders()` |
 
 Rules:
-- Declared in `cypress/support/commands.ts`
-- Types declared in `cypress/support/index.d.ts`
+- Declared in `test/e2e/support/commands.ts`
+- Types declared in `test/e2e/support/index.d.ts`
 - Use camelCase for command names
 - Prefix with domain when commands are domain-specific
 
 ```typescript
-// cypress/support/commands.ts
+// test/e2e/support/commands.ts
 Cypress.Commands.add('loginAs', (role: 'admin' | 'user') => {
   cy.request('POST', '/api/auth/login', { ...credentials[role] })
     .then((res) => cy.setCookie('auth_token', res.body.token));
@@ -227,7 +227,7 @@ Cypress.Commands.add('loginAs', (role: 'admin' | 'user') => {
 | Cypress spec | `feature-name.cy.ts` | — |
 | Page Object | `LoginPage.ts` | `class LoginPage` (static selectors) |
 | Component PO | `NavBar.ts` | `class NavBar` |
-| Fixture (JSON) | `cypress/fixtures/entity.json` | — |
+| Fixture (JSON) | `test/e2e/fixtures/entity.json` | — |
 | Utility helper | `date-helpers.ts` | named exports |
 | Data builder | `user-builder.ts` | named exports |
 | Custom command | declared in `commands.ts` | `cy.commandName()` |

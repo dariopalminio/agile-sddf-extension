@@ -11,14 +11,14 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@pages/*": ["cypress/support/pages/*"],
-      "@utils/*": ["cypress/utils/*"],
-      "@support/*": ["cypress/support/*"],
-      "@fixtures/*": ["cypress/fixtures/*"]
+      "@pages/*": ["test/e2e/pages/*"],
+      "@utils/*": ["test/e2e/utils/*"],
+      "@support/*": ["test/e2e/support/*"],
+      "@fixtures/*": ["test/e2e/fixtures/*"]
     },
     "types": ["cypress"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "cypress/**/*.ts", "**/*.feature", "cypress.config.ts"],
-  "exclude": ["node_modules", "dist", "reports", "cypress/videos", "cypress/screenshots"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/e2e/**/*.ts", "**/*.feature", "cypress.config.ts"],
+  "exclude": ["node_modules", "dist", "reports", "test/e2e/videos", "test/e2e/screenshots"]
 }

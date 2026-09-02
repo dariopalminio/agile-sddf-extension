@@ -112,7 +112,7 @@ Then('the user profile is accessible', () => {
 ## 7. Mixing describe/it with .feature Files
 
 ```typescript
-// WRONG — cypress/e2e/login.cy.ts conflicts with login.feature in the same dir
+// WRONG — test/e2e/features/login.cy.ts conflicts with login.feature in the same dir
 describe('Login', () => {
   it('should log in', () => { ... })
 })

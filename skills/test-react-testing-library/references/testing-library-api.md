@@ -67,7 +67,8 @@ const {
 Handle errors in tests with React 19 error callbacks:
 
 ```tsx
-test("catches error boundary errors", () => {
+test("catches error boundary errors", async () => {
+  const user = userEvent.setup();
   const errors: Error[] = [];
 
   render(<ComponentWithErrorBoundary />, {
@@ -79,7 +80,7 @@ test("catches error boundary errors", () => {
   });
 
   // Trigger error and verify
-  fireEvent.click(screen.getByRole("button", { name: /throw/i }));
+  await user.click(screen.getByRole("button", { name: /throw/i }));
   expect(errors).toHaveLength(1);
 });
 
@@ -152,10 +153,11 @@ unmount();
 Create snapshot of current DOM state:
 
 ```tsx
+const user = userEvent.setup();
 const { asFragment } = render(<Component />);
 
 const firstRender = asFragment();
-fireEvent.click(screen.getByRole("button"));
+await user.click(screen.getByRole("button"));
 
 // Snapshot diff
 expect(firstRender).toMatchDiffSnapshot(asFragment());
@@ -165,16 +167,23 @@ expect(firstRender).toMatchDiffSnapshot(asFragment());
 
 ## cleanup()
 
-Unmounts all rendered components. Called automatically in Jest/Vitest.
+Unmounts all rendered components. In Vitest it runs automatically when `globals: true`,
+because RTL registers itself on the global `afterEach`.
 
 ```ts
 import { cleanup, render } from "@testing-library/react";
 
-afterEach(cleanup); // Usually not needed
+// Only needed when `globals: false` — otherwise it is automatic
+import { afterEach } from "vitest";
+afterEach(cleanup);
 
-// Or skip auto-cleanup
+// Or skip auto-cleanup entirely
 import "@testing-library/react/dont-cleanup-after-each";
 ```
+
+> Without cleanup, components from one test stay mounted for the next one and queries start
+> failing with "Found multiple elements" — a failure that only shows up when the whole file
+> runs, not when the test runs alone.
 
 ---
 
@@ -186,13 +195,16 @@ Wrap state updates:
 import { act } from "@testing-library/react";
 
 await act(async () => {
-  // Trigger state updates
-  fireEvent.click(button);
+  // Trigger state updates that RTL does not wrap for you
+  result.current.increment();
   await promise;
 });
 ```
 
-**Note:** Most RTL methods handle `act()` automatically. Use explicitly only when needed.
+**Note:** Most RTL methods handle `act()` automatically — `render`, `rerender` and every
+`userEvent` method already wrap their updates. Use `act()` explicitly only when you call
+something yourself that triggers a state update, such as a hook method returned by
+`renderHook` or advancing fake timers.
 
 ---
 
@@ -298,40 +310,30 @@ test("works with providers", () => {
 
 ---
 
-## Jest Configuration
-
-```js
-// jest.config.js
-module.exports = {
-  testEnvironment: "jsdom", // Required for Jest 27+
-  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
-  moduleDirectories: ["node_modules", "utils"],
-};
-```
-
-```js
-// setupTests.js
-import "@testing-library/jest-dom";
-```
-
----
-
 ## Vitest Configuration
+
+This skill uses **Vitest + happy-dom**. See `vitest-component.md` for the full config.
 
 ```ts
 // vitest.config.ts
 import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  plugins: [react()],
   test: {
-    environment: "jsdom",
-    globals: true, // Enable auto-cleanup
-    setupFiles: "./setupTests.ts",
+    environment: "happy-dom", // faster than jsdom; swap only if a browser API is missing
+    globals: true, // enables RTL auto-cleanup
+    setupFiles: ["./vitest.setup.ts"],
   },
 });
 ```
 
 ```ts
-// setupTests.ts
-import "@testing-library/jest-dom";
+// vitest.setup.ts
+import "@testing-library/jest-dom/vitest";
 ```
+
+> Import the **`/vitest`** entry point, not `@testing-library/jest-dom`. It is the one that
+> registers the matchers on Vitest's `expect`; with the generic import `toBeInTheDocument`
+> can fail with "is not a function".
