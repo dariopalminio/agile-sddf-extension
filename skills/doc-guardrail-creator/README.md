@@ -59,15 +59,16 @@ and sources:
 > Create a guardrail named docker-compose-services in guardrails/: every service pins an image
   digest, no container runs as root, secrets are never plain environment values
 > I need a guardrail for our GitHub Actions workflows
-> Add a rule about force-pushing to guardrails/using-git-tbd.md --update
+> Add a rule about force-pushing to guardrails/using-git-tbd-checklist.md --update
 ```
 
 What happens next, in order:
 
-1. **Resolves the arguments.** The name is the domain in kebab-case and the file is `<name>.md` — no
-   `-guardrail` suffix. The folder is the one you gave, an existing `guardrails/` or
-   `docs/guardrails/`, or a new `guardrails/`. A name alone or a subject alone is enough to proceed;
-   neither means it asks.
+1. **Resolves the arguments.** The name is the domain in kebab-case and the file is
+   `<name>-checklist.md` — the suffix is idempotent, so a name already ending in `-checklist` is not
+   suffixed twice, and there is no `-guardrail` suffix. The folder is the one you gave, an existing
+   `guardrails/` or `docs/guardrails/`, or a new `guardrails/`. A name alone or a subject alone is
+   enough to proceed; neither means it asks.
 2. **Protects what exists.** If the target is already there, it offers regenerate, skip, or compare
    rather than overwriting.
 3. **Gathers evidence** from the request and from the source-of-truth files you named. A source that
@@ -117,8 +118,8 @@ for human judgement; never resolve one silently.
 - `SKILL.md` — main instructions
 - `assets/guardrail.template.md` — output template: section order, headings, verbatim paragraphs and
   the mandatory rule line format of each layer
-- `examples/test-cypress-cucumber.md` — a completed guardrail, with both layers filled and a working
-  ESLint configuration in the validation section
+- `examples/security-checklist.md` — a completed guardrail, with both layers filled and a validation
+  section whose grep and git checks are defined in full, so it depends on no external scanner
 - `evals/evals.json` — test cases covering the happy path, a topic with no name, a missing domain, an
   existing target file, rule classification, a missing source of truth, `--dry-run`, and template
   decoupling

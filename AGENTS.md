@@ -24,7 +24,9 @@ Applies equally to files an agent generates on the user's behalf. When a user wr
 another language, answer them in that language but keep the committed files in English.
 
 ## Guardrails
-- For detailed guidelines on skill creation, see [guardrails/skill-creation.md](guardrails/skill-creation.md).
+The following guardrails must be met:
+- For detailed guidelines on security, see [guardrails/security-checklist.md](guardrails/security-checklist.md).
+- For detailed guidelines on skill creation, see [guardrails/skill-creation-checklist.md](guardrails/skill-creation-checklist.md).
 
 ## 🧠 Core Principles for Skills
 

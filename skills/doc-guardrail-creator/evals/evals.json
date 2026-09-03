@@ -1,6 +1,6 @@
 {
   "skill": "doc-guardrail-creator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Test cases for doc-guardrail-creator: producing a single-pass guardrail Markdown file by instantiating assets/guardrail.template.md, with every rule classified by how it is verified (deterministic vs semantic).",
   "cases": [
     {
@@ -13,7 +13,7 @@
         "flags": []
       },
       "expected": {
-        "output_file": "guardrails/docker-compose-services.md",
+        "output_file": "guardrails/docker-compose-services-checklist.md",
         "contains": [
           "# Guardrail:",
           "Applies to",
@@ -44,13 +44,13 @@
       "id": "TC-002",
       "name": "topic-only-derives-name-and-default-path",
       "type": "edge-case",
-      "description": "Only the topic is given — no name and no output folder. The skill derives a kebab-case file name from the domain and writes into the repository's existing guardrails/ directory without asking for either.",
+      "description": "Only the topic is given — no name and no output folder. The skill derives a kebab-case file name from the domain, appends the -checklist suffix, and writes into the repository's existing guardrails/ directory without asking for either.",
       "input": {
         "prompt": "I need a guardrail for our GitHub Actions workflows: actions pinned to a full commit SHA, no plaintext secrets in the YAML, and an explicit permissions block on every job.",
         "flags": []
       },
       "expected": {
-        "output_file": "guardrails/*.md",
+        "output_file": "guardrails/*-checklist.md",
         "contains": [
           "# Guardrail:",
           "**On breach:** `(error)` blocks delivery",
@@ -97,12 +97,12 @@
       "description": "When the target file already exists, the skill reports the path and offers regenerate / skip / compare instead of overwriting it.",
       "input": {
         "prompt": "Create a guardrail for E2E testing with Cypress and Cucumber in guardrails/.",
-        "existing_files": ["guardrails/test-cypress-cucumber.md"],
+        "existing_files": ["guardrails/test-cypress-cucumber-checklist.md"],
         "flags": []
       },
       "expected": {
         "contains": [
-          "guardrails/test-cypress-cucumber.md",
+          "guardrails/test-cypress-cucumber-checklist.md",
           "(r)",
           "(n)",
           "(c)"
@@ -124,7 +124,7 @@
         "flags": []
       },
       "expected": {
-        "output_file": "guardrails/api-error-handling.md",
+        "output_file": "guardrails/api-error-handling-checklist.md",
         "contains": [
           "### Deterministic rules",
           "Spectral",
@@ -202,7 +202,7 @@
         "flags": []
       },
       "expected": {
-        "output_file": "guardrails/database-migrations.md",
+        "output_file": "guardrails/database-migrations-checklist.md",
         "contains": [
           "## Rollback expectations",
           "## Mandatory rules",
@@ -213,6 +213,31 @@
           "[the exact scope this guardrail binds]",
           "[concrete scope]",
           "<!--"
+        ]
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-009",
+      "name": "checklist-suffix-is-idempotent",
+      "type": "edge-case",
+      "description": "The output file always carries the -checklist suffix exactly once. A name the user already wrote with the suffix is used as it is, never suffixed twice.",
+      "input": {
+        "prompt": "Create a guardrail named release-notes-checklist in guardrails/. Rules: every entry links the commit that introduced it (greppable), the version heading follows semver, and the wording of each entry is meaningful to a user of the product rather than to its authors.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/release-notes-checklist.md",
+        "contains": [
+          "guardrails/release-notes-checklist.md",
+          "### Deterministic rules",
+          "### Semantic rules (AI / human review)"
+        ],
+        "not_contains": [
+          "release-notes-checklist-checklist",
+          "guardrails/release-notes.md",
+          "<!--",
+          "TODO"
         ]
       },
       "threshold": 1.0

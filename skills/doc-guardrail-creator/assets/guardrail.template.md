@@ -2,7 +2,7 @@
 <!-- GUARDRAIL TEMPLATE                                                 -->
 <!--                                                                    -->
 <!-- How to use:                                                        -->
-<!-- 1. Copy this file to guardrails/<domain>.md (kebab-case).           -->
+<!-- 1. Copy this file to guardrails/<domain>-checklist.md (kebab-case). -->
 <!-- 2. Fill in the [placeholders]. Delete sections that do not apply.   -->
 <!-- 3. Delete ALL of these comments before publishing.                  -->
 <!--                                                                    -->

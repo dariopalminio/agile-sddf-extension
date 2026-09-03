@@ -47,14 +47,20 @@ Every argument is optional. Resolve each one in order, taking the first that app
 | Subject, candidate rules, sources | The user's request → the source-of-truth files or URLs they named → the repository documents in step 2 |
 | Template | A template path the user gave → `assets/guardrail.template.md` |
 
-The **name** is the domain in kebab-case, and the file is `<name>.md` — `test-cypress-cucumber.md`,
-`docker-compose-services.md`. No `-guardrail` suffix: the directory already says what these files are.
+The **name** is the domain in kebab-case, and the file is `<name>-checklist.md` —
+`test-cypress-cucumber-checklist.md`, `docker-compose-services-checklist.md`. The suffix is
+idempotent: a name that already ends in `-checklist` is used as it is, never suffixed twice. No
+`-guardrail` suffix either: the directory already says what these files are.
 
 If the request identifies neither a name nor a subject — "create a guardrail", "write me a rules
 file" — stop and ask what the guardrail governs. Write nothing until you have it. A name alone is
 enough to proceed; a subject alone is enough to proceed and derive the name from it.
 
 ### Existing file
+
+The target whose existence you check is the `<name>-checklist.md` path. If only a legacy `<name>.md`
+sits in that folder, report it instead of quietly creating a second file beside it, and ask whether
+to rename it or write the new one.
 
 If the target already exists, do not overwrite it. Report the path and offer:
 
@@ -178,7 +184,7 @@ Re-scan the finished output against this list. Fix and re-check; do not save a f
 - No rule is unsourced — each traces to the request, a repository document, or a named standard.
 - Deterministic groups hold 4–8 rules each.
 - The file is close to ~200 lines. Well past it means content belongs in the skill, not here.
-- The file name is `<domain>.md` in kebab-case and the title names the same domain.
+- The file name is `<domain>-checklist.md` in kebab-case, with the suffix present exactly once, and the title names the same domain.
 
 ## 8. Report
 
@@ -205,5 +211,5 @@ Return:
 | Topic | Reference | Load when |
 |-------|-----------|-----------|
 | Output template | `assets/guardrail.template.md` | Required. Read before writing any guardrail. It is the sole source of the output's structure — section order, headings, verbatim paragraphs, rule line formats — and this document never enumerates it. |
-| Worked example | `examples/test-cypress-cucumber.md` | Comparing against a completed guardrail. Reference shape only, never a source of rules. |
+| Worked example | `examples/security-checklist.md` | Comparing against a completed guardrail — both layers filled, every deterministic rule backed by a command defined in the file itself. Reference shape only, never a source of rules. |
 | Test cases | `evals/evals.json` | Verifying a change to this skill did not regress its behavior. |
