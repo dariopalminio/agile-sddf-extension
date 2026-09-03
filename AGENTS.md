@@ -39,7 +39,7 @@ Every skill in this repository must adhere to these principles:
 4.  **Clarity for Agents**: The `description` in the skill's frontmatter must be specific and include trigger phrases so the agent knows exactly when to use it.
 5.  **English Only**: See [Language](#-language) — the requirement is repository-wide, not limited to `SKILL.md` and its references.
 6.  **README.md (recommended)**: A README.md file that explains what the skills do and how to install them.
-7.  **Clear License**: Include license (MIT) and ownership information (dariopalminio/agile-sddf).
+7.  **Clear License**: Skills authored here are MIT, with ownership information (dariopalminio/agile-sddf). A skill vendored from a third party keeps its **upstream** licence instead — never relabel it. It ships that licence file inside its own directory and is listed in [NOTICE](NOTICE). The one current instance is `skills/skill-master/`, which is Apache-2.0 (Copyright Anthropic, PBC).
 
 ## 🏗️ Repository Structure
 
@@ -81,7 +81,7 @@ When creating a new skill, follow this checklist:
     | `metadata.version` | No (Vercel extension) | Skill version, e.g. `"1.2.0"` |
 3.  **Name `name`**: Lowercase, with hyphens, maximum 64 characters.
 4.  **Description `description`**: In English, maximum 1024 characters, describing what it does and when to use it.
-5.  **License `license`**: Specify the license for the skill, e.g., `MIT`.
+5.  **License `license`**: `MIT` for a skill authored here. A vendored skill declares its upstream licence instead, or omits the field when that licence travels as a file beside it — which is what `skill-master` does.
 6.  **Write concise instructions**: Focus on the core workflow. Keep it actionable.
 7.  **Add references (if needed)**: Move detailed guides, rules, or long examples to `references/`.
 8.  **Add scripts (if needed)**: For any deterministic actions.
