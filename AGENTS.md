@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents (Claude Code, Cursor, GitHub Cop
 
 ## 🎯 Repository Purpose
 
-This repository is a collection of **reusable Agent Skills** for software engineering tasks. Skills are self-contained bundles of instructions (and optionally scripts) that extend AI agent capabilities. They can be invoked directly by users, triggered by context, or called by other skills/agents as part of a larger workflow.
+This repository is a collection of **reusable Agent Skills**, guardrails and policies for software engineering tasks. Skills are self-contained bundles of instructions (and optionally scripts) that extend AI agent capabilities. They can be invoked directly by users, triggered by context, or called by other skills/agents as part of a larger workflow.
 
 **Core focus areas**: Test-Driven Development (TDD), code quality, security, CI/CD, and general software engineering best practices.
 
@@ -22,6 +22,9 @@ per-directory exception. It covers:
 
 Applies equally to files an agent generates on the user's behalf. When a user writes to you in
 another language, answer them in that language but keep the committed files in English.
+
+## Guardrails
+- For detailed guidelines on skill creation, see [guardrails/skill-creation.md](guardrails/skill-creation.md).
 
 ## 🧠 Core Principles for Skills
 

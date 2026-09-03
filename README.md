@@ -1,14 +1,24 @@
 ![agile-sddf](assets/logo/agile-sddf-extension-logo-v1.png)
 # agile-sddf-extension
-Public repository of agent skills to extend agile-sddf
+Public repository of agent skills, guardrails and policies to extend agile-sddf
 
 ## Available Skills
 
-### Meta-framework de skills
+### Meta-framework of skills
 
-- **`skill-master`**: crea y benchmarkea nuevas skills con ciclo iterativo — `skill-master` orquesta el flujo completo de creación; 
+- **`skill-master`**: creates and benchmarks new skills with an iterative cycle — `skill-master` orchestrates the complete creation flow;
 
-- **`skill-test-evals`**: gestiona el ciclo de vida de los evals (generar, ejecutar, benchmarkear) con tres modos: `generate` (crea `evals/evals.json` + skeleton SKILL.md desde descripción libre o SKILL.md existente), `evals` (1 run → informe pass/fail con evidencia) y `benchmark` (N runs × caso → métricas estadísticas mean ± stddev);
+- **`skill-test-evals`**: manages the lifecycle of evals (generate, execute, benchmark) with three modes: `generate` (creates `evals/evals.json` + skeleton SKILL.md from free description or existing SKILL.md), `evals` (1 run → pass/fail report with evidence) and `benchmark` (N runs × case → statistical metrics mean ± stddev);
+
+### Documents
+
+- **`doc-guardrail-creator`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
+- **`doc-policy-creator`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
+- **`doc-release-notes`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
+
+### UX/UI Design
+
+- **`ui-generate-design-md`** — Create or update a DESIGN.md (design tokens + UI rules) from a product repository or a public website
 
 ### Implementation
 
@@ -22,13 +32,6 @@ Public repository of agent skills to extend agile-sddf
 - **`test-nestjs-jest-testing-module`** — Unit tests (UT) for NestJS apps using the Testing Module and Jest
 - **`test-nestjs-supertest`** — API integration tests (API/IT) for NestJS with Supertest (routing, guards, pipes, DB isolation)
 - **`test-react-testing-library`** — React components tested (CT) with Vitest + Testing Library + happy-dom + axe-core
-
-### Utilities
-
-- **`doc-guardrail-creator`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
-- **`doc-policy-creator`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
-- **`doc-release-notes`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
-- **`ui-generate-design-md`** — Create or update a DESIGN.md (design tokens + UI rules) from a product repository or a public website
 
 ### OpenSpec support
 
@@ -57,10 +60,54 @@ npx skills add dariopalminio/agile-sddf-extension --all
 | `-s, --skill <skills...>` | Install only specific skills by name (e.g. `--skill code-backend-nestjs`). Use `*` to install all skills in the repository. |
 | `-l, --list` | List all available skills in a repository without installing them |
 
+## Installing Guardrails
+
+Guardrails are standalone Markdown files, not skills: `npx skills add` does not install them. Each
+one is self-contained — copy the file into your project and it works, with no companion skill or
+script to fetch alongside it.
+
+| Guardrail | Domain |
+|-----------|--------|
+| `skill-creation.md` | Creating and reviewing Agent Skills |
+| `test-cypress-cucumber.md` | E2E BDD suites with Cypress + Cucumber |
+| `test-playwright-cucumber.md` | E2E BDD suites with Playwright + Cucumber |
+
+**One guardrail** — download it straight into your project:
+
+```bash
+mkdir -p guardrails
+curl -fsSL -o guardrails/skill-creation.md \
+  https://raw.githubusercontent.com/dariopalminio/agile-sddf-extension/main/guardrails/skill-creation.md
+```
+
+**All of them** — a sparse checkout fetches the folder without cloning the rest of the repository:
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse \
+  https://github.com/dariopalminio/agile-sddf-extension.git .sddf
+git -C .sddf sparse-checkout set guardrails
+mkdir -p guardrails && cp .sddf/guardrails/*.md guardrails/ && rm -rf .sddf
+```
+
+**Then wire it up.** A guardrail only takes effect when agents are told to read it, so add a pointer
+in your `AGENTS.md` (or `CLAUDE.md`) — this repository does the same:
+
+```markdown
+## Guardrails
+- For detailed guidelines on skill creation, see [guardrails/skill-creation.md](guardrails/skill-creation.md).
+```
+
+Each guardrail carries a *How to run the validation* section whose commands are copyable as written;
+wire those into CI to enforce the deterministic layer, and review the semantic checklist on the PR.
+
 ## Repository Structure
 ```
 agile-sddf-extension/
 ├── agents/
+├── guardrails/
+│   └── <domain>.md               # Standalone rule files (deterministic + semantic)
+├── policies/
+│   └── <domain>-policy.md        # Governance documents
 ├── skills/
 │   └── <skill-name>/             # kebab-case, e.g. code-backend-nestjs
 │       ├── SKILL.md              # REQUIRED main file

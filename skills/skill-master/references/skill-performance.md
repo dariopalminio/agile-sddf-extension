@@ -4,7 +4,7 @@ Léeme **antes de dar por terminado un `SKILL.md`**, o cuando un skill se sienta
 
 El rendimiento de un skill no se mide en milisegundos: se mide en **tokens de contexto gastados por invocación**. Cada línea del `SKILL.md` se paga cada vez que el skill dispara; cada carácter del `description` se paga en **todas** las sesiones, disparen o no el skill.
 
-Fuente normativa: `docs/policies/references/skill_creation_policy.md` §7.
+Fuente normativa: `policies/skill-creation-policy.md` §7.
 
 ---
 
