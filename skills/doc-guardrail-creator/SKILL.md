@@ -216,5 +216,5 @@ Return:
 | Topic | Reference | Load when |
 |-------|-----------|-----------|
 | Output template | `assets/guardrail.template.md` | Required. Read before writing any guardrail. It is the sole source of the output's structure — section order, headings, verbatim paragraphs, rule line formats — and this document never enumerates it. |
-| Worked example | `examples/security-checklist.md` | Comparing against a completed guardrail — both layers filled, every deterministic rule backed by a command defined in the file itself. Reference shape only, never a source of rules. |
+| Worked example | `examples/code-security-checklist.md` | Comparing against a completed guardrail — both layers filled, every deterministic rule backed by a command defined in the file itself. Reference shape only, never a source of rules. |
 | Test cases | `evals/evals.json` | Verifying a change to this skill did not regress its behavior. |

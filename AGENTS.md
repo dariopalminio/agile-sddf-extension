@@ -25,7 +25,8 @@ another language, answer them in that language but keep the committed files in E
 
 ## Guardrails
 The following guardrails must be met:
-- For detailed guidelines on security, see [guardrails/security-checklist.md](guardrails/security-checklist.md).
+- For security of the content this repository commits — secrets, scripts, tracked artefacts — see [guardrails/code-security-checklist.md](guardrails/code-security-checklist.md).
+- For security of what a skill instructs an agent to read, run and trust, see [guardrails/ai-security-checklist.md](guardrails/ai-security-checklist.md).
 - For detailed guidelines on skill creation, see [guardrails/skill-creation-checklist.md](guardrails/skill-creation-checklist.md).
 
 ## 🧠 Core Principles for Skills

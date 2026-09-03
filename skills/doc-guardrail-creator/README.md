@@ -118,7 +118,7 @@ for human judgement; never resolve one silently.
 - `SKILL.md` — main instructions
 - `assets/guardrail.template.md` — output template: section order, headings, verbatim paragraphs and
   the mandatory rule line format of each layer
-- `examples/security-checklist.md` — a completed guardrail, with both layers filled and a validation
+- `examples/code-security-checklist.md` — a completed guardrail, with both layers filled and a validation
   section whose grep and git checks are defined in full, so it depends on no external scanner
 - `evals/evals.json` — test cases covering the happy path, a topic with no name, a missing domain, an
   existing target file, rule classification, a missing source of truth, `--dry-run`, and template
