@@ -1,0 +1,22 @@
+{
+  "_comment": "FIXTURE NEGATIVO — lock deliberadamente inválido para probar AI-010, AI-011 y AI-012",
+  "skills": {
+    "sin-hash": {
+      "source": "acme/skills",
+      "sourceType": "github",
+      "skillPath": "skills/sin-hash/SKILL.md"
+    },
+    "publicador-opaco": {
+      "source": "https://cdn.example.com/mirror/skill.tar.gz",
+      "sourceType": "url",
+      "skillPath": "skills/publicador-opaco/SKILL.md",
+      "computedHash": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "ruta-con-travesia": {
+      "source": "acme/skills",
+      "sourceType": "github",
+      "skillPath": "../../outside/SKILL.md",
+      "computedHash": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  }
+}

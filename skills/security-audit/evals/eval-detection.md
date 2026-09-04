@@ -235,6 +235,100 @@ Para cada variable y stack, se define:
 
 ---
 
+## Variable: `has_agentic_config_files`
+
+### POSITIVE — Repositorio de skills sin código fuente
+
+**Input:** directorio con `skills/mi-skill/SKILL.md`, `skills/mi-skill/agents/x.agent.md` y `AGENTS.md`; sin `package.json` y sin archivos `.js`/`.py`
+
+**Resultado esperado:**
+```json
+{
+  "source_files_found": false,
+  "has_llm_agent": false,
+  "has_agentic_config_files": true,
+  "agent_facing_files": ["skills/mi-skill/SKILL.md", "skills/mi-skill/agents/x.agent.md", "AGENTS.md"]
+}
+```
+
+**Regresión que cubre este caso:** `has_agentic_config_files` no depende de `has_llm_agent` ni de `source_files_found`. Un repositorio de solo Markdown debe seguir activando las reglas `AI-*`.
+
+---
+
+### POSITIVE — Aplicación con `.claude/` y `CLAUDE.md`
+
+**Input:** proyecto Node.js con `CLAUDE.md` en la raíz y `.claude/skills/deploy/SKILL.md`
+
+**Resultado esperado:**
+```json
+{ "has_agentic_config_files": true }
+```
+
+---
+
+### NEGATIVE — Aplicación web sin artefactos agénticos
+
+**Input:** proyecto Express sin `SKILL.md`, `AGENTS.md`, `CLAUDE.md` ni directorio `.claude/`
+
+**Resultado esperado:**
+```json
+{ "has_agentic_config_files": false, "agent_facing_files": [] }
+```
+
+---
+
+## Variable: `has_skills_lock`
+
+### POSITIVE — Lock de skills en la raíz
+
+**Input:** repositorio con `skills-lock.json` que declara 3 entradas en `skills`
+
+**Resultado esperado:**
+```json
+{ "has_skills_lock": true }
+```
+
+---
+
+### NEGATIVE — Repositorio de skills sin lock
+
+**Input:** repositorio con `SKILL.md` pero sin `skills-lock.json` ni `.claude/skills-lock.json`
+
+**Resultado esperado:**
+```json
+{ "has_agentic_config_files": true, "has_skills_lock": false }
+```
+
+**Consecuencia esperada:** AI-010, AI-011, AI-012 y AI-020, AI-021 se marcan `N/A`.
+
+---
+
+## Variable: `agent_docs_ingest_external_content`
+
+### POSITIVE — Skill que descarga contenido externo
+
+**Input:** `SKILL.md` cuyo cuerpo menciona `WebFetch` y "fuente de verdad"
+
+**Resultado esperado:**
+```json
+{ "agent_docs_ingest_external_content": true }
+```
+
+**Consecuencia esperada:** AI-006 se activa; será `FAIL` si ese mismo archivo no declara que el contenido es dato y nunca instrucción.
+
+---
+
+### NEGATIVE — Skill que solo lee archivos del proyecto
+
+**Input:** `SKILL.md` sin `WebFetch`, `WebSearch`, `curl `, `fetch ` ni referencias a entrada externa
+
+**Resultado esperado:**
+```json
+{ "agent_docs_ingest_external_content": false }
+```
+
+---
+
 ## Variable: `has_unsafe_deserialization`
 
 ### POSITIVE — Python con pickle
@@ -399,7 +493,97 @@ Para cada variable y stack, se define:
 **Resultado esperado:**
 ```json
 {
-  "source_files_found": false
+  "source_files_found": false,
+  "has_agentic_config_files": false
 }
 ```
 Todas las reglas: `"status": "N/A", "justification": "sin archivos fuente detectados"`
+
+---
+
+### Benchmark 5: AI-003 (`allowed-tools` con comodín) — FAIL esperado
+
+**Input:** `examples/agent-skill-project/SKILL.md` con `allowed-tools: *` en el frontmatter
+
+**Resultado esperado:**
+```json
+{
+  "id": "AI-003",
+  "status": "FAIL",
+  "severity": "HIGH",
+  "evidence": { "file": "SKILL.md", "line": 7, "snippet": "allowed-tools: *" },
+  "recommendation": "Sustituir * por la lista explícita de herramientas que el flujo del skill necesita"
+}
+```
+
+---
+
+### Benchmark 6: AI-010 (entrada sin `computedHash`) — FAIL esperado
+
+**Input:** `examples/agent-skill-project/skills-lock.json`, entrada `sin-hash` sin campo `computedHash`
+
+**Resultado esperado:**
+```json
+{
+  "id": "AI-010",
+  "status": "FAIL",
+  "severity": "HIGH",
+  "evidence": { "file": "skills-lock.json", "line": 4, "snippet": "\"sin-hash\": { \"source\": \"acme/skills\", ..." }
+}
+```
+
+---
+
+### Benchmark 7: AI-013 (pipe remoto a intérprete) — FAIL esperado
+
+**Input:** `examples/agent-skill-project/SKILL.md`, en el Paso 1: una descarga `curl` canalizada directamente a `sh`
+
+**Resultado esperado:**
+```json
+{
+  "id": "AI-013",
+  "status": "FAIL",
+  "severity": "CRITICAL"
+}
+```
+
+---
+
+### Benchmark 8: Regla semántica — REVIEW esperado siempre
+
+**Input:** cualquier repositorio con `has_agentic_config_files: true`
+
+**Resultado esperado para AI-014 … AI-025:**
+```json
+{
+  "id": "AI-014",
+  "status": "REVIEW",
+  "severity": "INFO",
+  "evidence": null,
+  "recommendation": null
+}
+```
+
+**Criterio de fallo del benchmark:** cualquier regla semántica devuelta como `PASS` o `FAIL` es un fallo del eval, aunque el veredicto parezca correcto: esas reglas no tienen patrón evaluable y el evaluador no debe juzgarlas.
+
+---
+
+### Benchmark 9: Repositorio de solo Markdown — reglas `AI-*` evaluadas
+
+**Input:** la raíz de este repositorio (`agile-sddf-extension`): decenas de `SKILL.md`, guardrails y policies, `skills-lock.json` con 3 entradas, y **ninguna dependencia de LLM** (no hay `package.json` con `anthropic`/`openai`)
+
+**Resultado esperado con `--checklist ai`:**
+```json
+{
+  "source_files_found": false,
+  "has_llm_agent": false,
+  "has_agentic_config_files": true,
+  "has_skills_lock": true
+}
+```
+- AI-001 a AI-009 y AI-013 → evaluadas (`PASS` o `FAIL` con evidencia)
+- AI-010, AI-011, AI-012 → `PASS` (las 3 entradas del lock declaran `computedHash` de 64 hex, `sourceType: github` con `owner/repo` y `skillPath` relativo)
+- AI-014 a AI-025 → `REVIEW`
+- `summary.review` = 12, `status` no degradado por los `REVIEW`
+
+**Regresión que cubre este caso:** antes de la dimensión `ai`, esta ejecución no evaluaba ninguna regla — `source_files_found: false` marcaba todo `N/A` y SEC-079 exigía `has_llm_agent`.

@@ -5,7 +5,9 @@ Applies to what this repository tells an agent to do — every `SKILL.md`, its `
 declared in `skills-lock.json`. Does not apply to this repository's own scripts, secrets and tracked
 artefacts, which are [guardrails/code-security-checklist.md](code-security-checklist.md). Nor to anything this
 repository does not host — no model, no training data, no vector store, no agent runtime — so model
-provenance, data lineage, retention, consent and audit trails stay out.
+provenance, data lineage, retention, consent and audit trails stay out. `skills/security-audit/examples/`
+is excluded too: it holds deliberate negative fixtures that carry the exact strings the rules below
+forbid, so that an audit has something known-bad to detect.
 
 ## Mandatory rules
 
@@ -94,13 +96,15 @@ finding to report, not a step to perform.
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 present() { for f in "$@"; do [ -f "$f" ] && printf '%s\n' "$f"; done; }   # skip tracked-but-deleted paths
-ALL=$(present $(git ls-files '*.md' '*.py' '*.mjs' '*.js' '*.ts' '*.json' '*.html' '*.feature' '*.txt' '*.yml'))
-SCAN=$(printf '%s\n' "$ALL" | grep -vE '^(guardrails|\.tmp)/|checklist\.md$')  # these quote the patterns by design
-DOCS=$(present $(git ls-files 'skills/*/SKILL.md' 'skills/*/references/*.md' 'skills/*/assets/*.md'))
+FIXTURES='^skills/security-audit/examples/'                                # deliberate known-bad fixtures
+QUOTES='checklist\.md$'                                                    # these quote the patterns by design
+ALL=$(present $(git ls-files '*.md' '*.py' '*.mjs' '*.js' '*.ts' '*.json' '*.html' '*.feature' '*.txt' '*.yml') | grep -vE "$FIXTURES")
+SCAN=$(printf '%s\n' "$ALL" | grep -vE "^(guardrails|\.tmp)/|$QUOTES")
+DOCS=$(present $(git ls-files 'skills/*/SKILL.md' 'skills/*/references/*.md' 'skills/*/assets/*.md') | grep -vE "$FIXTURES|$QUOTES")
 
 # agent-facing instructions
-grep -rInE -e 'ignore (all )?(previous|prior|above) instructions' \
-           -e 'disregard (the|your) (guardrails|rules|instructions)' $SCAN                   # ai-no-prompt-override
+grep -rInEi -e 'ignore (all )?(previous|prior|above) instructions' \
+            -e 'disregard (the|your) (guardrails|rules|instructions)' $SCAN                  # ai-no-prompt-override (-i: an injected line starts a sentence)
 grep -rInE -e 'dangerously-skip-permissions' -e 'bypassPermissions' -e 'chmod[[:space:]]+777' $SCAN   # ai-no-safety-bypass
 grep -rInE '^allowed-tools:[[:space:]]*(\*|$)' $ALL                                          # ai-tools-not-wildcard
 grep -rInE '[A-Za-z0-9+/]{200,}={0,2}' $SCAN                                                 # ai-no-opaque-blob (warn)
@@ -145,6 +149,12 @@ prints a line names the file and the breach.
 |-------|--------|
 | Deterministic | Run the commands above; every `(error)` check prints nothing, and each `(warn)` line is triaged and either fixed or justified in the PR. |
 | Semantic | Review the semantic checklist against the diff (AI or human reviewer) and attach the result to the PR. |
+
+Both layers also run as an audit: `/security-audit --repo . --checklist ai` evaluates
+`skills/security-audit/assets/ai-security-checklist.md`, the executable mirror of this file — rules
+`AI-001`–`AI-013` carry the `ai-*` ids above, and `AI-014`–`AI-025` are the semantic rules, reported
+as `REVIEW` rather than judged. This file stays the source of truth; the skill's asset is how it gets
+executed and reported.
 
 ## Source of truth
 

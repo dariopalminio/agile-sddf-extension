@@ -33,6 +33,14 @@ Public repository of agent skills, guardrails and policies to extend agile-sddf
 - **`test-nestjs-supertest`** — API integration tests (API/IT) for NestJS with Supertest (routing, guards, pipes, DB isolation)
 - **`test-react-testing-library`** — React components tested (CT) with Vitest + Testing Library + happy-dom + axe-core
 
+### Security
+
+- **`security-audit`** — Conditional security audit of a repository: detects the tech stack, evaluates the OWASP-based checklist rules that apply to it, and generates `audit-report.md` (and optional JSON) with findings, code evidence and recommendations. Supports full, release-readiness, story and changed-files scopes.
+
+  It audits two dimensions, selectable with `--checklist code|ai|all`:
+  - **`code`** (`SEC-*`) — the application's own code: JWT, XSS, SQLi, CSRF, secrets, uploads, GraphQL, multi-tenancy, crypto, supply chain, plus the runtime risks of apps that call an LLM (OWASP LLM & API Top 10).
+  - **`ai`** (`AI-*`) — the artefacts an agent reads and executes: `SKILL.md`, `*.agent.md`, `AGENTS.md`, `references/`, `assets/`, `skills-lock.json`. It is the executable mirror of [guardrails/ai-security-checklist.md](guardrails/ai-security-checklist.md), and it triggers on the presence of those artefacts rather than on an LLM SDK in the dependencies — so a skills repository with no application code at all still gets audited. Its 12 semantic rules are reported as non-blocking `REVIEW` items instead of being judged by the model.
+
 ### OpenSpec support
 
 - **`openspec-generate-baseline`** — Reverse-engineers an OpenSpec baseline from existing code and docs (README/AGENTS)

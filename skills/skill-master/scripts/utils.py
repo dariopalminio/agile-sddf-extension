@@ -9,7 +9,7 @@ def sanitize_for_llm(text: str) -> str:
     """Strip invisible Unicode chars that could enable ASCII smuggling attacks."""
     text = unicodedata.normalize("NFKC", text)
     # Zero-width chars: soft-hyphen, ZWSP, ZWNJ, ZWJ, word joiner, BOM
-    text = re.sub(r"[­​‌‍⁠﻿]", "", text)
+    text = re.sub(r"[\xad\u200b\u200c\u200d\u2060\ufeff]", "", text)
     # Unicode Tag block (U+E0000–U+E007F) used for invisible text injection
     text = re.sub(r"[\U000E0000-\U000E007F]", "", text)
     return text
