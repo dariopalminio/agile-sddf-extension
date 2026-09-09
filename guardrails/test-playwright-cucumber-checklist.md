@@ -3,6 +3,10 @@
 Applies to every BDD end-to-end suite built with `@cucumber/cucumber` + Playwright + TypeScript.
 Does not apply to unit tests, component tests, or backend/API-only tests.
 
+*Package root* below means the root of the package that owns the E2E suite — the repository root in
+a single-package project, the app package (e.g. `apps/my-apps`) in a monorepo. All paths are relative
+to it.
+
 ## Mandatory rules
 
 **On breach:** `(error)` blocks delivery — stop, name the rule id, fix it before continuing.
@@ -33,11 +37,12 @@ greppable in the ESLint output. The full config is in *How to run the validation
 
 - [ ] No literal `http://` or `https://` URL inside `step_definitions/`; base URL comes from `utils/config.ts` — ESLint: `bdd-no-hardcoded-url` (error)
 - [ ] No credential literal in `step_definitions/`; credentials come from `utils/config.ts` + env vars — ESLint: `bdd-no-hardcoded-credentials` (error)
-- [ ] Every profile in `cucumber.js` declares `publishQuiet: true` — grep (error)
+- [ ] The Cucumber config file sits at the package root and is named `cucumber.js`, `cucumber.cjs` or `cucumber.mjs`, with the extension matching the host `package.json` `"type"`: a package with `"type": "module"` names a CommonJS config `.cjs` (as `.js` it would be parsed as ESM and `module.exports` would throw) — grep (error)
+- [ ] Every profile in the Cucumber config declares `publishQuiet: true` — grep (error)
 - [ ] Every profile excludes work in progress with `not @wip` in its tag expression — grep (error)
-- [ ] `package.json` defines `test:e2e:smoke`, `test:e2e:sanity` and `test:e2e:regression`, each selecting the `cucumber.js` profile of the same name — grep (error)
+- [ ] `package.json` defines `test:e2e:smoke`, `test:e2e:sanity` and `test:e2e:regression`, each selecting the Cucumber config profile of the same name — grep (error)
 - [ ] Those profiles' tag expressions are cumulative: `@smoke`, then `@smoke or @sanity`, then `@smoke or @sanity or @regression` (`not @wip` is an acceptable superset for the last) — grep (error)
-- [ ] `tsconfig` declares `"module": "commonjs"`, or `"NodeNext"` together with the `ts-node/esm` loader in ESM projects — grep (error)
+- [ ] The `tsconfig` used by the suite is internally consistent with its loader: `"module": "commonjs"` with `ts-node/register` in a CommonJS package, **or** an ESM setting (`"NodeNext"` or `"ESNext"`) with the `ts-node/esm` loader in a `"type": "module"` package. A dedicated `tsconfig.cucumber.json` selected via `TS_NODE_PROJECT` is the preferred form — grep (error)
 - [ ] `reports/` and `*.auth.json` are git-ignored — `git check-ignore` (error)
 
 #### Feature files & tags
@@ -48,7 +53,7 @@ greppable in the ESLint output. The full config is in *How to run the validation
 
 #### Structure & naming
 
-- [ ] The layout is `test/e2e/{features,step_definitions,pages,support,utils,test-data,reports}` with `cucumber.js` at the project root — glob (error)
+- [ ] The layout is `test/e2e/{features,step_definitions,pages,support,utils,test-data,reports}` under the package root, with the Cucumber config file at that package root — glob (error)
 - [ ] `step_definitions/` mirrors the folder structure of `features/` — glob (error)
 - [ ] Feature and step files are kebab-case: `<feature>.feature`, `<feature>.steps.ts` — glob (error)
 - [ ] Page Object file and class names match exactly and are PascalCase with a `Page` suffix: `LoginPage.ts` → `class LoginPage` — glob (warn)
@@ -75,9 +80,12 @@ greppable in the ESLint output. The full config is in *How to run the validation
 ## Minimum expected structure
 
 ```
-my-project/
-├── cucumber.js                       ← profiles, publishQuiet, tag expressions
+<package-root>/                        ← repo root, or apps/<app>/ in a monorepo
+├── package.json                      ← its "type" decides the config extension below
+├── cucumber.cjs                      ← profiles, publishQuiet, tag expressions
+│                                       (or .js / .mjs — must match package.json "type")
 ├── tsconfig.json
+├── tsconfig.cucumber.json            ← optional ESM/CJS override for ts-node
 └── test/
     └── e2e/
         ├── features/auth/login.feature
@@ -129,6 +137,20 @@ After(async function (this: PlaywrightWorld, scenario) {
 
 ## How to run the validation
 
+Run these from the package that owns the E2E suite (in a monorepo, `cd` into it first — the
+repository root only forwards the scripts it re-exports).
+
+```bash
+# e2e
+pnpm test:e2e                # npm run test:e2e
+# smoke testing
+pnpm test:e2e:smoke          # npm run test:e2e:smoke
+# sanity testing
+pnpm test:e2e:sanity         # npm run test:e2e:sanity
+# regression testing
+pnpm test:e2e:regression     # npm run test:e2e:regression
+```
+
 ```bash
 npx cucumber-js --dry-run                        # undefined / ambiguous steps
 npx tsc --noEmit -p tsconfig.json                # `this: PlaywrightWorld` typing
@@ -137,9 +159,15 @@ npx eslint test/e2e                              # rules of the deterministic ta
 # the three run-level scripts exist and select the matching profile
 node -e "const s=require('./package.json').scripts||{};['smoke','sanity','regression'].forEach(p=>{if(!(s['test:e2e:'+p]||'').includes('--profile '+p))throw Error('test:e2e:'+p)})"
 
-# grep-level checks
-grep -A4 'sanity:' cucumber.js | grep -q '@smoke or @sanity'
-grep -L 'publishQuiet' cucumber.js               # must print nothing
+# grep-level checks — resolve the config file first, whatever its extension
+CFG=$(ls cucumber.js cucumber.cjs cucumber.mjs 2>/dev/null | head -1)
+[ -n "$CFG" ] || { echo "no Cucumber config at package root"; exit 1; }
+# a "type": "module" package must not name a CommonJS config .js
+grep -q '"type"[[:space:]]*:[[:space:]]*"module"' package.json && [ "$CFG" = cucumber.js ] \
+  && echo "BREACH: rename cucumber.js to cucumber.cjs"
+
+grep -A4 'sanity:' "$CFG" | grep -q '@smoke or @sanity'
+grep -L 'publishQuiet' "$CFG"                    # must print nothing
 grep -L '@smoke' test/e2e/features/**/*.feature  # must print nothing
 grep -A15 'After(' test/e2e/support/hooks.ts | grep -q 'finally'
 git check-ignore -q test/e2e/reports && echo "reports ignored"

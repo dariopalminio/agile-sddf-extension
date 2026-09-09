@@ -140,8 +140,21 @@ async setupNodeEvents(on, config) {
 
 ## How to run the validation
 
+Run these from the package that owns the E2E suite (in a monorepo, `cd` into it first — the
+repository root only forwards the scripts it re-exports).
+
 ```bash
-npm run test:e2e:smoke                # real execution, fast gate
+# e2e
+pnpm test:e2e                # npm run test:e2e
+# smoke testing
+pnpm test:e2e:smoke          # npm run test:e2e:smoke
+# sanity testing
+pnpm test:e2e:sanity         # npm run test:e2e:sanity
+# regression testing
+pnpm test:e2e:regression     # npm run test:e2e:regression
+```
+
+```bash
 npx tsc --noEmit                      # type-check
 npx eslint test/e2e                   # rules of the deterministic table
 
