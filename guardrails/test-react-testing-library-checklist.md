@@ -136,6 +136,10 @@ test('given a submitted form, should show the confirmation', async () => {
 ## How to run the validation
 
 ```bash
+pnpm test # or npm run test
+```
+
+```bash
 npx vitest run                        # behaviour suite
 npx vitest typecheck                  # *.test-d.ts type-level tests
 npx tsc --noEmit                      # the suite type-checks
