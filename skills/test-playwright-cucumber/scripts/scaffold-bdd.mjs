@@ -218,8 +218,18 @@ Before(async function (this: PlaywrightWorld) {
   this.page.setDefaultTimeout(config.timeout);
 });
 
-Before({ tags: '@authenticated' }, async function (this: PlaywrightWorld) {
-  await this.context.storageState({ path: 'test/e2e/test-data/auth/user.auth.json' });
+function authenticationSetupRequired(): never {
+  throw new Error(
+    '[hooks.ts] @authenticated is intentionally unconfigured. ' +
+      'Create a project-owned authentication setup before using this tag. ' +
+      'If the project reuses Playwright storage state, pass a verified and gitignored ' +
+      'state file to browser.newContext({ storageState: authFile }) when creating the context. ' +
+      'Do not call context.storageState({ path }) to load state: that method writes the current state.'
+  );
+}
+
+Before({ tags: '@authenticated' }, async function () {
+  authenticationSetupRequired();
 });
 
 After(async function (this: PlaywrightWorld, scenario) {
