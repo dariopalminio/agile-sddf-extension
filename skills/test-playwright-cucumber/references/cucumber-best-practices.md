@@ -12,7 +12,7 @@ Focus on **what** needs to happen, not **how** it happens.
 
 ```gherkin
 Scenario: Add product to cart
-  Given I navigate to "http://shop.com/products"
+  Given I navigate to "https://my-test-example-shop.com/products"
   When I find the element with CSS ".product[data-id='123']"
   And I click the button with class "add-to-cart"
   And I wait for the AJAX request to complete

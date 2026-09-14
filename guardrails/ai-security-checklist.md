@@ -1,13 +1,11 @@
 # Guardrail: AI security check for agent-facing artefacts
 
-Applies to what this repository tells an agent to do — every `SKILL.md`, its `references/`,
-`assets/` and `examples/`, the guardrails and policies an agent reads, and the third-party skills
+Applies to what this repository tells an agent to do — every `SKILL.md`, its `references/` and
+`assets/`, the guardrails and policies an agent reads, and the third-party skills
 declared in `skills-lock.json`. Does not apply to this repository's own scripts, secrets and tracked
 artefacts, which are [guardrails/code-security-checklist.md](code-security-checklist.md). Nor to anything this
 repository does not host — no model, no training data, no vector store, no agent runtime — so model
-provenance, data lineage, retention, consent and audit trails stay out. `skills/security-audit/examples/`
-is excluded too: it holds deliberate negative fixtures that carry the exact strings the rules below
-forbid, so that an audit has something known-bad to detect.
+provenance, data lineage, retention, consent and audit trails stay out.
 
 ## Mandatory rules
 
@@ -51,6 +49,7 @@ id names the guardrail that owns it.
 - [ ] Every entry names an identifiable publisher — `sourceType: github` with an `owner/repo` source, never a bare URL or a mirror — python: `ai-locked-skill-source` (error)
 - [ ] Every `skillPath` is repo-relative, with no `..` segment and no leading `/` — python: `ai-locked-skill-path` (error)
 - [ ] No documented or scripted command pipes remote content into an interpreter (`curl … | sh`, `wget … | bash`, `Invoke-Expression`) — grep: `ai-no-remote-pipe` (error)
+- [ ] `skills/security-audit/` is declarative-only: it contains no `examples/` directory and no `SKILL.md` below its root entry point. This prevents recursive discovery and packaging from treating test material as an installable skill — find: `security-audit-declarative-layout` (error)
 
 ---
 
@@ -96,11 +95,17 @@ finding to report, not a step to perform.
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 present() { for f in "$@"; do [ -f "$f" ] && printf '%s\n' "$f"; done; }   # skip tracked-but-deleted paths
-FIXTURES='^skills/security-audit/examples/'                                # deliberate known-bad fixtures
 QUOTES='checklist\.md$'                                                    # these quote the patterns by design
-ALL=$(present $(git ls-files '*.md' '*.py' '*.mjs' '*.js' '*.ts' '*.json' '*.html' '*.feature' '*.txt' '*.yml') | grep -vE "$FIXTURES")
+ALL=$(present $(git ls-files '*.md' '*.py' '*.mjs' '*.js' '*.ts' '*.json' '*.html' '*.feature' '*.txt' '*.yml'))
 SCAN=$(printf '%s\n' "$ALL" | grep -vE "^(guardrails|\.tmp)/|$QUOTES")
-DOCS=$(present $(git ls-files 'skills/*/SKILL.md' 'skills/*/references/*.md' 'skills/*/assets/*.md') | grep -vE "$FIXTURES|$QUOTES")
+DOCS=$(present $(git ls-files 'skills/*/SKILL.md' 'skills/*/references/*.md' 'skills/*/assets/*.md') | grep -vE "$QUOTES")
+
+# security-audit is a declarative package, not a fixture host
+find skills/security-audit \
+  \( -type d -name examples -o -type f -name SKILL.md ! -path 'skills/security-audit/SKILL.md' \) \
+  -print | while IFS= read -r path; do
+    printf 'FAIL security-audit-declarative-layout: prohibited path %s\n' "$path"
+  done
 
 # agent-facing instructions
 grep -rInEi -e 'ignore (all )?(previous|prior|above) instructions' \

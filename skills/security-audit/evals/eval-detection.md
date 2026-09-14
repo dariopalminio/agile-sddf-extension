@@ -501,44 +501,44 @@ Todas las reglas: `"status": "N/A", "justification": "sin archivos fuente detect
 
 ---
 
-### Benchmark 5: AI-003 (`allowed-tools` con comodín) — FAIL esperado
+### Benchmark 5: AI-003 (unrestricted tool declaration) — expected FAIL
 
-**Input:** `examples/agent-skill-project/SKILL.md` con `allowed-tools: *` en el frontmatter
+**Input:** An abstract skill frontmatter declares an unrestricted tool wildcard.
 
-**Resultado esperado:**
+**Expected result:**
 ```json
 {
   "id": "AI-003",
   "status": "FAIL",
   "severity": "HIGH",
-  "evidence": { "file": "SKILL.md", "line": 7, "snippet": "allowed-tools: *" },
-  "recommendation": "Sustituir * por la lista explícita de herramientas que el flujo del skill necesita"
+  "evidence": { "file": "SKILL.md", "line": 1, "snippet": "<unrestricted tool declaration>" },
+  "recommendation": "Replace the wildcard with the explicit minimum tool list required by the skill."
 }
 ```
 
 ---
 
-### Benchmark 6: AI-010 (entrada sin `computedHash`) — FAIL esperado
+### Benchmark 6: AI-010 (entry without `computedHash`) — expected FAIL
 
-**Input:** `examples/agent-skill-project/skills-lock.json`, entrada `sin-hash` sin campo `computedHash`
+**Input:** An abstract root skill lock contains an entry without a `computedHash` integrity field.
 
-**Resultado esperado:**
+**Expected result:**
 ```json
 {
   "id": "AI-010",
   "status": "FAIL",
   "severity": "HIGH",
-  "evidence": { "file": "skills-lock.json", "line": 4, "snippet": "\"sin-hash\": { \"source\": \"acme/skills\", ..." }
+  "evidence": { "file": "skills-lock.json", "line": 1, "snippet": "<skill entry without computedHash>" }
 }
 ```
 
 ---
 
-### Benchmark 7: AI-013 (pipe remoto a intérprete) — FAIL esperado
+### Benchmark 7: AI-013 (remote content piped to an interpreter) — expected FAIL
 
-**Input:** `examples/agent-skill-project/SKILL.md`, en el Paso 1: una descarga `curl` canalizada directamente a `sh`
+**Input:** An abstract skill document pipes a remote download directly into an interpreter.
 
-**Resultado esperado:**
+**Expected result:**
 ```json
 {
   "id": "AI-013",

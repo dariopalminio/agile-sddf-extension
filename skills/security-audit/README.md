@@ -110,14 +110,12 @@ security-audit/
 │   ├── context-detector.agent.md     ← detecta características del proyecto
 │   ├── checklist-evaluator.agent.md  ← evalúa reglas activas
 │   └── report-generator.agent.md     ← genera el reporte final
-├── examples/
-│   ├── jwt-project/                  ← proyecto con JWT (test AC-1, AC-2)
-│   ├── empty-project/                ← sin archivos fuente (test AC-3)
-│   └── agent-skill-project/          ← fixture negativo de artefactos IA (test AI-*)
 ├── evals/
 │   └── eval-detection.md             ← benchmarks de evaluación
 └── README.md                         ← este archivo
 ```
+
+This skill deliberately ships no example projects or executable fixtures. Its rule definitions live in `assets/`, and `evals/` contains abstract evaluation contracts only.
 
 ## Heurísticas de detección de características
 

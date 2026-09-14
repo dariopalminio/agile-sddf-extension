@@ -75,7 +75,7 @@ export class HealthController {
     return this.health.check([
       () => this.db.pingCheck('database'),
       () =>
-        this.http.pingCheck('redis', 'http://redis:6379', { timeout: 1000 }),
+        this.http.pingCheck('redis', 'https://redis:6379', { timeout: 1000 }),
       () =>
         this.disk.checkStorage('disk', { path: '/', thresholdPercent: 0.9 }),
     ]);
