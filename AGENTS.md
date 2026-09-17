@@ -117,8 +117,6 @@ When contributing to this repository:
 
 ## 🔗 Useful References
 
-*   [Agent Skills Specification](spec/agent-skills-spec.md)
-*   [Skill Template](template/SKILL.md)
 *   [Anthropic Skills Repository](https://github.com/anthropics/skills) for examples
 *   [Best Practices for Skills](https://github.com/dariopalminio/agile-sddf/blob/main/docs/knowledge/guides/best-practices-for-skills.md)
 *   [Best Practices for Skill Testing](https://github.com/dariopalminio/agile-sddf/blob/main/docs/knowledge/guides/best-practices-for-skill-testing.md)
