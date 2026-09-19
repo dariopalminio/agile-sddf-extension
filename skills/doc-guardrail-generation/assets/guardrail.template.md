@@ -26,6 +26,20 @@
 
 Applies to [concrete scope]. Does not apply to [exclusion that prevents misuse].
 
+<!-- Keep this line, with [PREFIX] resolved. Every rule in this file —     -->
+<!-- deterministic AND semantic — carries an id <PREFIX>-NN:               -->
+<!--   PREFIX = upper-case, one or two segments of 2-6 letters joined by   -->
+<!--            "-", and it must NAME THE DOMAIN without opening the file  -->
+<!--            (SEC, HEX-BE, HEX-FE — never CHK1 or X). It must not be   -->
+<!--            in use by any sibling guardrail in the same folder.       -->
+<!--   NN     = two digits, fixed width (01…99). One sequence per prefix, -->
+<!--            document order on first write.                            -->
+<!-- Ids are IMMUTABLE once published: never renumber, never insert in   -->
+<!-- the middle, never reuse a retired number.                            -->
+
+Rule IDs: `[PREFIX]-NN` — unique across this project's guardrails, immutable once published:
+never renumbered, never reused.
+
 ## Mandatory rules
 
 <!-- Keep this paragraph verbatim. Severity alone is linter vocabulary — -->
@@ -38,6 +52,12 @@ Applies to [concrete scope]. Does not apply to [exclusion that prevents misuse].
 **On breach:** `(error)` blocks delivery — stop, name the rule id, fix it before continuing.
 `(warn)` does not block — apply it, or state why you did not. A semantic rule that fails is raised
 for human judgement; never resolve one silently.
+
+<!-- OPTIONAL, only under --update: numbers whose rule was deleted. They  -->
+<!-- are retired for good so nobody reassigns them. Delete this line on   -->
+<!-- a first write.                                                       -->
+
+Retired IDs: [none | [PREFIX]-04, [PREFIX]-09]
 
 <!-- ================================================================== -->
 <!-- THE AXIS IS VERIFIABILITY, NOT SEVERITY.                           -->
@@ -64,25 +84,30 @@ for human judgement; never resolve one silently.
 
 ### Deterministic rules ([tools — e.g. Spectral / ESLint / tsc])
 
-<!-- MANDATORY line format:                                              -->
-<!--   - [ ] <rule> — <tool>: `<rule-id>` (error|warn)                   -->
+<!-- MANDATORY line formats. The id is bold and is the first token after  -->
+<!-- the checkbox; the severity is the last token.                       -->
 <!--                                                                    -->
-<!-- If the rule-id is your own no-restricted-syntax entry (or           -->
-<!-- equivalent), put it as the MESSAGE PREFIX so it appears verbatim in -->
-<!-- the linter output and stays greppable.                              -->
+<!--   Check you define yourself (grep, find, a dependency-cruiser rule, -->
+<!--   a no-restricted-syntax entry, a script in this file):             -->
+<!--   - [ ] **<PREFIX>-NN** <rule> — <tool> (error|warn)                -->
+<!--   …and the check PRINTS <PREFIX>-NN verbatim: the guardrail id IS   -->
+<!--   the tool's label, so one grep on the CI output finds the rule.    -->
+<!--                                                                    -->
+<!--   Published rule of a third-party tool (you cannot rename it):     -->
+<!--   - [ ] **<PREFIX>-NN** <rule> — <tool>: `<published-rule-id>` (error|warn) -->
 <!--                                                                    -->
 <!-- Group rules into themed subsections of 4-8. If a group grows past   -->
 <!-- ~10, it is probably two groups.                                     -->
 
 #### [Group 1 — e.g. Base structure]
 
-- [ ] [Verifiable rule, stated positively] — [Tool]: `[rule-id]` (error)
-- [ ] [Verifiable rule] — [Tool]: `[rule-id]` (warn)
+- [ ] **[PREFIX]-01** [Verifiable rule, stated positively] — [Tool]: `[published-rule-id]` (error)
+- [ ] **[PREFIX]-02** [Verifiable rule] — [Tool]: `[published-rule-id]` (warn)
 
 #### [Group 2 — e.g. Configuration & secrets]
 
-- [ ] [Verifiable rule] — grep (error)
-- [ ] [Generated artefacts and credentials are git-ignored] — `git check-ignore` (error)
+- [ ] **[PREFIX]-03** [Verifiable rule] — grep (error)
+- [ ] **[PREFIX]-04** [Generated artefacts and credentials are git-ignored] — `git check-ignore` (error)
 
 <!-- OPTIONAL clarifying note. Use it when a sibling guardrail holds the  -->
 <!-- opposite rule, so nobody carries it over by inertia.                -->
@@ -94,7 +119,12 @@ for human judgement; never resolve one silently.
 
 ### Semantic rules (AI / human review)
 
-<!-- Prose. NO rule-id and NO severity: there is no tool to report them.  -->
+<!-- Prose with an id and NO severity: the id lets a reviewer cite the   -->
+<!-- rule ("fails <PREFIX>-17"); a severity would be a lie, since no tool -->
+<!-- reports it. The sequence continues from the deterministic layer.    -->
+<!--                                                                    -->
+<!-- MANDATORY line format:                                              -->
+<!--   - [ ] **<PREFIX>-NN** <rule requiring judgement>.                 -->
 <!--                                                                    -->
 <!-- This is where intent, domain language, coverage, meaning-based       -->
 <!-- naming and sensitive data belong.                                   -->
@@ -104,9 +134,9 @@ for human judgement; never resolve one silently.
 <!--   deterministic: "every scenario carries a run-level tag" (grep)    -->
 <!--   semantic:      "the tag matches the scenario's real scope"        -->
 
-- [ ] [Rule requiring judgement about meaning].
-- [ ] [Rule about coverage or intent].
-- [ ] [No credentials or personal data are committed in [artefacts]].
+- [ ] **[PREFIX]-05** [Rule requiring judgement about meaning].
+- [ ] **[PREFIX]-06** [Rule about coverage or intent].
+- [ ] **[PREFIX]-07** [No credentials or personal data are committed in [artefacts]].
 
 ## Minimum expected structure
 
@@ -129,13 +159,18 @@ for human judgement; never resolve one silently.
 <!-- If a published ruleset exists, cite and link it.                    -->
 <!-- If it does NOT exist, DEFINE it here (the full config block): it is  -->
 <!-- the only thing that makes the deterministic layer operational.      -->
+<!--                                                                    -->
+<!-- Every check you define prints the rule id VERBATIM on failure       -->
+<!-- (`FAIL <PREFIX>-03: …`, `name: '<PREFIX>-01'` in a dependency-      -->
+<!-- cruiser rule, the message prefix of a no-restricted-syntax entry).  -->
+<!-- That is what keeps the output greppable by id.                      -->
 
 ```bash
-[command 1]            # what it checks
+[command 1]            # [PREFIX]-01 … [PREFIX]-02 — what it checks
 [command 2]
 
-# grep-level checks
-[grep / git check-ignore / node -e "…"]
+# grep-level checks — each prints its rule id on failure
+[grep / git check-ignore / node -e "…"]   # [PREFIX]-03
 ```
 
 <!-- ================================================================== -->
@@ -157,7 +192,7 @@ for human judgement; never resolve one silently.
 
 | Level | Action |
 |-------|--------|
-| Deterministic | [The commands above finish with zero errors.] |
+| Deterministic | [The commands above finish with zero errors and print no `[PREFIX]-NN` id.] |
 | Semantic | [Review the semantic checklist against the diff (AI or human) and attach the result to the PR.] |
 
 ## Source of truth

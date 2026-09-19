@@ -1,7 +1,7 @@
 {
   "skill": "doc-guardrail-generation",
-  "version": "1.1.0",
-  "description": "Test cases for doc-guardrail-generation: producing a single-pass guardrail Markdown file by instantiating assets/guardrail.template.md, with every rule classified by how it is verified (deterministic vs semantic).",
+  "version": "1.2.0",
+  "description": "Test cases for doc-guardrail-generation: producing a single-pass guardrail Markdown file by instantiating assets/guardrail.template.md, with every rule classified by how it is verified (deterministic vs semantic) and carrying a project-unique, domain-prefixed id (<PREFIX>-NN) that is never renumbered or reused.",
   "cases": [
     {
       "id": "TC-001",
@@ -25,13 +25,15 @@
           "## How to run the validation",
           "## Verification",
           "## Source of truth",
+          "Rule IDs:",
           "(error)"
         ],
         "not_contains": [
           "<!--",
           "[Domain or standard]",
           "[Verifiable rule",
-          "[rule-id]",
+          "[published-rule-id]",
+          "[PREFIX]",
           "[Group 1",
           "[Tool]",
           "[concrete scope]",
@@ -118,7 +120,7 @@
       "id": "TC-005",
       "name": "unverifiable-rules-land-in-the-semantic-layer",
       "type": "edge-case",
-      "description": "The core classification behaviour. Rules a named command can decide go to the deterministic layer with tool, rule id and severity; rules requiring judgement go to the semantic layer as prose, with no rule id and no (error)/(warn) marker.",
+      "description": "The core classification behaviour. Rules a named command can decide go to the deterministic layer with tool and severity; rules requiring judgement go to the semantic layer as prose that carries its guardrail id but no (error)/(warn) marker.",
       "input": {
         "prompt": "Create a guardrail named api-error-handling in guardrails/. Rules: every endpoint returns application/problem+json (we run Spectral), no stack trace is ever serialised into a response body (greppable), and error messages must be meaningful to the end user and must never leak internal domain terminology.",
         "flags": []
@@ -134,7 +136,8 @@
         ],
         "not_contains": [
           "<!--",
-          "[rule-id]",
+          "[published-rule-id]",
+          "[PREFIX]",
           "TODO"
         ]
       },
@@ -239,6 +242,88 @@
           "<!--",
           "TODO"
         ]
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-010",
+      "name": "every-rule-carries-a-domain-prefixed-id",
+      "type": "happy-path",
+      "description": "Every rule in both layers carries one id of the form <PREFIX>-NN: the prefix the user gave, two fixed digits, bold, first token after the checkbox, one sequence continuing from the deterministic layer into the semantic one. Flat families (G-01) and mixed padding (DCS-1, DCS-001) never appear. The Rule IDs line under the scope names the prefix.",
+      "input": {
+        "prompt": "Create a guardrail named docker-compose-services in guardrails/, use the prefix DCS. Rules: every service pins an image digest (greppable), no container runs as root (greppable), every service declares a healthcheck (greppable), and the healthcheck actually exercises the service's real readiness rather than a trivial command.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/docker-compose-services-checklist.md",
+        "contains": [
+          "Rule IDs: `DCS-NN`",
+          "- [ ] **DCS-01**",
+          "- [ ] **DCS-02**",
+          "- [ ] **DCS-03**",
+          "- [ ] **DCS-04**",
+          "### Semantic rules (AI / human review)",
+          "DCS-01"
+        ],
+        "not_contains": [
+          "**DCS-1**",
+          "**DCS-001**",
+          "G-01",
+          "[PREFIX]",
+          "<!--"
+        ]
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-011",
+      "name": "update-appends-ids-and-never-renumbers",
+      "type": "edge-case",
+      "description": "Under --update the existing rules keep their ids untouched and a new rule takes the next free number at the end of its layer. Nothing is renumbered, no gap is closed, and the prefix does not change.",
+      "input": {
+        "prompt": "Add a rule to guardrails/code-security-checklist.md --update: no documented command disables the package manager's signature or checksum verification (greppable).",
+        "existing_files": ["guardrails/code-security-checklist.md"],
+        "existing_file_facts": "The existing file uses the prefix SEC with ids SEC-01 to SEC-24 and no retired ids.",
+        "flags": ["--update"]
+      },
+      "expected": {
+        "output_file": "guardrails/code-security-checklist.md",
+        "contains": [
+          "- [ ] **SEC-01**",
+          "- [ ] **SEC-24**",
+          "- [ ] **SEC-25**",
+          "SEC-25"
+        ],
+        "not_contains": [
+          "- [ ] **SEC-26**",
+          "Rule IDs: `SEC2-NN`",
+          "<!--"
+        ]
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-012",
+      "name": "prefix-collision-is-refused",
+      "type": "error-handling",
+      "description": "A prefix already used by a sibling guardrail in the output folder is never reused. When the derived prefix collides, the skill says so, proposes a distinct one and either asks or proceeds with the distinct prefix; it never writes a second file whose ids repeat the sibling's.",
+      "input": {
+        "prompt": "Create a guardrail for secrets management in our deployment manifests in guardrails/: no secret value is inlined in a manifest (greppable), every secret is referenced by name from the vault (greppable), and secret names describe what the secret unlocks rather than where it is used.",
+        "existing_files": ["guardrails/code-security-checklist.md"],
+        "existing_file_facts": "The sibling guardrails/code-security-checklist.md already uses the prefix SEC.",
+        "flags": []
+      },
+      "expected": {
+        "output_file": "guardrails/secrets-management-checklist.md",
+        "contains": [
+          "SEC",
+          "already"
+        ],
+        "not_contains": [
+          "Rule IDs: `SEC-NN`",
+          "- [ ] **SEC-01**"
+        ],
+        "exit_gracefully": true
       },
       "threshold": 1.0
     }
