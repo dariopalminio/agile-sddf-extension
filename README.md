@@ -1,6 +1,16 @@
 ![agile-sddf](assets/logo/agile-sddf-extension-logo-v1.png)
 # agile-sddf-extension
-Public repository of agent skills, guardrails and policies to extend agile-sddf
+Public repository of agent skills, guardrails and policies to extend agile-sddf o coding harnesses.
+
+
+### The Problem
+Adopting AI agents to build software is easy; getting them to work with method, security, and traceability is not. Teams end up with scattered prompts, inconsistent rules, and zero governance over what the agent reads or executes.
+
+### The Solution
+agile-sddf-extension is the public repository of skills, guardrails, and policies that extends the agile-sddf framework or your own agent harness — a minimalist multi-agent system that automates the entire specification cycle using only Markdown files as agents, skills, and templates. Installable with a single command (`npx skills add`), it brings production-ready capabilities across the entire SDD cycle: DDD domain document generation, design, changelogs, OWASP security auditing, BDD end-to-end testing, backend/frontend patterns, and OpenSpec support.
+
+### The Differential Value
+These are not generic prompts. Each skill is a versioned, tested, and auditable artifact: it includes deterministic guardrails with rule IDs and semantic guardrails for human review. It also incorporates a dual security layer — auditing both the application code (`SEC-*`) and the very artifacts the agent reads (`AI-*`: SKILL.md, AGENTS.md, references) — something no other skills ecosystem offers today. And it ships `skill-master` and `skill-test-evals` so your team can create, benchmark, and maintain its own skills with statistical metrics (mean ± stddev).
 
 ## Available Skills
 
@@ -114,7 +124,7 @@ wire those into CI to enforce the deterministic layer, and review the semantic c
 agile-sddf-extension/
 ├── agents/
 ├── guardrails/
-│   └── <domain>.md               # Standalone rule files (deterministic + semantic)
+│   └── <domain>-checklist.md               # Standalone rule files (deterministic + semantic)
 ├── policies/
 │   └── <domain>-policy.md        # Governance documents
 ├── skills/
@@ -124,10 +134,18 @@ agile-sddf-extension/
 │       ├── references/           # (Optional) Supporting documentation
 │       ├── assets/               # (Optional) Static files used by the skill
 │       └── lib/                  # (Optional) Shared code for scripts
-├── template/
-│   └── SKILL.md                  # Base template for new skills
-├── spec/
-│   └── agent-skills-spec.md      # Skill specification
+├── docs/ # Internal documentation for the repository
+│   ├── index.md                                            # punto de entrada wiki (wikilinks [[slug]])
+│   ├── specs/{01-projects,02-epics,03-stories}/            # artefactos generados por los skills SDD
+│   ├── domain/                                             # modelo de dominio del sistema y reglas de negocio
+│   ├── requirements/                                       # especificaciones de requisitos del sistema
+│   ├── adr/                                                # decisiones de arquitectura (ADR-NNNN, inmutables)
+│   ├── architecture/                                       # Arquitectura del sistema (diagramas, decisiones de alto nivel)
+│   ├── guardrails/                                         # Guardrails del sistema (reglas de seguridad y buenas prácticas)
+│   ├── policies/                                           # constitution.md, dod-story.md y enlaces a guardrails
+│   ├── guides/                                             # guías de referencia, how-to-guides (ver docs/index.md)
+│   ├── runbooks/                                           # procedimientos operativos (deploy npm, docker)
+│   └── templates/                                          # plantillas de generación (meta-artefactos)
 ├── AGENTS.md                     # Guide for AI agents working in the repo
 ├── README.md                     # Main repository documentation
 └── .gitignore

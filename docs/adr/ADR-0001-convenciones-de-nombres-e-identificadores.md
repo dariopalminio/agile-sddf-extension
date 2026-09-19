@@ -92,8 +92,10 @@ Quedan prohibidas las **familias planas repetidas entre archivos** (`G-01` en ca
 - Pendientes de renombrar: `openspec-generate-baseline`, `openspec-init-config` (verbo-primero);
   `skill-master` queda en revisión por ser genérico.
 - El skill `doc-guardrail-generation` ya implementa el esquema de IDs (template, método, ejemplo y
-  evals). Los nueve guardrails existentes en `guardrails/` y el skill `doc-policy-generation` (con
-  sus familias `G-`/`BP-`/`R-`) deben migrarse; hasta entonces conviven dos esquemas.
+  evals). Los nueve guardrails de `guardrails/` se migraron el 2026-09-19 con los prefijos `SEC`,
+  `AIS`, `AGT`, `SKL`, `CTX`, `HEX-BE`, `E2E-CY`, `E2E-PW` y `RTL`. Queda pendiente el skill
+  `doc-policy-generation` (con sus familias `G-`/`BP-`/`R-`); hasta entonces las políticas y los
+  guardrails usan esquemas distintos.
 - Ningún ID puede reciclarse: la lista de retirados crece con el tiempo y forma parte del archivo.
 
 ## Referencias

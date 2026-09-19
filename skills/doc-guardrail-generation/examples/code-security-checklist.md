@@ -47,7 +47,7 @@ stays greppable in the output.
 - [ ] **SEC-15** No binary or archive artefact is tracked — `*.exe`, `*.dll`, `*.so`, `*.zip`, `*.jar`, `*.skill` — `git ls-files` (error)
 
 > Piping remote content into an interpreter is checked in the AI guardrail, under third-party
-> executed content. Do not duplicate that `AIS-*` rule here.
+> executed content. Do not duplicate `AIS-13` here.
 
 ---
 
