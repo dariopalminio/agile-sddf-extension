@@ -1,5 +1,5 @@
 ---
-name: ui-generate-design-md
+name: doc-design-generation
 description: Create or update a DESIGN.md from an existing product repository or public website. Use when asked to document an interface's design language, reconstruct its visual system, extract design tokens and guidance from current evidence, or give coding agents persistent UI context.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: using-git-tbd
+name: git-tbd-custom-use
 description: Use this skill when managing git branches, releases, or hotfixes according to the Trunk-Based Development (TBD). It enforces naming conventions and synchronization policies.
 author: dariopalminio
 version: 1.0.0

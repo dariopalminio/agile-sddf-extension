@@ -1,7 +1,7 @@
 {
-  "skill": "doc-guardrail-creator",
+  "skill": "doc-guardrail-generation",
   "version": "1.1.0",
-  "description": "Test cases for doc-guardrail-creator: producing a single-pass guardrail Markdown file by instantiating assets/guardrail.template.md, with every rule classified by how it is verified (deterministic vs semantic).",
+  "description": "Test cases for doc-guardrail-generation: producing a single-pass guardrail Markdown file by instantiating assets/guardrail.template.md, with every rule classified by how it is verified (deterministic vs semantic).",
   "cases": [
     {
       "id": "TC-001",

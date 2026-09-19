@@ -1,4 +1,4 @@
-# doc-readme-generator
+# doc-readme-generation
 
 Generate a project `README.md` from the specification artifacts the repository already has.
 
@@ -29,7 +29,7 @@ it does not invent a project description.
 Install only this skill:
 
 ```bash
-npx skills add dariopalminio/agile-sddf-extension --skill doc-readme-generator
+npx skills add dariopalminio/agile-sddf-extension --skill doc-readme-generation
 ```
 
 Or install all skills in the repository:
@@ -45,7 +45,7 @@ After installation the skill is invoked automatically by context or directly by 
 Ask for the README. No configuration and no flags are required:
 
 ```text
-> /doc-readme-generator
+> /doc-readme-generation
 > /readme-generator
 > Generate a README for this project
 > Build a README from the specs

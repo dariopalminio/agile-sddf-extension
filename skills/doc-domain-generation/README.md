@@ -1,6 +1,6 @@
-# doc-domain-generator
+# doc-domain-generation
 
-`doc-domain-generator` creates and maintains a living, Domain-Driven Design oriented domain knowledge base for a custom business application.
+`doc-domain-generation` creates and maintains a living, Domain-Driven Design oriented domain knowledge base for a custom business application.
 
 It is intended for people who want a durable business-domain document rather than a one-off architecture summary. The runtime instructions live in [SKILL.md](SKILL.md).
 
@@ -21,7 +21,7 @@ The document captures bounded contexts, ubiquitous language, business concepts, 
 Install this skill from the repository with:
 
 ```bash
-npx skills add dariopalminio/agile-sddf-extension --skill doc-domain-generator
+npx skills add dariopalminio/agile-sddf-extension --skill doc-domain-generation
 ```
 
 ## Usage
@@ -29,11 +29,11 @@ npx skills add dariopalminio/agile-sddf-extension --skill doc-domain-generator
 Use natural language or your runtime's skill invocation syntax:
 
 ```text
-/doc-domain-generator Build domain knowledge for this application.
-/doc-domain-generator Reverse-engineer this repository to document its domain.
-/doc-domain-generator Document the domain in docs/knowledge/domains/.
-/doc-domain-generator Update docs/domains/DOMAIN.md with the latest order workflow evidence. --update
-/doc-domain-generator Build domain knowledge through a guided interview. --interactive
+/doc-domain-generation Build domain knowledge for this application.
+/doc-domain-generation Reverse-engineer this repository to document its domain.
+/doc-domain-generation Document the domain in docs/knowledge/domains/.
+/doc-domain-generation Update docs/domains/DOMAIN.md with the latest order workflow evidence. --update
+/doc-domain-generation Build domain knowledge through a guided interview. --interactive
 ```
 
 ## Guided interview

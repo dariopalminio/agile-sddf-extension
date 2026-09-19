@@ -1,5 +1,5 @@
 <!--
-DESIGN.md TEMPLATE — skills/ui-generate-design-md/assets/DESIGN.template.md
+DESIGN.md TEMPLATE — skills/doc-design-generation/assets/DESIGN.template.md
 
 This file is the single definition of the DESIGN.md output shape. Copy it, then:
   1. Replace every <PLACEHOLDER> with normalized evidence.

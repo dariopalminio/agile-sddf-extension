@@ -63,7 +63,7 @@ the output. All commands assume `SKILL=skills/<skill-name>`, set once.
 - [ ] The skill covers exactly one workflow or one domain; a skill that has grown to cover two is split.
 - [ ] The `description` answers *when to invoke me*, never *how the task is done* — the "how" lives in the body, because the description is paid for in every session whether the skill fires or not.
 - [ ] The trigger phrases in the `description` are phrases a real user would actually type, in the languages the team works in.
-- [ ] The `name` is descriptive and action-oriented (`generar-pruebas`, not `auxiliar`).
+- [ ] The `name` is descriptive and follows the noun-activity form — `<noun>-<activity>` with an `-ing` / `-tion` activity, or a pure noun — as in `doc-domain-generation` or `story-mapping`; never a verb-first phrase (`generar-pruebas`) and never a generic word that names no domain (`auxiliar`).
 - [ ] Instructions are explicit: exact requirements, numbered steps, no ambiguous language a reader could resolve two ways.
 - [ ] The skill includes verification steps that let the agent confirm the workflow actually completed.
 - [ ] The skill is portable — it would still work if copied unchanged into another runtime, with no client-specific directory, no absolute path, and no assumption that a particular tool or UI exists.

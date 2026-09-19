@@ -1,5 +1,5 @@
 ---
-name: doc-policy-creator
+name: doc-policy-generation
 description: >-
   Creates a `<domain>-policy.md` — an executable spec stating the guardrails, best practices and
   operational directives that govern AI agents in one domain of a Spec-Driven Development repo.

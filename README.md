@@ -12,14 +12,14 @@ Public repository of agent skills, guardrails and policies to extend agile-sddf
 
 ### Documents
 
-- **`doc-domain-generator`** — Generate and maintain a living, DDD-oriented domain knowledge document from business context or repository evidence
-- **`doc-guardrail-creator`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
-- **`doc-policy-creator`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
-- **`doc-release-notes`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
+- **`doc-domain-generation`** — Generate and maintain a living, DDD-oriented domain knowledge document from business context or repository evidence
+- **`doc-guardrail-generation`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
+- **`doc-policy-generation`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
+- **`doc-changelog-generation`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
 
 ### UX/UI Design
 
-- **`ui-generate-design-md`** — Create or update a DESIGN.md (design tokens + UI rules) from a product repository or a public website
+- **`doc-design-generation`** — Create or update a DESIGN.md (design tokens + UI rules) from a product repository or a public website
 
 ### Implementation
 

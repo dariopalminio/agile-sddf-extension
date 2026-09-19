@@ -1,13 +1,13 @@
 ---
-name: doc-readme-generator
+name: doc-readme-generation
 description: >-
   Generates README.md from SDDF spec artifacts (project-intent.md, requirement-spec.md, project-plan.md).
   Use after /project-discovery or /project-planning to document the project.
-  Triggers on /doc-readme-generator, /readme-generator, "generate README", "create README", "write a README",
+  Triggers on /doc-readme-generation, /readme-generator, "generate README", "create README", "write a README",
   "build README from specs", "document my project".
 ---
 
-# Skill: /doc-readme-generator
+# Skill: /doc-readme-generation
 
 Genera un README.md completo a partir de los artefactos de especificación disponibles, usando un template Markdown como fuente de verdad estructural. Nunca sobreescribe un README existente sin confirmación explícita del usuario.
 

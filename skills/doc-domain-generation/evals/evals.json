@@ -1,5 +1,5 @@
 {
-  "skill": "doc-domain-generator",
+  "skill": "doc-domain-generation",
   "version": "1.2.0",
   "description": "Acceptance cases for generating and maintaining a repository-grounded DDD domain knowledge document.",
   "cases": [

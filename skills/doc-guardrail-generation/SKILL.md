@@ -1,10 +1,10 @@
 ---
-name: doc-guardrail-creator
+name: doc-guardrail-generation
 description: >-
   Creates a guardrail Markdown file — one domain, one pass, every rule classified by how it is
   verified: deterministic (tool, rule id, error/warn) or semantic (AI / human review). Use when
   asked to write, draft or update a guardrail, a rules file or the lint gate for a stack, standard
-  or framework. Triggers on "create a guardrail", "guardrail for", "doc-guardrail-creator".
+  or framework. Triggers on "create a guardrail", "guardrail for", "doc-guardrail-generation".
 ---
 
 # Create a guardrail file

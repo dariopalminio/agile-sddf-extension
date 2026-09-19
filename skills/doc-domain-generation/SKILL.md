@@ -1,5 +1,5 @@
 ---
-name: doc-domain-generator
+name: doc-domain-generation
 description: >-
   Generates and maintains a main, DDD-oriented DOMAIN.md knowledge document for a custom business application. Use when asked to create or update that artifact, build domain knowledge, map bounded contexts, reverse-engineer a repository to document its domain, or conduct a guided domain interview.
 license: MIT

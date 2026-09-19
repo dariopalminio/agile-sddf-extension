@@ -1,7 +1,7 @@
 {
-  "skill": "doc-policy-creator",
+  "skill": "doc-policy-generation",
   "version": "1.0.0",
-  "description": "Test cases for doc-policy-creator: generating *-policy.md executable specification artifacts by instantiating assets/policy.template.md.",
+  "description": "Test cases for doc-policy-generation: generating *-policy.md executable specification artifacts by instantiating assets/policy.template.md.",
   "cases": [
     {
       "id": "TC-001",

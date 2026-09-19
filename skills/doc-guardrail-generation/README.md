@@ -1,4 +1,4 @@
-# doc-guardrail-creator
+# doc-guardrail-generation
 
 Create a guardrail — the single-pass Markdown file that states the rules of one domain, already
 sorted by how each rule is verified.
@@ -39,7 +39,7 @@ standard you named. If the request identifies no domain, it asks before writing.
 Install only this skill:
 
 ```bash
-npx skills add dariopalminio/agile-sddf-extension --skill doc-guardrail-creator
+npx skills add dariopalminio/agile-sddf-extension --skill doc-guardrail-generation
 ```
 
 Or install all skills in the repository:
@@ -59,7 +59,7 @@ and sources:
 > Create a guardrail named docker-compose-services in guardrails/: every service pins an image
   digest, no container runs as root, secrets are never plain environment values
 > I need a guardrail for our GitHub Actions workflows
-> Add a rule about force-pushing to guardrails/using-git-tbd-checklist.md --update
+> Add a rule about force-pushing to guardrails/git-tbd-custom-use-checklist.md --update
 ```
 
 What happens next, in order:

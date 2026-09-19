@@ -1,4 +1,4 @@
-# doc-policy-creator
+# doc-policy-generation
 
 Create a `<domain>-policy.md` — the executable specification that governs how AI agents behave in
 one domain of a Spec-Driven Development repository.
@@ -33,7 +33,7 @@ named. If the request does not identify a domain, it asks before writing.
 Install only this skill:
 
 ```bash
-npx skills add dariopalminio/agile-sddf-extension --skill doc-policy-creator
+npx skills add dariopalminio/agile-sddf-extension --skill doc-policy-generation
 ```
 
 Or install all skills in the repository:

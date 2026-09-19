@@ -1,4 +1,4 @@
-# doc-release-notes
+# doc-changelog-generation
 
 Generate release notes from git commits, updates, or feature lists.
 
@@ -30,7 +30,7 @@ release, with its history preserved by git tags and release artifacts.
 Install only this skill:
 
 ```bash
-npx skills add dariopalminio/agile-sddf-extension --skill doc-release-notes
+npx skills add dariopalminio/agile-sddf-extension --skill doc-changelog-generation
 ```
 
 Or install all skills in the repository:

@@ -1,4 +1,4 @@
-# ui-generate-design-md
+# doc-design-generation
 
 Create or update a `DESIGN.md` from an existing product repository or a public website.
 
@@ -30,7 +30,7 @@ rendered browser inspection; screenshots, copy, or HTML structure alone are not 
 Install only this skill:
 
 ```bash
-npx skills add dariopalminio/agile-sddf-extension --skill ui-generate-design-md
+npx skills add dariopalminio/agile-sddf-extension --skill doc-design-generation
 ```
 
 Or install all skills in the repository:
