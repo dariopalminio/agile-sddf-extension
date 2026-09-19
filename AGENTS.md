@@ -96,6 +96,8 @@ When creating a new skill, follow this checklist:
 | `SKILL.md` | Always exactly this name | `SKILL.md` |
 | Scripts | `kebab-case.sh` or `.mjs` | `deploy.sh`, `collect-signals.mjs` |
 | Skill name (frontmatter) | Lowercase, hyphens | `code-backend-nestjs` |
+| Skill name | Sustantivo-actividad (-ing, -tion) o Sustantivo puro | `doc-domain-generation` |
+
 
 Gerund form (verb + *-ing*, e.g. `testing-react-components`) is an optional community convention some skill names follow.
 
