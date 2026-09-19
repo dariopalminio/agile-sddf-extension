@@ -7,7 +7,7 @@ created: 2026-09-19
 updated: 2026-09-19
 ---
 
-# POLÍTICA DE ARQUITECTURA HEXAGONAL PARA BACKEND
+# POLÍTICA DE ARQUITECTURA HEXAGONAL PARA BACKEND (NestJS + TypeScript)
 
 **Versión:** 1.1.0
 **Estado:** Borrador

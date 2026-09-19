@@ -1,4 +1,6 @@
-# Guardrail: Hexagonal architecture (backend)
+# Guardrail: NestJS Hexagonal architecture for backend
+
+This guardrail is written for NestJS backend.
 
 Applies to every business module under `src/<module>/` of a backend built with Hexagonal
 Architecture (Ports & Adapters) on NestJS + TypeScript or an equivalent stack — its `api/`,
