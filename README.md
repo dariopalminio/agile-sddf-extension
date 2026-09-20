@@ -1,7 +1,9 @@
 ![agile-sddf](assets/logo/agile-sddf-extension-logo-v1.png)
 # agile-sddf-extension
-Public repository of agent skills, guardrails and policies to extend agile-sddf o coding harnesses.
 
+Public repository of agent skills, guardrails and policies to extend agile-sddf or coding harnesses.
+
+## Value proposition
 
 ### The Problem
 Adopting AI agents to build software is easy; getting them to work with method, security, and traceability is not. Teams end up with scattered prompts, inconsistent rules, and zero governance over what the agent reads or executes.
