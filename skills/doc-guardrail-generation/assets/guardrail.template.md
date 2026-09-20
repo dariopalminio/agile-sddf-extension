@@ -33,7 +33,10 @@ Applies to [concrete scope]. Does not apply to [exclusion that prevents misuse].
 <!--            (SEC, HEX-BE, HEX-FE — never CHK1 or X). It must not be   -->
 <!--            in use by any sibling guardrail in the same folder.       -->
 <!--   NN     = two digits, fixed width (01…99). One sequence per prefix, -->
-<!--            document order on first write.                            -->
+<!--            document order on first write. A FAMILY (one base plus   -->
+<!--            stack extensions sharing the prefix) uses three digits    -->
+<!--            and partitions by hundreds: base 001…099, each extension  -->
+<!--            a block of one hundred; state the allocation below.       -->
 <!-- Ids are IMMUTABLE once published: never renumber, never insert in   -->
 <!-- the middle, never reuse a retired number.                            -->
 

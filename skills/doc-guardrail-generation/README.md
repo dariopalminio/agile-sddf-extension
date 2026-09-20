@@ -21,7 +21,9 @@ semantic one. Most concerns split across both layers — *presence* is grep, *co
 Every rule in both layers carries an id of the form `<PREFIX>-NN` — `SEC-01`, `HEX-BE-07` — unique
 across the project's guardrails, not just within the file, so an `AGENTS.md` can point at several
 checklists and an agent can cite `HEX-BE-03` without naming the file. The prefix names the domain;
-the number is two digits and immutable: never renumbered, never reused. A check the guardrail
+the number is two digits (three inside a family — a framework-agnostic base and its stack
+extensions sharing one prefix, partitioned by hundreds) and immutable: never renumbered, never
+reused. A check the guardrail
 defines itself prints that id on failure, so one grep on the CI output finds the rule.
 
 The document is never written from memory. The skill reads `assets/guardrail.template.md` at run

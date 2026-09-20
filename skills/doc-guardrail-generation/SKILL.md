@@ -165,13 +165,17 @@ order the argument table gives; when you derive it yourself, abbreviate the sign
 name and confirm it under `--interactive`.
 
 **Uniqueness.** Before assigning, scan the sibling guardrails of the output folder for the prefixes
-already in use — `grep -ohE '\*\*[A-Z]{2,6}(-[A-Z]{2,6})?-[0-9]{2}\*\*' <folder>/*.md` — and
+already in use — `grep -ohE '\*\*[A-Z]{2,6}(-[A-Z]{2,6})?-[0-9]{2,3}\*\*' <folder>/*.md` — and
 reject any prefix that is already taken, or that is a prefix or an extension of one that is (`HEX`
-next to `HEX-BE` is ambiguous). Propose another and say why.
+next to `HEX-BE` is ambiguous). Propose another and say why. The one exception is a **family**: a
+framework-agnostic base and its stack extensions share one prefix and own disjoint ranges (below).
 
 **Sequence.** Two digits, fixed width, `01` to `99`, one sequence per prefix, in document order on
 a first write: the deterministic groups first, then the semantic rules continue the count. A
-guardrail that would need more than 99 rules is two guardrails.
+guardrail that would need more than 99 rules is two guardrails. A family uses three digits and
+partitions by hundreds — the base owns `001`–`099`, each extension a block of one hundred
+(`100`–`199`, `200`–`299`, …) — and every member states the allocation under its Rule IDs line.
+Padding never mixes within a prefix.
 
 **Immutability.** Ids never change once the file is published. Under `--update`:
 
@@ -220,10 +224,12 @@ Re-scan the finished output against this list. Fix and re-check; do not save a f
 - No HTML comment inherited from the template remains anywhere, including inside code blocks.
 - Every heading the template gives a retained section is present, verbatim.
 - Every paragraph the template marks verbatim is character-for-character identical.
-- Every rule, in both layers, carries exactly one id `<PREFIX>-NN` — two digits, bold, the first
-  token after the checkbox — and every id in the file uses the same prefix.
+- Every rule, in both layers, carries exactly one id `<PREFIX>-NN` — two digits, or three inside a
+  range-partitioned family, bold, the first token after the checkbox — and every id in the file
+  uses the same prefix and the same width.
 - Ids are unique in the file, and the sequence has no gap that the retired-ids line does not explain.
-- The prefix appears in no sibling guardrail of the output folder.
+- The prefix appears in no sibling guardrail of the output folder, unless the file is a member of a
+  family and its ids fall inside the range that family allocates to it.
 - Every deterministic rule cites a tool and carries exactly one of `(error)` / `(warn)`; a published
   rule also cites its tool id.
 - No semantic rule carries a severity marker.

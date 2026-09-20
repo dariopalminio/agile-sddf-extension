@@ -2,6 +2,7 @@
 
 **Estado:** Aceptado
 **Fecha:** 2026-09-19
+**Actualizado:** 2026-09-20 (familias con rangos de 3 dígitos)
 **Fecha de revisión:** 2027-03-19
 **Decisores:** Dario Palminio (mantenedor del repositorio)
 
@@ -61,8 +62,8 @@ práctica.
 |---|---|
 | Forma | `<PREFIJO>-<NN>`. Prefijo en mayúsculas, uno o dos segmentos de 2–6 letras unidos por `-`; secuencia numérica con padding fijo. |
 | Unicidad | **Cada ID es único a nivel global del proyecto**, no solo dentro de su archivo. Un ID citado en un issue, un PR o la respuesta de un agente identifica una sola regla sin ambigüedad. |
-| Prefijo | **Dice a qué dominio pertenece la regla sin necesidad de abrir el archivo**: `SEC`, `HEX-BE`, `HEX-FE`, `E2E-CY`. Nunca un token opaco (`CHK1`, `X`). El segundo segmento existe solo para distinguir variantes del mismo dominio (`-BE` / `-FE`). Un prefijo se asigna a un solo archivo; antes de crear uno se comprueban los ya usados en la carpeta. |
-| Padding | **2 o 3 dígitos, consistentes dentro del proyecto**, para que los IDs ordenen alfabéticamente. Este repositorio usa **2 dígitos** (`01`–`99`); un archivo que necesitaría más de 99 reglas se divide en dos. Nunca se mezclan anchos (`SEC-1` junto a `SEC-02`). |
+| Prefijo | **Dice a qué dominio pertenece la regla sin necesidad de abrir el archivo**: `SEC`, `HEX-BE`, `HEX-FE`, `E2E-CY`. Nunca un token opaco (`CHK1`, `X`). El segundo segmento existe solo para distinguir variantes del mismo dominio (`-BE` / `-FE`). Un prefijo se asigna a un solo archivo, o a una **familia** (una base agnóstica de framework más sus extensiones por stack) cuyos miembros poseen rangos disjuntos; antes de crear uno se comprueban los ya usados en la carpeta. |
+| Padding | **2 o 3 dígitos, consistentes dentro de cada prefijo**, para que los IDs ordenen alfabéticamente. Un archivo aislado usa **2 dígitos** (`01`–`99`); uno que necesitaría más de 99 reglas se divide en dos. Una **familia** usa **3 dígitos** y reparte por centenas: la base ocupa `001`–`099` y cada extensión un bloque de cien (`100`–`199`, `200`–`299`, …), de modo que el prefijo sigue siendo uno y el ID sigue diciendo de qué archivo viene. Nunca se mezclan anchos dentro de un prefijo (`SEC-1` junto a `SEC-02`, `HEX-FE-05` junto a `HEX-FE-105`). |
 | Secuencia | Una secuencia por prefijo, en orden de documento en la primera escritura. En un guardrail, las reglas semánticas continúan la cuenta de las deterministas. |
 | Inmutabilidad | Un ID publicado no cambia nunca. Una regla nueva toma el siguiente número libre y se añade al final de su sección, nunca en medio. No se renumera para cerrar huecos. |
 | Retiro | Al eliminar una regla, su número se **retira para siempre** y se registra en el archivo (`Retired IDs:`). No se reasigna. |
@@ -96,6 +97,13 @@ Quedan prohibidas las **familias planas repetidas entre archivos** (`G-01` en ca
   `AIS`, `AGT`, `SKL`, `CTX`, `HEX-BE`, `E2E-CY`, `E2E-PW` y `RTL`. Queda pendiente el skill
   `doc-policy-generation` (con sus familias `G-`/`BP-`/`R-`); hasta entonces las políticas y los
   guardrails usan esquemas distintos.
+- La familia `HEX-FE` se repartió el 2026-09-20 en `HEX-FE-001`–`099` (base
+  `hexagonal-frontend-checklist.md`), `HEX-FE-100`–`199` (`nextjs-hexagonal-frontend-checklist.md`)
+  y `HEX-FE-200`–`299` (`react-hexagonal-frontend-checklist.md`). La familia `HEX-BE` se repartió
+  el mismo día en `HEX-BE-001`–`099` (base `hexagonal-backend-checklist.md`) y `HEX-BE-100`–`199`
+  (`nestjs-hexagonal-backend-checklist.md`); los ids `HEX-BE-01`–`39` del guardrail NestJS
+  publicados en `fabae8b` pasan a `HEX-BE-101`–`139` (misma regla, +100) — única renumeración de
+  ids publicados, aceptada para cerrar la colisión.
 - Ningún ID puede reciclarse: la lista de retirados crece con el tiempo y forma parte del archivo.
 
 ## Referencias
