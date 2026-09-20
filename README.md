@@ -85,18 +85,35 @@ Guardrails are standalone Markdown files, not skills: `npx skills add` does not 
 one is self-contained — copy the file into your project and it works, with no companion skill or
 script to fetch alongside it.
 
-| Guardrail | Domain |
-|-----------|--------|
-| `skill-creation.md` | Creating and reviewing Agent Skills |
-| `test-cypress-cucumber.md` | E2E BDD suites with Cypress + Cucumber |
-| `test-playwright-cucumber.md` | E2E BDD suites with Playwright + Cucumber |
+Every rule carries a project-unique, immutable id (`SEC-04`, `HEX-BE-107`) that agents cite when
+they stop on a breach. Two-digit ids belong to a standalone guardrail; three-digit ids belong to a
+*family* — a framework-agnostic base (`001…099`) plus stack extensions, one block of one hundred
+each — so a base and its extensions can be installed together without colliding.
+
+| Guardrail | Domain | Rule ids |
+|-----------|--------|----------|
+| `code-security-checklist.md` | Security of committed content: secrets, scripts, tracked artefacts | `SEC-NN` |
+| `ai-security-checklist.md` | Security of what a skill or agent reads, runs and trusts | `AIS-NN` |
+| `skill-creation-checklist.md` | Creating and reviewing Agent Skills | `SKL-NN` |
+| `agent-creation-checklist.md` | Creating custom agents (subagent definitions) | `AGT-NN` |
+| `context-engineering-checklist.md` | Context engineering for agent-facing artefacts | `CTX-NN` |
+| `hexagonal-backend-checklist.md` | Hexagonal architecture invariants, backend — framework-agnostic base | `HEX-BE-001…099` |
+| `nestjs-hexagonal-backend-checklist.md` | NestJS extension of the backend base | `HEX-BE-100…199` |
+| `hexagonal-frontend-checklist.md` | Hexagonal architecture invariants, frontend — framework-agnostic base | `HEX-FE-001…099` |
+| `nextjs-hexagonal-frontend-checklist.md` | Next.js (App Router) extension of the frontend base | `HEX-FE-100…199` |
+| `react-hexagonal-frontend-checklist.md` | React SPA extension of the frontend base | `HEX-FE-200…299` |
+| `test-cypress-cucumbe-checklist.md` | E2E BDD suites with Cypress + Cucumber | `E2E-CY-NN` |
+| `test-playwright-cucumber-checklist.md` | E2E BDD suites with Playwright + Cucumber | `E2E-PW-NN` |
+| `test-react-testing-library-checklist.md` | React component testing with Vitest + Testing Library | `RTL-NN` |
+
+A stack extension does not replace its base: install both and point agents at both.
 
 **One guardrail** — download it straight into your project:
 
 ```bash
 mkdir -p guardrails
-curl -fsSL -o guardrails/skill-creation.md \
-  https://raw.githubusercontent.com/dariopalminio/agile-sddf-extension/main/guardrails/skill-creation.md
+curl -fsSL -o guardrails/skill-creation-checklist.md \
+  https://raw.githubusercontent.com/dariopalminio/agile-sddf-extension/main/guardrails/skill-creation-checklist.md
 ```
 
 **All of them** — a sparse checkout fetches the folder without cloning the rest of the repository:
@@ -113,7 +130,7 @@ in your `AGENTS.md` (or `CLAUDE.md`) — this repository does the same:
 
 ```markdown
 ## Guardrails
-- For detailed guidelines on skill creation, see [guardrails/skill-creation.md](guardrails/skill-creation.md).
+- For detailed guidelines on skill creation, see [guardrails/skill-creation-checklist.md](guardrails/skill-creation-checklist.md).
 ```
 
 Each guardrail carries a *How to run the validation* section whose commands are copyable as written;
