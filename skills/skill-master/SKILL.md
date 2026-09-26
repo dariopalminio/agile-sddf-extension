@@ -175,11 +175,19 @@ If `--skill-dir` is provided, use it as the target for SKILL.md. Otherwise use t
 
 Before writing anything, read:
 - `assets/skill-template.md` (fallback chain: if not found, search nearby `assets/` folders; if still missing, use minimum valid YAML + body)
+- `assets/readme-template.md` (required source of truth for the human-facing `README.md`)
 - `references/skill-anatomy.md`
 - `references/writing-guide.md`
 - `references/tdd-workflow.md`
 
 Write the minimum SKILL.md that should satisfy the evals. Don't add polish yet — just make it pass.
+
+For every new skill, also create `README.md` in the skill folder:
+
+- Use `assets/readme-template.md` as the required structure. Its headings and comments define the README contract; do not change the template while generating the README.
+- Replace every `{...}` placeholder and remove template-only comments, sample commands, and alternatives that do not apply. Do not leave scaffolding in the generated README.
+- Keep it human-facing: describe what the skill does, when to use it, and how to install or invoke it using only accurate, concrete information from the generated skill and repository.
+- If the target is an existing skill and it already has a `README.md`, preserve it unless the user explicitly requests that it be regenerated or updated.
 
 Then spawn runs WITH the skill. Save to `$WORKSPACE/iteration-1/<eval-name>/with_skill/outputs/`.
 
@@ -207,8 +215,8 @@ Repeat until:
 
 ### Final checkpoint
 
-- If `--manual`: show SKILL.md to user and ask for explicit approval before declaring done.
-- If `--auto`: print `[build] SKILL.md written. Pass rate: X%. Iterations: N.` and exit.
+- If `--manual`: show both SKILL.md and README.md to the user and ask for explicit approval before declaring done.
+- If `--auto`: print `[build] SKILL.md and README.md written. Pass rate: X%. Iterations: N.` and exit.
 
 ---
 
@@ -261,6 +269,15 @@ Check available MCPs - if useful for research (searching docs, finding similar s
   **Budget: ≤ 350 chars target, 500 chars hard maximum.** The description is loaded into the system prompt of EVERY session regardless of which skills are used — keep it focused on answering "¿cuándo invocarme?" only. Use this 3-part pattern: (1) what it produces (1 sentence), (2) when to use it (1 sentence), (3) trigger phrases ("Invocar también cuando el usuario mencione…"). The "how" always goes in the body, never here. Use `>-` YAML scalar (folded, strip). Preserve all existing trigger phrases when editing — they are what cause dispatching.
 - **`triggers`**: List of key phrases that reliably signal this skill (used for description optimization).
 - **Body sections**: Fill each section from the template with information gathered during the interview. Adapt or omit sections that don't apply to the skill's domain — the template is a starting point, not a rigid checklist.
+
+#### Write the README.md
+
+Every newly created skill must include a human-facing `README.md` in the same folder as `SKILL.md`.
+
+1. Read `assets/readme-template.md` before writing it. The template is the required structure; use its headings and its comments as the content contract.
+2. Replace all `{...}` placeholders with facts about the new skill. Remove template-only comments, illustrative commands, and options that do not apply, so no scaffold text remains.
+3. Keep the README focused on human use: what the skill does, when to use or avoid it, and accurate installation and invocation instructions. `SKILL.md` remains the agent-facing operational document.
+4. Do not overwrite an existing `README.md` unless the user explicitly asks to update it.
 
 #### Skill Writing Guide
 
@@ -582,7 +599,7 @@ The `references/` directory contains detailed guides and schemas:
 | `references/tdd-workflow.md` | RED/GREEN/REFACTOR cycle with pressure scenarios |
 | `references/skill-tasks-template.md` | Tasks template with TDD phases annotated [Pre-RED/RED/GREEN/REFACTOR] |
 | `references/skill-evals-format.md` | Eval format TC-NNN with contains/not_contains/threshold |
-
+| `assets/readme-template.md` | Template for the skill README |
 ---
 
 Repeating one more time the core loop here for emphasis:
