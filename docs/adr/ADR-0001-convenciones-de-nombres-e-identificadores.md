@@ -88,7 +88,7 @@ Quedan prohibidas las **familias planas repetidas entre archivos** (`G-01` en ca
   `doc-domain-generator` → `doc-domain-generation`, `doc-policy-creator` → `doc-policy-generation`,
   `doc-readme-generator` → `doc-readme-generation`, `doc-release-notes` →
   `doc-changelog-generation`, `ui-generate-design-md` → `doc-design-generation`, `using-git-tbd`
-  → `git-tbd-custom-use`, `using-git-worktrees` → `git-worktrees-use`. Quien los tenga instalados
+  → `git-tbd-for-sdd`, `using-git-worktrees` → `git-worktrees-use`. Quien los tenga instalados
   por el nombre anterior debe reinstalarlos.
 - Pendientes de renombrar: `openspec-generate-baseline`, `openspec-init-config` (verbo-primero);
   `skill-master` queda en revisión por ser genérico.

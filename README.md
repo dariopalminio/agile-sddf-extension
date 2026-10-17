@@ -28,6 +28,7 @@ These are not generic prompts. Each skill is a versioned, tested, and auditable 
 - **`doc-guardrail-generation`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
 - **`doc-policy-generation`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
 - **`doc-changelog-generation`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists
+- **`doc-readme-generation`** — Generate README.md from SDDF spec artifacts (project-intent.md, requirement-spec.md, project-plan.md)
 
 ### UX/UI Design
 
@@ -45,6 +46,11 @@ These are not generic prompts. Each skill is a versioned, tested, and auditable 
 - **`test-nestjs-jest-testing-module`** — Unit tests (UT) for NestJS apps using the Testing Module and Jest
 - **`test-nestjs-supertest`** — API integration tests (API/IT) for NestJS with Supertest (routing, guards, pipes, DB isolation)
 - **`test-react-testing-library`** — React components tested (CT) with Vitest + Testing Library + happy-dom + axe-core
+
+### Git workflow
+
+- **`git-tbd-for-sdd`** — Trunk-Based Development with SDD integration: short-lived branches, trunk as the only integration point, specs and code traveling separately; covers branching, PRs, releases and hotfixes
+- **`git-worktrees-use`** — Ensures an isolated workspace for feature work, via native tools or a `git worktree` fallback, before starting a feature or executing implementation plans
 
 ### Security
 

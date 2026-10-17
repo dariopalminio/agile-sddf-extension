@@ -67,7 +67,7 @@ and sources:
 > Create a guardrail named docker-compose-services in guardrails/: every service pins an image
   digest, no container runs as root, secrets are never plain environment values
 > I need a guardrail for our GitHub Actions workflows
-> Add a rule about force-pushing to guardrails/git-tbd-custom-use-checklist.md --update
+> Add a rule about force-pushing to guardrails/git-tbd-for-sdd-checklist.md --update
 ```
 
 What happens next, in order:
