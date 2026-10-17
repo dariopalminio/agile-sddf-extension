@@ -10,7 +10,7 @@ metadata:
   short-description: Expert guidance on Trunk-Based Development (TBD) branching and release management.
 ---
 
-# Git TBD (custom)
+# Git TBD for SDD
 
 Trunk-based development with a spec-first overlay for SDD (Specification-Driven Development). Branches are short-lived,
 `main` is the only integration point, and specs merge before the code that
