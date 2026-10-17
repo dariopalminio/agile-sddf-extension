@@ -1,7 +1,7 @@
 # git-tbd-for-sdd
 
 > **Type:** skill · **Category:** utility  
-> **Location:** `.claude/skills/git-tbd-for-sdd/SKILL.md`  
+> **Location:** `ia-runtime/skills/git-tbd-for-sdd/SKILL.md`  
 > **Status:** stable
 
 ---
