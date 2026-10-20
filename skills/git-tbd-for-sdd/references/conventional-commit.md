@@ -24,6 +24,7 @@ git commit -m "feat(lang): add Polish language"
 | `feat`     | New feature                    |
 | `fix`      | Bug fix                        |
 | `docs`     | Documentation only             |
+| `spec`     | Specification changes          |
 | `style`    | Formatting/style (no logic)    |
 | `refactor` | Code refactor (no feature/fix) |
 | `perf`     | Performance improvement        |
