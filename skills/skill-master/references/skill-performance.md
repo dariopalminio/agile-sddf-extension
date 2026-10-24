@@ -12,9 +12,9 @@ Fuente normativa: `policies/skill-creation-policy.md` §7.
 
 | Elemento | Límite | Cómo verificar | Acción si se excede |
 |----------|--------|----------------|---------------------|
-| `SKILL.md` | < 500 líneas | `wc -l SKILL.md` | Dividir en archivos de `references/` y enlazarlos |
-| `description` (frontmatter) | ≤ 350 chars objetivo · 500 duro | contar caracteres | Mover el "cómo" al cuerpo; dejar solo "¿cuándo invocarme?" |
-| Archivo de `references/` | < 300 líneas | `wc -l references/*.md` | Añadir tabla de contenidos, o dividir por dominio |
+| `SKILL.md` | < 150 líneas | `wc -l SKILL.md` | Dividir en archivos de `references/` y enlazarlos |
+| `description` (frontmatter) | ≤ 160 chars objetivo · 200 duro | contar caracteres | Mover el "cómo" al cuerpo; dejar solo "¿cuándo invocarme?" |
+| Archivo de `references/` | < 150–300 líneas | `wc -l references/*.md` | Añadir tabla de contenidos, o dividir por dominio |
 | Cualquier archivo empaquetado | < 5 MB | `du -h` | Alojar externo y referenciar por URL |
 
 Los límites del `description` provienen del propio `SKILL.md` de skill-master (sección "Write the SKILL.md"); esta referencia los recoge, no los redefine.
@@ -23,7 +23,7 @@ Los límites del `description` provienen del propio `SKILL.md` de skill-master (
 
 ## Reglas
 
-### R-01 — El `SKILL.md` DEBE mantenerse bajo 500 líneas
+### R-01 — El `SKILL.md` DEBE mantenerse bajo 150 líneas
 
 El cuerpo se carga **completo** en contexto cada vez que el skill dispara. Un `SKILL.md` de 900 líneas cobra 900 líneas incluso cuando la tarea del usuario solo usa una sección. Si el contenido crece, **divide**: el material que solo se necesita en algunos casos DEBE vivir en `references/`, enlazado desde el cuerpo con una indicación de *cuándo* leerlo.
 
@@ -47,6 +47,10 @@ Instrucciones concisas y directas; ejemplos breves y representativos. Una tabla 
 
 Si un skill cubre varios dominios, divídelos en archivos separados (`references/api.md`, `references/faq.md`, `references/advanced.md`) en lugar de un único archivo enorme. Así el agente carga solo el dominio que necesita en cada momento.
 
+### R-07 — No DEBE ser verboso
+
+Evita explicaciones largas y redundantes. Prefiere ejemplos, tablas y referencias externas para detallar la información. La concisión reduce el coste y mejora la claridad.
+
 ---
 
 ## De dónde sale el coste
@@ -65,14 +69,15 @@ El nivel 1 es el más caro por carácter: es el único que se multiplica por tod
 
 Sobre un skill ya escrito:
 
-- [ ] `wc -l SKILL.md` < 500 (R-01)
-- [ ] `description` ≤ 350 chars y sin instrucciones de "cómo" (R-05, nivel 1)
+- [ ] `wc -l SKILL.md` < 150 (R-01)
+- [ ] `description` ≤ 160-200 chars y sin instrucciones de "cómo" (R-05, nivel 1)
 - [ ] Cada archivo de `references/` se enlaza desde el cuerpo **con una indicación de cuándo leerlo** (R-02)
 - [ ] Ninguna referencia queda huérfana (enlazada desde ningún sitio) ni duplicada dentro del cuerpo
 - [ ] Ningún archivo supera 5 MB (R-03)
 - [ ] No hay `README.md` que duplique el `SKILL.md` (R-04)
 - [ ] Los archivos de `references/` > 300 líneas tienen tabla de contenidos, o se han dividido (R-06)
 - [ ] El trabajo repetitivo que el agente rehace en cada invocación está empaquetado en `scripts/` en lugar de descrito en prosa
+- [ ] No DEBE ser verboso (R-07)
 
 ---
 

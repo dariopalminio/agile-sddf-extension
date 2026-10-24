@@ -7,6 +7,7 @@ skill-name/
 ├── SKILL.md          # OBLIGATORIO — frontmatter YAML + instrucciones del skill
 ├── assets/           # templates canónicos (fuente de verdad dinámica)
 ├── references/       # guías y documentación de referencia (solo en skills tipo reference)
+├── agents/           # definiciones de agentes internos que usa el skill
 ├── evals/
 │   └── evals.json    # casos de prueba — DEBE existir ANTES que SKILL.md (TDD)
 ├── examples/
