@@ -146,5 +146,7 @@ For more details, consult these reference files (loaded on demand):
 | API Mocking | `references/api-mocking.md` | Mocking API responses, stubbing endpoints, and testing edge cases |
 | API/REST Testing | `references/api-rest-testing.md` | Testing RESTful APIs, endpoints, and response validation |
 | WCAG E2E Testing | `references/wcag-e2e-testing.md` | Automated WCAG 2.2 accessibility checks in E2E tests with Playwright + axe-core |
+| Features for Living-spec | configure-cucumber-lfor-iving-spec.md | Configure feature folder for Living-spec |
+| Living-spec Gherkin Specifications | features-organization-for-living-spec.md | Organizing Living-spec Gherkin Specifications |
 
 > These files are only loaded if the agent needs additional context.

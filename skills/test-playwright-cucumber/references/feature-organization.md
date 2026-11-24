@@ -135,6 +135,32 @@ test-data/
   catalog/
   checkout/
 ```
+## Level 3: Domain-Based & Living-spec
+
+```text
+specs/features/
+  <domain-name>/
+    <capability-name>/
+      <feature-name>.feature
+```
+
+Example of an e-commerce library::
+
+```text
+specs/features/
+├── compras/                           # domain
+│   ├── gestionar-pedidos/             # capability
+│   │   ├── confirmar-pedido.feature
+│   │   ├── consultar-estado.feature
+│   │   └── cancelar-pedido.feature
+│   └── gestionar-carrito/             # capability
+│       └── actualizar-carrito.feature
+└── pagos/                             # domain
+    ├── procesar-pagos/                # capability
+    │   └── pagar-pedido.feature
+    └── gestionar-reembolsos/          # capability
+        └── reembolsar-pago.feature
+```
 
 ---
 
