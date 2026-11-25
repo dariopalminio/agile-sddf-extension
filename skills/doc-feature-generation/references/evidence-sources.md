@@ -32,7 +32,8 @@ message producer, a scheduler, or a developer who calls a library or runs a CLI.
 
 ## 2. Reading the scanner output
 
-`scripts/scan-entry-points.mjs --root <scope>` prints one JSON object:
+`scripts/scan-entry-points.mjs --root <scope>` prints one JSON object. It redacts credential-like
+values, email addresses and absolute host paths from the evidence it prints:
 
 | Field | Use it to |
 |---|---|

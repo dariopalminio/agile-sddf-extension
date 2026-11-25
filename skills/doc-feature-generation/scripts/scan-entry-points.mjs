@@ -13,6 +13,7 @@
 
 import { lstatSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
 import { extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { safeOutput } from './safe-output.mjs';
 
 const USAGE = 'Usage: node scan-entry-points.mjs [--root <dir>] [--max-per-kind <n>] [--include-excluded]';
 const MAX_FILES = 50000;
@@ -254,7 +255,7 @@ function parseArgs(argv) {
     else if (arg === '--max-per-kind') opts.maxPerKind = Number(argv[(i += 1)]);
     else if (arg === '--include-excluded') opts.includeExcluded = true;
     else if (arg === '--help' || arg === '-h') opts.help = true;
-    else fail(`unknown argument: ${arg}`);
+    else fail('unknown argument');
   }
   if (!opts.root) fail('--root needs a directory');
   if (!Number.isInteger(opts.maxPerKind) || opts.maxPerKind < 1) fail('--max-per-kind must be a positive integer');
@@ -319,13 +320,14 @@ function main() {
     return;
   }
   const rootAbs = resolve(opts.root);
+  if (isAbsolute(opts.root)) fail('root must be workspace-relative');
   let rootStat;
   try {
     rootStat = statSync(rootAbs);
   } catch {
-    fail(`root not found: ${opts.root}`);
+    fail('root not found');
   }
-  if (!rootStat.isDirectory()) fail(`root is not a directory: ${opts.root}`);
+  if (!rootStat.isDirectory()) fail('root is not a directory');
   if (!insideCwd(rootAbs)) fail('root must resolve inside the current directory; run the script from the workspace root');
 
   const out = createCollector(opts.maxPerKind);
@@ -472,7 +474,7 @@ function main() {
 
   const kinds = ['http', 'ui', 'cli', 'events', 'jobs', 'graphql', 'rpc', 'library'];
   const result = {
-    root: toPosix(opts.root),
+    root: toPosix(relative(process.cwd(), rootAbs)) || '.',
     stats,
     languages: Object.fromEntries(Object.entries(languages).sort((a, b) => b[1] - a[1]).slice(0, 12)),
     manifests,
@@ -492,7 +494,7 @@ function main() {
   };
   if (stats.truncated) result.notes.push(`stopped after ${MAX_FILES} files; narrow --root`);
   const found = kinds.reduce((n, k) => n + result.entryPoints[k].length, 0);
-  process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify(safeOutput(result), null, 2)}\n`);
   process.stderr.write(`[scan-entry-points] ${stats.files} files, ${stats.scanned} scanned, ${found} entry points listed, ${testFiles.length} test files read\n`);
 }
 
@@ -590,7 +592,7 @@ function inspectManifest(rel, name, text, ctx) {
 try {
   main();
 } catch (error) {
-  if (!(error instanceof UsageError)) throw error;
-  process.stderr.write(`[scan-entry-points] ${error.message}\n${USAGE}\n`);
+  if (error instanceof UsageError) process.stderr.write(`[scan-entry-points] ${error.message}\n${USAGE}\n`);
+  else process.stderr.write('[scan-entry-points] failed to inspect files\n');
   process.exitCode = 2;
 }

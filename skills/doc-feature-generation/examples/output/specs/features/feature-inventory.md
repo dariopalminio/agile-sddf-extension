@@ -12,7 +12,7 @@
 |---|---|---|
 | Purpose | Ordering backend of a small online shop: customers place and follow orders, the warehouse ships paid orders and back-office staff export orders. | `README.md` |
 | Scope analyzed | The whole workspace: one HTTP API (`src/`) with its hourly job and payment handler, plus a back-office CLI (`bin/admin.js`). | `package.json`, `src/server.js` |
-| Actors | Customer, through the storefront gateway; support agent (role `support`); warehouse operator (role `warehouse`); back-office operator (CLI); payment provider (message bus); scheduler. | `src/middleware/authenticate.js`, `src/orders/order-service.js`, `src/orders/orders.routes.js`, `bin/admin.js`, `src/payments/payment-events.js`, `src/jobs/expire-unpaid-orders.js` |
+| Actors | Customer, through the signing storefront gateway; support agent (role `support`); warehouse operator (role `warehouse`); back-office operator (CLI); payment provider (message bus); scheduler. | `src/middleware/authenticate.js`, `src/orders/order-service.js`, `src/orders/orders.routes.js`, `bin/admin.js`, `src/payments/payment-events.js`, `src/jobs/expire-unpaid-orders.js` |
 | Excluded from the inventory | The test fixture `test/fixtures/orders.json` and the generated storefront client `src/generated/api-client.js`. | scanner `excluded` |
 
 ## Feature tree
@@ -66,7 +66,7 @@ specs/features/
 |---|---|---|
 | Customers act only on their own orders; support agents act on any order | `ordering/manage-orders/check-order-status.feature` | `ordering/manage-orders/confirm-order.feature`, `ordering/manage-orders/cancel-order.feature` |
 | An unknown order is reported as not found | `ordering/manage-orders/check-order-status.feature` | Confirm, cancel and ship apply it through the same lookup |
-| Every API request needs an identified caller, or it is refused | Not repeated as scenarios: `src/middleware/authenticate.js`, applied to every `@api` feature | All `@api` features |
+| Every API request needs a gateway-signed caller identity, or it is refused | Not repeated as scenarios: `src/middleware/authenticate.js`, applied to every `@api` feature | All `@api` features |
 
 ## Open questions and review checklist
 
@@ -75,7 +75,7 @@ specs/features/
 - [ ] Payment events: where is the message bus connected to `subscribe()` in production?
 - [ ] The `export-orders` command reads an in-memory store in its own process, so today it prints only the CSV header. Is the CLI in use before the database adapter exists?
 - [ ] Is the 20-item limit a business rule or a technical safeguard?
-- [ ] Authentication is delegated to the storefront gateway through identity headers. What does the gateway guarantee?
+- [ ] The gateway must remove client-supplied identity headers before signing. Is that guaranteed in the deployment configuration?
 - [ ] Review questions from the checkpoint (run with `--auto`): are `ordering`, `payments` and `fulfillment` the words the team uses? Should the export live under `fulfillment` or under a back-office domain? Can you find the rule "only paid orders can be shipped" in the tree?
 
 ## Untrusted content findings

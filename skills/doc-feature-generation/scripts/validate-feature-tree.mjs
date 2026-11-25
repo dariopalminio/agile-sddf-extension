@@ -4,19 +4,21 @@
 //
 // Usage, from the workspace root:
 //   node <skill-dir>/scripts/validate-feature-tree.mjs --root <output-dir> [--lang <code>]
-//        [--files <a.feature,b.feature>] [--inventory <file>]
+//        [--files <a.feature,b.feature>] [--inventory <root-relative-file>]
 //
 // --files lists the paths written in this run, relative to --root; issues in any other file are
 // reported as warnings, because the run must not rewrite files it did not write.
 // Reads the tree and prints one JSON object on stdout: errors, warnings and counts. It writes
 // nothing and runs nothing; a summary goes to stderr. Exit codes: 0 no error, 1 errors, 2 usage.
 
-import { existsSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
+import { existsSync, lstatSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { safeOutput } from './safe-output.mjs';
 
 const USAGE = 'Usage: node validate-feature-tree.mjs --root <dir> [--lang <code>] [--files <a,b>] [--inventory <file>]';
 const STATUS_TAGS = ['@confirmed', '@implemented-unverified', '@partial', '@proposed'];
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const DIALECT_CODE = /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?$/;
 const INVENTORY = 'feature-inventory.md';
 
 // Keywords from the Gherkin dialect list (gherkin-languages.json); step keywords without the "* " bullet.
@@ -75,14 +77,18 @@ function parseArgs(argv) {
     else if (arg === '--files') opts.files = (argv[(i += 1)] || '').split(',').map((f) => toPosix(f.trim()).replace(/^\.\//, '')).filter(Boolean);
     else if (arg === '--inventory') opts.inventory = argv[(i += 1)];
     else if (arg === '--help' || arg === '-h') opts.help = true;
-    else fail(`unknown argument: ${arg}`);
+    else fail('unknown argument');
   }
   if (!opts.help && !opts.root) fail('--root is required');
   return opts;
 }
 
 function insideCwd(target) {
-  const rel = relative(realpathSync(process.cwd()), realpathSync(target));
+  return isWithin(realpathSync(process.cwd()), realpathSync(target));
+}
+
+function isWithin(root, target) {
+  const rel = relative(root, target);
   return rel === '' || !(rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel));
 }
 
@@ -118,7 +124,8 @@ function checkFeature(rel, text, expectedLang) {
   if (text.startsWith('\uFEFF')) issue('encoding', 'file starts with a byte-order mark');
   const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/);
   const header = /^\s*#\s*language\s*:\s*([\w-]+)\s*$/.exec(lines[0] || '');
-  const lang = header ? header[1] : 'en';
+  const lang = header && DIALECT_CODE.test(header[1]) ? header[1] : header ? 'invalid' : 'en';
+  if (header && lang === 'invalid') issue('language-header', 'language code has an invalid format');
   lines.forEach((line, i) => {
     if (i > 0 && /^\s*#\s*language\s*:/.test(line)) issue('language-header', `line ${i + 1}: "# language:" must be the first line`);
     if (/^\s*#\s*TEMPLATE:/.test(line)) issue('placeholder', `line ${i + 1}: template guidance left in the file`);
@@ -217,11 +224,11 @@ function checkFeature(rel, text, expectedLang) {
         pendingTags = [];
       }
       if (state === 'description' || state === 'examples') return;
-      issue('unexpected-line', `line ${i + 1}: not a keyword, step, table, tag or comment: "${line.slice(0, 60)}"`);
+      issue('unexpected-line', `line ${i + 1}: not a keyword, step, table, tag or comment`);
     });
     closeOutline();
     if (docstring) issue('unexpected-line', 'doc string is never closed');
-    if (pendingTags.length) issue('unexpected-line', `tags ${pendingTags.join(' ')} are not followed by a keyword`);
+    if (pendingTags.length) issue('unexpected-line', 'tags are not followed by a keyword');
     if (features === 0) issue('feature-keyword', 'no Feature line');
     if (result.scenarios === 0) issue('scenario-present', 'no Scenario, Example or Scenario Outline');
   }
@@ -249,12 +256,22 @@ function main() {
     process.stdout.write(`${USAGE}\n`);
     return;
   }
+  if (isAbsolute(opts.root)) fail('root must be workspace-relative');
+  if (opts.lang && !DIALECT_CODE.test(opts.lang)) fail('--lang must be a valid dialect code');
   const rootAbs = resolve(opts.root);
-  if (!existsSync(rootAbs) || !statSync(rootAbs).isDirectory()) fail(`root not found or not a directory: ${opts.root}`);
+  if (!existsSync(rootAbs) || !statSync(rootAbs).isDirectory()) fail('root not found or not a directory');
   if (!insideCwd(rootAbs)) fail('root must resolve inside the current directory; run the script from the workspace root');
   const rootPrefix = `${toPosix(relative(process.cwd(), rootAbs))}/`;
   const owned = opts.files ? new Set(opts.files.map((f) => (f.startsWith(rootPrefix) ? f.slice(rootPrefix.length) : f))) : null;
-  const inventoryAbs = opts.inventory ? resolve(opts.inventory) : join(rootAbs, INVENTORY);
+  if (opts.inventory && isAbsolute(opts.inventory)) fail('inventory must be root-relative');
+  const inventoryAbs = resolve(rootAbs, opts.inventory || INVENTORY);
+  if (!isWithin(rootAbs, inventoryAbs)) fail('inventory must stay inside the root');
+  if (existsSync(inventoryAbs)) {
+    if (lstatSync(inventoryAbs).isSymbolicLink() || !statSync(inventoryAbs).isFile()
+      || !isWithin(realpathSync(rootAbs), realpathSync(inventoryAbs))) {
+      fail('inventory must be a regular file inside the root');
+    }
+  }
   const inventoryRel = toPosix(relative(rootAbs, inventoryAbs));
 
   const errors = [];
@@ -338,8 +355,8 @@ function main() {
     for (const path of cited) report('inventory-sync', inventoryRel, `cites ${path}, which does not exist`);
   }
 
-  const result = { ok: errors.length === 0, root: toPosix(opts.root), dialects: [...dialects], stats, errors, warnings };
-  process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+  const result = { ok: errors.length === 0, root: toPosix(relative(process.cwd(), rootAbs)) || '.', dialects: [...dialects], stats, errors, warnings };
+  process.stdout.write(`${JSON.stringify(safeOutput(result), null, 2)}\n`);
   process.stderr.write(`[validate-feature-tree] ${stats.features} features, ${errors.length} errors, ${warnings.length} warnings\n`);
   if (errors.length) process.exitCode = 1;
 }
@@ -347,7 +364,7 @@ function main() {
 try {
   main();
 } catch (error) {
-  if (!(error instanceof UsageError)) throw error;
-  process.stderr.write(`[validate-feature-tree] ${error.message}\n${USAGE}\n`);
+  if (error instanceof UsageError) process.stderr.write(`[validate-feature-tree] ${error.message}\n${USAGE}\n`);
+  else process.stderr.write('[validate-feature-tree] failed to inspect files\n');
   process.exitCode = 2;
 }
