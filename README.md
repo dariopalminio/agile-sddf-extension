@@ -25,6 +25,7 @@ These are not generic prompts. Each skill is a versioned, tested, and auditable 
 ### Documents
 
 - **`doc-domain-generation`** — Generate and maintain a living, DDD-oriented domain knowledge document from business context or repository evidence
+- **`doc-feature-generation`** — Reverse-engineer a repository into a living spec of Gherkin `.feature` files grouped by domain and capability (`specs/features/` by default), with an inventory of evidence and verification status per feature
 - **`doc-guardrail-generation`** — Create a guardrail file for one domain: rules split into deterministic (tool + rule id + error/warn) and semantic (AI / human review)
 - **`doc-policy-generation`** — Create a `<domain>-policy.md`: guardrails, best practices and operational directives that govern AI agents in one SDD domain
 - **`doc-changelog-generation`** — Generate changelog and release notes (user-facing + technical) from git commits, updates, or feature lists

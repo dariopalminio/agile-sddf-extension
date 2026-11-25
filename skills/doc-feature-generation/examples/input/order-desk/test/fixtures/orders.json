@@ -1,0 +1,8 @@
+[
+  {
+    "id": "o-1",
+    "customerId": "c-1",
+    "status": "pending",
+    "items": [{ "sku": "BOOK-1", "quantity": 1, "unitPrice": 12.5 }]
+  }
+]
