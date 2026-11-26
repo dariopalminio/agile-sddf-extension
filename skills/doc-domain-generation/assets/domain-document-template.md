@@ -15,7 +15,7 @@
 <!--
 Fill every placeholder from supported evidence. Remove this comment and all other author comments from the generated document.
 Use business language. Preserve a confirmed statement unless the user authorizes its correction. Represent missing information as an explicit open question, never as a fabricated fact.
-Write all generated prose, headings, and table labels in English. Translate non-English evidence or ask for an approved English rendering instead of copying it into an English-only repository.
+Use this English template as the structural source. Render headings, labels, status terms, and prose in the selected document language only when the destination repository permits it. Preserve evidenced local business terms where permitted; ask when a term's meaning or approved rendering is unclear.
 -->
 
 ## Purpose and Scope
@@ -139,7 +139,7 @@ Required. State any conflicting evidence, gaps, and questions that need human do
 
 <!--
 Keep only in split mode. Index Tier 2 or Tier 3 documents beneath the selected output directory. Remove this section for a single-file knowledge base.
-For an approved per-entity detail, index `entities/[english-kebab-case-entity].md` and create it from
+For an approved per-entity detail, index `entities/[kebab-case-entity].md` and create it from
 the entity detail template. Do not add entity files before the split and file set are explicitly approved.
 -->
 

@@ -13,7 +13,7 @@
 <!--
 Use this template only after the user explicitly approves a split and the entity detail file is in the approved file set.
 Remove this comment and all other author comments from the generated document.
-Write all generated prose, headings, and table labels in English. Use business language, not database or code structure, unless the evidence establishes a domain meaning.
+Render prose, headings, labels, and status terms in the selected document language when the destination repository permits it. Use business language, not database or code structure, unless the evidence establishes a domain meaning.
 Do not record credentials, connection strings, tokens, personal data, endpoint URLs, or other sensitive values. Use an open question for unsupported details.
 -->
 
@@ -32,7 +32,7 @@ Required. Explain what the entity represents in the business, its responsibility
 ## Also Known As
 
 <!--
-Keep only when aliases or special business terms are evidenced. Prefer an approved English rendering for non-English evidence.
+Keep only when aliases or special business terms are evidenced. Preserve local business terms where the selected language and repository policy permit them; ask when their meaning or approved rendering is unclear.
 -->
 
 | Term or alias | Meaning in this entity context | Evidence status | Evidence reference |

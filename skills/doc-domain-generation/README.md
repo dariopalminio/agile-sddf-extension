@@ -34,7 +34,25 @@ Use natural language or your runtime's skill invocation syntax:
 /doc-domain-generation Document the domain in docs/knowledge/domains/.
 /doc-domain-generation Update docs/domains/DOMAIN.md with the latest order workflow evidence. --update
 /doc-domain-generation Build domain knowledge through a guided interview. --interactive
+/doc-domain-generation Reverse-engineer apps/backoffice and write the domain document to .temp. --scope apps/backoffice --output-dir .temp --auto
+/doc-domain-generation Build the domain document in Spanish where the destination repository permits it. --lang es --auto
 ```
+
+## Optional parameters
+
+| Flag | Effect |
+|---|---|
+| `--output-dir <path>` | Workspace-relative directory for `DOMAIN.md`; defaults to `docs/domains/`. |
+| `--scope <path>` | Analyze one workspace-relative application subtree and directly relevant shared files. |
+| `--lang <code>` | Document language; defaults to the existing document's language when present, otherwise English. |
+| `--update` | Add supported missing knowledge while preserving existing claims and wording. |
+| `--force` | Regenerate the selected output paths, overwriting existing files at those paths. |
+| `--dry-run` | Show the proposed document and evidence without writing. |
+| `--auto` | Skip the draft review checkpoint; other safeguards still apply. |
+
+`--update` and `--force` cannot be combined. The output remains `DOMAIN.md`; `--lang` is a
+document language, not a Gherkin dialect. A destination repository's language policy takes
+precedence over `--lang`.
 
 ## Guided interview
 
@@ -50,8 +68,8 @@ conversation before it prepares a draft. It asks one short stage at a time:
 
 The skill uses available evidence to skip already answered questions and accepts `skip` or `unknown`
 as an open question. After the stages, it shows a reviewed draft summary and asks for explicit final
-approval before it writes or changes `DOMAIN.md`. `--interactive --dry-run` can show the plan but
-never writes files or directories.
+approval before it writes or changes `DOMAIN.md`, unless `--auto` was supplied. Combining
+`--interactive` with `--dry-run` can show the plan but never writes files or directories.
 
 ## Example: ecommerce with multiple bounded contexts
 
@@ -99,14 +117,15 @@ database table or source-code class.
 
 | Situation | Behavior |
 |---|---|
-| No main document exists | Creates the first evidence-backed draft. |
+| No main document exists | Creates the first evidence-backed draft after review, or immediately with `--auto`. |
 | Existing document with `--update` | Preserves historical wording and stable rule IDs while incorporating supported evidence. |
 | Existing document without an update request | Offers regenerate, leave unchanged, or compare. |
-| `--interactive` | Runs the six-stage interview and requires explicit final approval before writing. |
-| `--dry-run` | Reports the target and evidence plan without writing files. |
+| `--interactive` | Runs the six-stage interview and uses a final draft checkpoint unless `--auto` was supplied. |
+| `--dry-run` | Reports the target, evidence, and proposed document without writing files. |
 | Invalid path or external link | Stops before reading or writing outside the workspace. |
 
-Generated documentation is written in English. The skill records uncertainty as an open question rather than inventing a business fact.
+Generated documentation uses the selected language when the destination repository permits it. The
+skill records uncertainty as an open question rather than inventing a business fact.
 
 ## Contents
 
