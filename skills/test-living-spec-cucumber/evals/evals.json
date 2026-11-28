@@ -1,0 +1,80 @@
+{
+  "skill": "test-living-spec-cucumber",
+  "version": "1.0.0",
+  "description": "Acceptance cases for organizing and wiring executable Cucumber living specifications.",
+  "cases": [
+    {
+      "id": "TC-001",
+      "name": "root-feature-with-package-local-automation",
+      "type": "happy-path",
+      "description": "The feature lives at the repository root, and the storefront Cucumber profile discovers it and loads package-local automation. Validate the bindings before running the affected scenario.",
+      "input": {
+        "context": "Organize a Cucumber living spec for order cancellation in the shopping domain and manage-orders capability. A shopper can cancel a pending order and see the status Canceled. The suite uses @shopping for this domain. The storefront Cucumber.js runner starts in apps/storefront and only owns this capability. The existing npm run test:bdd script uses the living-spec profile. Its ESM step definitions live in apps/storefront/e2e/steps/ and its Playwright Page Objects in apps/storefront/e2e/pages/. The order details page has a Cancel order button and a status field. Show the Gherkin, where the automation belongs, the profile entries for feature and step discovery, and how to check and run the affected scenario. Add and show how to invoke the npm scripts for smoke, sanity, and regression."
+      },
+      "expected": {
+        "contains": [
+          "specs/features/shopping/manage-orders/cancel-order.feature",
+          "apps/storefront/e2e/steps/",
+          "apps/storefront/e2e/pages/",
+          "../../specs/features/shopping/manage-orders/",
+          "living-spec",
+          "import",
+          "npm run test:bdd",
+          "npm run test:e2e:smoke",
+          "npm run test:e2e:sanity",
+          "npm run test:e2e:regression",
+          "--dry-run",
+          "@shopping",
+          "@manage-orders",
+          "@smoke",
+          "Then ",
+          "Canceled"
+        ],
+        "not_contains": ["npm install", ".github/workflows/"]
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-002",
+      "name": "runner-unavailable-in-spec-repository",
+      "type": "error-handling",
+      "description": "The requested Gherkin can be written and the missing Cucumber runner is reported as an execution blocker.",
+      "input": {
+        "context": "Add decline-card.feature to our Cucumber living spec under the payments domain and process-payments capability. A declined card leaves the order unpaid. The spec uses @payments for this domain. This repository only contains specifications. The app, Cucumber runner, and test code are in another repository outside this workspace. Show the Gherkin and tell me what blocks execution."
+      },
+      "expected": {
+        "contains": [
+          "specs/features/payments/process-payments/decline-card.feature",
+          "@payments",
+          "@process-payments",
+          "@smoke",
+          "Cucumber runner",
+          "unpaid"
+        ],
+        "not_contains": ["npm install", "All scenarios passed"]
+      },
+      "threshold": 1.0
+    },
+    {
+      "id": "TC-003",
+      "name": "dry-run-exit-zero-with-unresolved-steps",
+      "type": "error-handling",
+      "description": "The dry run discovers the scenario and exits with code zero. Its output reports an ambiguous binding and an undefined step. Real execution is blocked.",
+      "input": {
+        "context": "I ran the returns package's Cucumber.js command with --dry-run for our living spec. It discovered one intended scenario and exited with code 0. The runner marked 'the order is eligible for return' as ambiguous, with matches in e2e/steps/orders.steps.mjs and e2e/steps/returns.steps.mjs. It marked 'the order status is Returned' as undefined. The test app is unavailable. Explain what the output verifies, which steps need work, and whether I can mark this scenario as passed."
+      },
+      "expected": {
+        "contains": [
+          "ambiguous",
+          "undefined",
+          "e2e/steps/orders.steps.mjs",
+          "e2e/steps/returns.steps.mjs",
+          "the order status is Returned",
+          "blocked"
+        ],
+        "not_contains": ["All scenarios passed", "npm install"]
+      },
+      "threshold": 1.0
+    }
+  ]
+}

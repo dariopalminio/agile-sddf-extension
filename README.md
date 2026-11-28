@@ -42,6 +42,7 @@ These are not generic prompts. Each skill is a versioned, tested, and auditable 
 
 ### Testing
 
+- **`test-living-spec-cucumber`** — Maintain executable Cucumber living specs under `specs/features/` by domain and capability, with step definitions and Page Objects in the owning project's test code
 - **`test-playwright-cucumber`** — E2E tests (E2E) with Cucumber BDD + Playwright (feature files, step definitions, hooks, CI/CD)
 - **`test-cypress-cucumber`** — E2E tests (E2E) with Cucumber BDD + Cypress (feature files, step definitions, hooks, CI/CD)
 - **`test-nestjs-jest-testing-module`** — Unit tests (UT) for NestJS apps using the Testing Module and Jest
